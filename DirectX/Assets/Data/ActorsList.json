@@ -1,0 +1,161 @@
+{
+  "gameObjects": [
+    {
+      "type": "Camera",
+      "properties": {
+        "position": [ 0.0, 3.0, -10.0 ]
+      },
+      "components": [
+        {
+          "type": "Camera",
+          "properties": {
+            "fov": 45.0,
+            "nearClip": 0.01,
+            "farClip": 1000.0
+          }
+        },
+        {
+          "type": "ListenerComponent",
+          "properties": {
+          }
+        }
+      ]
+    },
+    {
+      "type": "DirectionalLight",
+      "properties": {
+        "position": [ 0.0, 15.0, 0.0 ],
+        "scale": [ 0.5, 0.5, 0.5 ]
+      },
+      "components": [
+        {
+          "type": "DirectionalLight",
+          "properties": {
+            "direction": [ -50.0, 0.0, 0.0 ],
+            "color": [ 0.5, 0.75, 1.0 ]
+          }
+        },
+        {
+          "type": "MeshComponent",
+          "properties": {
+            "fileName": "Light/DLight.obj"
+          }
+        }
+      ]
+    },
+    {
+      "type": "Title",
+      "components": [
+        {
+          "type": "Scene",
+          "properties": {
+          }
+        },
+        {
+          "type": "Title",
+          "properties": {
+          }
+        },
+        {
+          "type": "SoundComponent",
+          "properties": {
+            "fileName": "çgò@âÿ.wav",
+            "use3D": false
+          }
+        }
+      ]
+    },
+    {
+      "type": "GamePlay",
+      "components": [
+        {
+          "type": "Scene",
+          "properties": {
+          }
+        },
+        {
+          "type": "GamePlay",
+          "properties": {
+          }
+        }
+      ]
+    },
+    {
+      "type": "Waveform",
+      "components": [
+        {
+          "type": "WaveformRenderSample",
+          "properties": {
+          }
+        },
+        {
+          "type": "SoundComponent",
+          "properties": {
+            "fileName": "çgò@âÿ.wav",
+            "use3D": false
+          }
+        }
+      ]
+    },
+    {
+      "type": "ObjTest",
+      "properties": {
+      },
+      "components": [
+        {
+          "type": "MeshComponent",
+          "properties": {
+            "fileName": "Shape/Sphere.obj"
+          }
+        }
+      ]
+    },
+    {
+      "type": "Player",
+      "properties": {
+        "position": [ 0.0, 1.5, 0.0 ],
+        "scale": [ 2.0, 3.0, 2.0 ]
+      },
+      "components": [
+        {
+          "type": "MeshComponent",
+          "properties": {
+            "fileName": "Shape/Sphere.obj"
+          }
+        },
+        {
+          "type": "PlayerMove",
+          "properties": {
+            "moveSpeed": 30.0
+          }
+        }
+      ]
+    },
+    {
+      "type": "Ground",
+      "properties": {
+        "scale": [ 5.0, 5.0, 5.0 ]
+      },
+      "components": [
+        {
+          "type": "MeshComponent",
+          "properties": {
+            "fileName": "Test/test.obj"
+          }
+        }
+      ]
+    },
+    {
+      "type": "LookAtObject",
+      "components": [
+        {
+          "type": "LookAtObject",
+          "properties": {
+            "cameraPositionOffset": [ 0.0, 5.0, -20.0 ],
+            "lookAtOffset": [ 0.0, 2.5, 7.0 ]
+          }
+        }
+      ]
+    }
+  ]
+}

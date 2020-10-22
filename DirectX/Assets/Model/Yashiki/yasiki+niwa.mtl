@@ -1,0 +1,387 @@
+newmtl 1mai_ita
+Ka 0 0 0
+Kd 0.784314 0.784314 0.784314
+Ks 0 0 0
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+map_Kd yasiki_tex.bmp
+
+newmtl big_pilllar
+Ka 0 0 0
+Kd 0.784314 0.784314 0.784314
+Ks 0 0 0
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+map_Kd yasiki_tex.bmp
+
+newmtl daidokoro
+Ka 0 0 0
+Kd 0 0.243137 0.356863
+Ks 0 0 0
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+
+newmtl doma
+Ka 0 0 0
+Kd 0.254902 0.254902 0.254902
+Ks 0 0 0
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+map_Kd yasiki_tex.bmp
+
+newmtl doma_iriguchi
+Ka 0 0 0
+Kd 0.47451 0.47451 0.47451
+Ks 0 0 0
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+map_Kd yasiki_tex.bmp
+
+newmtl door_rail
+Ka 0 0 0
+Kd 0.784314 0.784314 0.784314
+Ks 0 0 0
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+
+newmtl door_waku
+Ka 0 0 0
+Kd 0.784314 0.784314 0.784314
+Ks 0 0 0
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+map_Kd yasiki_tex.bmp
+
+newmtl dou
+Ka 0 0 0
+Kd 0.184314 0.223529 0.0509804
+Ks 0 0 0
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+
+newmtl iriguchi_yane
+Ka 0 0 0
+Kd 0.784314 0.784314 0.784314
+Ks 0 0 0
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+map_Kd yasiki_tex.bmp
+
+newmtl jimen
+Ka 0 0 0
+Kd 0.0745098 0.0509804 0.0352941
+Ks 0 0 0
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+map_Kd yasiki_tex.bmp
+
+newmtl kabe
+Ka 0 0 0
+Kd 0.784314 0.784314 0.784314
+Ks 0 0 0
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+map_Kd yasiki_tex.bmp
+
+newmtl light
+Ka 0 0 0
+Kd 1 1 1
+Ks 0 0 0
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+
+newmtl medium_pilllar
+Ka 0 0 0
+Kd 0.784314 0.784314 0.784314
+Ks 0 0 0
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+map_Kd yasiki_tex.bmp
+
+newmtl mokume_ita
+Ka 0 0 0
+Kd 0.784314 0.784314 0.784314
+Ks 0 0 0
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+map_Kd yasiki_tex.bmp
+
+newmtl mon_entrance
+Ka 0 0 0
+Kd 0.784314 0.784314 0.784314
+Ks 0 0 0
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+map_Kd yasiki_tex.bmp
+
+newmtl mon_ita
+Ka 0 0 0
+Kd 0.784314 0.784314 0.784314
+Ks 0 0 0
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+map_Kd yasiki_tex.bmp
+
+newmtl mon_waku
+Ka 0 0 0
+Kd 0.784314 0.784314 0.784314
+Ks 0 0 0
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+map_Kd yasiki_tex.bmp
+
+newmtl niwa
+Ka 0 0 0
+Kd 0.454902 0.427451 0.321569
+Ks 0 0 0
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+map_Kd niwa_ColorMap.bmp
+
+newmtl rail
+Ka 0 0 0
+Kd 0.470588 0.305882 0.0196078
+Ks 0 0 0
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+
+newmtl room_pillar
+Ka 0 0 0
+Kd 0.784314 0.784314 0.784314
+Ks 0 0 0
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+map_Kd yasiki_tex.bmp
+
+newmtl rouka
+Ka 0 0 0
+Kd 0.784314 0.784314 0.784314
+Ks 0 0 0
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+map_Kd yasiki_tex.bmp
+
+newmtl sinchu
+Ka 0 0 0
+Kd 0.501961 0.501961 0
+Ks 0 0 0
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+
+newmtl small_pillar
+Ka 0 0 0
+Kd 0.784314 0.784314 0.784314
+Ks 0 0 0
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+map_Kd yasiki_tex.bmp
+
+newmtl soto_kabe
+Ka 0 0 0
+Kd 0.784314 0.784314 0.784314
+Ks 0 0 0
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+map_Kd yasiki_tex.bmp
+
+newmtl soto_to_waku
+Ka 0 0 0
+Kd 0.784314 0.784314 0.784314
+Ks 0 0 0
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+map_Kd yasiki_tex.bmp
+
+newmtl tatami
+Ka 0 0 0
+Kd 0.752941 0.796078 0.611765
+Ks 0 0 0
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+
+newmtl tate_ita
+Ka 0 0 0
+Kd 0.784314 0.784314 0.784314
+Ks 0 0 0
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+map_Kd yasiki_tex.bmp
+
+newmtl to_waku
+Ka 0 0 0
+Kd 0.784314 0.784314 0.784314
+Ks 0 0 0
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+map_Kd yasiki_tex.bmp
+
+newmtl to_waku_chu
+Ka 0 0 0
+Kd 0.784314 0.784314 0.784314
+Ks 0 0 0
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+map_Kd yasiki_tex.bmp
+
+newmtl to_waku_shou
+Ka 0 0 0
+Kd 0.784314 0.784314 0.784314
+Ks 0 0 0
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+map_Kd yasiki_tex.bmp
+
+newmtl window_waku
+Ka 0 0 0
+Kd 0.784314 0.784314 0.784314
+Ks 0 0 0
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+map_Kd yasiki_tex.bmp
+
+newmtl yane
+Ka 0 0 0
+Kd 0.784314 0.784314 0.784314
+Ks 0 0 0
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+map_Kd yasiki_tex.bmp
+
+newmtl yane_pillar
+Ka 0 0 0
+Kd 0.784314 0.784314 0.784314
+Ks 0 0 0
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+map_Kd yasiki_tex.bmp
+
+newmtl yane_side
+Ka 0 0 0
+Kd 0.784314 0.784314 0.784314
+Ks 0 0 0
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+map_Kd yasiki_tex.bmp
+
+newmtl yoko_ita
+Ka 0 0 0
+Kd 0.784314 0.784314 0.784314
+Ks 0 0 0
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+map_Kd yasiki_tex.bmp
+
+newmtl yousitsu_yuka
+Ka 0 0 0
+Kd 0.501961 0.25098 0
+Ks 0 0 0
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+
+newmtl yuka
+Ka 0 0 0
+Kd 0.501961 0.25098 0
+Ks 0 0 0
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+
+newmtl shoji
+Ka 0 0 0
+Kd 1 1 1
+Ks 0 0 0
+Ni 1
+Ns 400
+Tf 1 1 1
+d 0.8
+
+newmtl kumori_glass
+Ka 0 0 0
+Kd 1 1 1
+Ks 1 1 1
+Ni 1.6
+Ns 254
+Tf 1 1 1
+d 0.78
+
+newmtl glass
+Ka 0 0 0
+Kd 0.882353 1 1
+Ks 1 1 1
+Ni 1.6
+Ns 660
+Tf 1 1 1
+d 0.4

@@ -1,0 +1,10 @@
+newmtl niwa
+Ka 0 0 0
+Kd 0.454902 0.427451 0.321569
+Ks 0 0 0
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+map_Kd niwa_ColorMap.bmp
+

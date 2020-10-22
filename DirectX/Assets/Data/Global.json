@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "globalProperties": {
+    "window": {
+      "title": "MyEngine",
+      "windowWidth": 1024,
+      "windowHeight": 576,
+      "releaseWindowWidth": 1600,
+      "releaseWindowHeight": 900,
+      "windowStandardWidth": 1920,
+      "windowStandardHeight": 1080,
+      "windowDebugWidth": 1920,
+      "windowDebugHeight": 1080
+    },
+    "fps": 60.0,
+    "beginScene": "GamePlay",
+    "light": {
+      "ambientLight": [ 0.1, 0.1, 0.1 ],
+      "pointLightMeshFileName": "Shape/Sphere.obj"
+    },
+    "drawString": {
+      "number": "System/number2.png",
+      "font": "System/font2.png"
+    },
+    "log": {
+      "scale": [ 0.3125, 0.3125 ]
+    },
+    "fixedDebugInfo": {
+      "scale": [ 0.3125, 0.3125 ]
+    },
+    "hierarchy": {
+      "scale": [ 0.3, 0.3 ],
+      "offsetCharCountX": 2,
+      "offsetCharCountY": 3,
+      "lineSpace": 8.0,
+      "nonActiveAlpha": 0.3
+    },
+    "inspector": {
+      "inspectorPositionX": 1400.0,
+      "tagScale": [ 0.5, 0.5 ],
+      "elementScale": [ 0.3, 0.3 ],
+      "offsetCharCountX": 2
+    },
+    "pause": {
+      "fileName": "System/pause.png",
+      "offset": [ 50.0, 15.0 ]
+    },
+    "enterKey": "Space",
+    "enterPad": "A"
+  }
+}
