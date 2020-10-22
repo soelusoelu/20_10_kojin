@@ -3,7 +3,7 @@
     {
       "type": "Camera",
       "properties": {
-        "position": [ 0.0, 3.0, -10.0 ]
+        "position": [ 0.0, 3.0, -15.0 ]
       },
       "components": [
         {
@@ -100,12 +100,14 @@
     {
       "type": "ObjTest",
       "properties": {
+        "rotation": [ -90.0, 180.0, 0.0 ],
+        "scale": [ 0.25, 0.25, 0.25 ]
       },
       "components": [
         {
           "type": "MeshComponent",
           "properties": {
-            "fileName": "Shape/Sphere.obj"
+            "fileName": "zunko_model_data/TouhokuZunko_FromBlender_20140620_3.fbx"
           }
         }
       ]
@@ -113,8 +115,8 @@
     {
       "type": "Player",
       "properties": {
-        "position": [ 0.0, 1.5, 0.0 ],
-        "scale": [ 2.0, 3.0, 2.0 ]
+        "position": [ 0.0, 1.0, 0.0 ],
+        "scale": [ 2.0, 2.0, 2.0 ]
       },
       "components": [
         {
@@ -151,8 +153,10 @@
         {
           "type": "LookAtObject",
           "properties": {
-            "cameraPositionOffset": [ 0.0, 5.0, -20.0 ],
-            "lookAtOffset": [ 0.0, 2.5, 7.0 ]
+            "cameraToTargetLenght": 15.0,
+            "cameraPositionOffsetY": 7.0,
+            "lookAtOffsetY": 2.0,
+            "lookAtOffsetZ": 5.0
           }
         }
       ]

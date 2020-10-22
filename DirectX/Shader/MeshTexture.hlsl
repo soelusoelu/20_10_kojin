@@ -28,7 +28,8 @@ VS_OUTPUT VS(float4 pos : POSITION, float3 normal : NORMAL, float2 uv : TEXCOORD
 {
     VS_OUTPUT output = (VS_OUTPUT) 0;
     output.Pos = mul(wvp, pos);
-    output.Normal = mul(world, float4(normal, 0)).xyz;
+    float3 norm = mul(world, float4(normal, 0)).xyz;
+    output.Normal = normalize(norm);
     output.UV = uv;
     output.WorldPos = mul(world, pos).xyz;
 

@@ -18,6 +18,8 @@ public:
 private:
     std::shared_ptr<Camera> mCamera;
     std::shared_ptr<GameObject> mTarget;
-    Vector3 mCameraPositionOffset;
-    Vector3 mLookAtOffset;
+    float mCameraToTargetLength;
+    float mCameraPositionOffsetY;
+    float mLookAtOffsetY;
+    float mLookAtOffsetZ;
 };

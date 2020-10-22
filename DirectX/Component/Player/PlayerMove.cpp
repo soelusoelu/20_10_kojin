@@ -23,12 +23,14 @@ void PlayerMove::update() {
         transform().rotate(Vector3::up, 60.f * Time::deltaTime);
     }
 
+    //進みたい方向
     auto dir = Vector3::normalize(Vector3(
         Input::keyboard().horizontal(),
         0.f,
         Input::keyboard().vertical()
     ));
-    transform().translate(dir * mMoveSpeed * Time::deltaTime);
+    //移動
+    transform().translate((dir.x * transform().right() + dir.z * transform().forward()) * mMoveSpeed * Time::deltaTime);
 }
 
 void PlayerMove::loadProperties(const rapidjson::Value& inObj) {
