@@ -8,8 +8,10 @@ class DrawString;
 class FixedDebugInformation;
 class Hierarchy;
 class Inspector;
+class ImGuiInspector;
 class Log;
 class Pause;
+class PointRenderer;
 class LineRenderer2D;
 class LineRenderer3D;
 
@@ -34,8 +36,10 @@ public:
     static Log& log();
     static FixedDebugInformation* fixedDebugInfo();
     static Hierarchy& hierarchy();
-    static Inspector& inspector();
+    //static Inspector& inspector();
+    static ImGuiInspector& inspector();
     static Pause& pause();
+    static PointRenderer& pointRenderer();
     static LineRenderer2D& lineRenderer2D();
     static LineRenderer3D& lineRenderer3D();
 
@@ -44,8 +48,10 @@ private:
     static inline Log* mLog = nullptr;
     static inline FixedDebugInformation* mFixedDebugInfo = nullptr;
     static inline Hierarchy* mHierarchy = nullptr;
-    static inline Inspector* mInspector = nullptr;
+    //static inline Inspector* mInspector = nullptr;
+    static inline ImGuiInspector* mInspector = nullptr;
     static inline Pause* mPause = nullptr;
+    static inline PointRenderer* mPointRenderer = nullptr;
     static inline LineRenderer2D* mLineRenderer2D = nullptr;
     static inline LineRenderer3D* mLineRenderer3D = nullptr;
 };

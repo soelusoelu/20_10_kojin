@@ -70,6 +70,10 @@ Vector2& Vector2::operator-=(const Vector2& right) {
     return *this;
 }
 
+bool Vector2::equal(const Vector2& right) const {
+    return (Math::equal(x, right.x) && Math::equal(y, right.y));
+}
+
 float Vector2::lengthSq() const {
     return (x * x + y * y);
 }

@@ -21,8 +21,8 @@ public:
     void initialize();
     void update();
     void setGameObjectToButton(const GameObjectPtrList& gameObjects);
-    //マネージャーに登録されてる全アクターを表示
-    void drawActors() const;
+    //マネージャーに登録されてる全ゲームオブジェクトを表示
+    void drawGameObjects() const;
 
 private:
     DrawString* mDrawString;

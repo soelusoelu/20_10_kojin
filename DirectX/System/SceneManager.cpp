@@ -9,6 +9,7 @@
 #include "../DebugLayer/LineRenderer/LineRenderer2D.h"
 #include "../DebugLayer/LineRenderer/LineRenderer3D.h"
 #include "../DebugLayer/Pause.h"
+#include "../DebugLayer/PointRenderer.h"
 #include "../Device/DrawString.h"
 #include "../Device/Physics.h"
 #include "../Device/Renderer.h"
@@ -80,7 +81,8 @@ void SceneManager::update() {
         return;
     }
 
-    //ライン描画情報を削除
+    //描画情報を削除
+    DebugUtility::pointRenderer().clear();
     DebugUtility::lineRenderer2D().clear();
     DebugUtility::lineRenderer3D().clear();
     //保有しているテキストを全削除
@@ -147,12 +149,15 @@ void SceneManager::draw() const {
     DebugUtility::draw(proj);
 #endif // _DEBUG
 
-    //2Dライン
-    mRenderer->renderLine2D(&proj);
-    DebugUtility::lineRenderer2D().draw(proj);
+    //3Dポイント
+    mRenderer->renderPoint3D();
+    DebugUtility::pointRenderer().draw(mCamera->getViewProjection());
     //3Dライン
     mRenderer->renderLine3D();
     DebugUtility::lineRenderer3D().draw(mCamera->getViewProjection());
+    //2Dライン
+    mRenderer->renderLine2D(&proj);
+    DebugUtility::lineRenderer2D().draw(proj);
 }
 
 void SceneManager::change(const StringSet& tags) {

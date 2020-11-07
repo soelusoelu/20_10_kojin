@@ -28,8 +28,8 @@ public:
     //アクティブ状態の取得
     bool getActive() const;
 
-    //タグの設定
-    void setTag(const std::string& tag);
+    //名前の取得
+    const std::string& name() const;
     //タグの取得
     const std::string& tag() const;
 
@@ -44,7 +44,7 @@ public:
     GameObjectManager& getGameObjectManager();
 
     //ゲームオブジェクトを生成
-    static std::shared_ptr<GameObject> create();
+    static std::shared_ptr<GameObject> create(const std::string& name, const std::string& tag);
 
 private:
     GameObject(const GameObject&) = delete;
@@ -58,6 +58,7 @@ private:
 private:
     std::unique_ptr<Transform3D> mTransform;
     std::unique_ptr<ComponentManager> mComponentManager;
+    std::string mName;
     std::string mTag;
     bool mIsActive;
 

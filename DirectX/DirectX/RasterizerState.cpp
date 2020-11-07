@@ -30,7 +30,7 @@ const RasterizerDesc& RasterizerState::desc() const {
 void RasterizerState::execute() {
     Microsoft::WRL::ComPtr<ID3D11RasterizerState> rasterizer;
 
-    auto& dx = DirectX::instance();
+    auto& dx = MyDirectX::DirectX::instance();
     dx.device()->CreateRasterizerState(&toRasterizerDesc(mDesc), &rasterizer);
     dx.deviceContext()->RSSetState(rasterizer.Get());
 }

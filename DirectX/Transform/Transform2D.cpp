@@ -18,11 +18,9 @@ bool Transform2D::computeWorldTransform() {
         mWorldTransform = Matrix4::createScale(Vector3(mSize, 1.f)); //テクスチャサイズに
         mWorldTransform *= Matrix4::createTranslation(Vector3(-mPivot, 0.f)); //中心 + ピボットを原点に
 
-        auto w = static_cast<float>(Window::width()) / static_cast<float>(Window::standardWidth());
-        auto h = static_cast<float>(Window::height()) / static_cast<float>(Window::standardHeight());
-        mWorldTransform *= Matrix4::createScale(Vector3(getScale() * Vector2(w, h), 1.f));
+        mWorldTransform *= Matrix4::createScale(Vector3(getScale() * Window::getWindowCompensate(), 1.f));
         mWorldTransform *= Matrix4::createRotationZ(mRotation);
-        mWorldTransform *= Matrix4::createTranslation(Vector3(getPosition() * Vector2(w, h), 1.f));
+        mWorldTransform *= Matrix4::createTranslation(Vector3(getPosition() * Window::getWindowCompensate(), 1.f));
 
         mIsRecomputeTransform = false;
 

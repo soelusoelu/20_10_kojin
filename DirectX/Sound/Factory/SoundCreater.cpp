@@ -6,8 +6,6 @@
 #include "../XAudio2/SoundBase.h"
 #include "../XAudio2/XAudio2.h"
 #include "../../DebugLayer/Debug.h"
-#include "../../System/World.h"
-#include "../../Utility/Directory.h"
 #include "../../Utility/FileUtil.h"
 
 SoundCreater::SoundCreater(const SoundBase& base) :
@@ -28,11 +26,9 @@ std::shared_ptr<SourceVoice> SoundCreater::createSourceVoice(const std::string& 
         return nullptr;
     }
 
-    World::instance().directory().setSoundDirectory(filePath);
-    auto fileName = FileUtil::getFileNameFromDirectry(filePath);
     //音を読み込む
     WAVEFORMATEX format = { 0 };
-    auto res = loader->loadFromFile(&format, fileName);
+    auto res = loader->loadFromFile(&format, filePath);
     if (!res) {
         return nullptr;
     }

@@ -25,7 +25,7 @@ class JoyPad {
 public:
     JoyPad();
     ~JoyPad();
-    bool initialize(HWND hWnd, IDirectInput8* directInput);
+    bool initialize(const HWND& hWnd, IDirectInput8* directInput);
     void loadProperties(const rapidjson::Value& inObj);
     void update();
     //キーが押された瞬間

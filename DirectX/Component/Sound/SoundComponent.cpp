@@ -1,4 +1,5 @@
 ﻿#include "SoundComponent.h"
+#include "../../Imgui/imgui.h"
 #include "../../Sound/3D/Emitter/Sound3DEmitter.h"
 #include "../../Sound/Player/SoundPlayer.h"
 #include "../../Sound/Voice/SourceVoice/SourceVoice.h"
@@ -46,9 +47,13 @@ void SoundComponent::loadProperties(const rapidjson::Value& inObj) {
     JsonHelper::getBool(inObj, "use3D", &mUse3DSound);
 }
 
-void SoundComponent::drawDebugInfo(ComponentDebug::DebugInfoList* inspect) const {
-    inspect->emplace_back("FileName", mFileName);
-    inspect->emplace_back("Use3D", mUse3DSound);
+void SoundComponent::saveProperties(rapidjson::Document::AllocatorType& alloc, rapidjson::Value* inObj) const {
+    JsonHelper::setString(alloc, inObj, "fileName", mFileName);
+    JsonHelper::setBool(alloc, inObj, "use3D", mUse3DSound);
+}
+
+void SoundComponent::drawInspector() {
+    ImGui::Text("FileName: &s", mFileName);
 }
 
 bool SoundComponent::isNull() const {

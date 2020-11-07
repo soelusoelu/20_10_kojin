@@ -1,0 +1,22 @@
+{
+  "tag": "Light",
+  "properties": {
+    "position": [ 0.0, 15.0, 0.0 ],
+    "scale": [ 0.5, 0.5, 0.5 ]
+  },
+  "components": [
+    {
+      "type": "DirectionalLight",
+      "properties": {
+        "direction": [ -50.0, 0.0, 0.0 ],
+        "color": [ 0.5, 0.75, 1.0 ]
+      }
+    },
+    {
+      "type": "MeshComponent",
+      "properties": {
+        "fileName": "Light/DLight.obj"
+      }
+    }
+  ]
+}

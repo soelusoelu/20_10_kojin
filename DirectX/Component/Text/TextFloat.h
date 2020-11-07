@@ -8,7 +8,7 @@ public:
     ~TextFloat();
     virtual void lateUpdate() override;
     virtual void loadProperties(const rapidjson::Value& inObj) override;
-    virtual void drawDebugInfo(ComponentDebug::DebugInfoList* inspect) const override;
+    virtual void drawInspector() override;
     void setNumber(float number);
     float number() const;
     void setDecimalDigits(int decimalDigits);

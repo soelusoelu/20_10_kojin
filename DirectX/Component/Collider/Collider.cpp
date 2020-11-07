@@ -1,5 +1,6 @@
 ﻿#include "Collider.h"
 #include "../../Device/Physics.h"
+#include "../../Imgui/imgui.h"
 #include <algorithm>
 
 Collider::Collider(GameObject& gameObject) :
@@ -32,9 +33,9 @@ void Collider::finalize() {
     }
 }
 
-void Collider::drawDebugInfo(ComponentDebug::DebugInfoList* inspect) const {
-    inspect->emplace_back("IsAutoUpdate", mIsAutoUpdate);
-    inspect->emplace_back("Enable", mEnable);
+void Collider::drawInspector() {
+    ImGui::Checkbox("IsAutoUpdate", &mIsAutoUpdate);
+    ImGui::Checkbox("Enable", &mEnable);
 }
 
 void Collider::onEnable(bool value) {

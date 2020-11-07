@@ -1,4 +1,7 @@
 ﻿#include "Window.h"
+#include "../Imgui/imgui.h"
+#include "../Imgui/imgui_impl_dx11.h"
+#include "../Imgui/imgui_impl_win32.h"
 #include "../Utility/LevelLoader.h"
 #include "../Utility/StringUtil.h"
 
@@ -66,6 +69,8 @@ void Window::createWindow(HINSTANCE hInstance) {
     UpdateWindow(mhWnd);
 }
 
+extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
+
 LRESULT Window::msgProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam) {
     switch (iMsg) {
     case WM_KEYDOWN:
@@ -74,6 +79,8 @@ LRESULT Window::msgProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam) {
         PostQuitMessage(0);
         break;
     }
+
+    ImGui_ImplWin32_WndProcHandler(hWnd, iMsg, wParam, lParam);
     return DefWindowProc(hWnd, iMsg, wParam, lParam);
 }
 
@@ -111,6 +118,13 @@ int Window::debugHeight() {
 
 Vector2 Window::windowToClientSize() {
     return mWindowToClientSize;
+}
+
+Vector2 Window::getWindowCompensate() {
+    Vector2 compen;
+    compen.x = static_cast<float>(Window::width()) / static_cast<float>(Window::standardWidth());
+    compen.y = static_cast<float>(Window::height()) / static_cast<float>(Window::standardHeight());
+    return compen;
 }
 
 void Window::loadProperties(const rapidjson::Value& inObj) {

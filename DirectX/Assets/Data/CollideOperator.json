@@ -1,0 +1,31 @@
+{
+  "components": [
+    {
+      "type": "CollideMouseOperator",
+      "properties": {
+      }
+    },
+    {
+      "type": "AABBSelector",
+      "properties": {
+      }
+    },
+    {
+      "type": "AABBMouseScaler",
+      "properties": {
+        "editPointRadius": 0.5,
+        "collisionExpantionAmount": 2.0
+      }
+    },
+    {
+      "type": "MeshAdder",
+      "properties": {
+      }
+    },
+    {
+      "type": "CollideAdder",
+      "properties": {
+      }
+    }
+  ]
+}

@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include <rapidjson/document.h>
 #include <list>
 #include <memory>
 #include <string>
@@ -72,9 +73,15 @@ public:
         return components;
     }
 
+    //すべてのコンポーネントを保存する
+    void saveComponents(rapidjson::Document::AllocatorType& alloc, rapidjson::Value* inObj) const;
+
 private:
     ComponentManager(const ComponentManager&) = delete;
     ComponentManager& operator=(const ComponentManager&) = delete;
+
+    //各コンポーネントを保存する
+    void saveComponent(rapidjson::Document::AllocatorType& alloc, rapidjson::Value* outArray, const Component& component) const;
 
 private:
     ComponentPtrList mStartComponents;

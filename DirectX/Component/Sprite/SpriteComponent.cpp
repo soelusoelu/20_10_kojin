@@ -1,5 +1,6 @@
 ﻿#include "SpriteComponent.h"
 #include "../../GameObject/GameObject.h"
+#include "../../Imgui/imgui.h"
 #include "../../Sprite/Sprite.h"
 #include "../../Sprite/SpriteManager.h"
 #include "../../Transform/Pivot.h"
@@ -70,11 +71,11 @@ void SpriteComponent::loadProperties(const rapidjson::Value& inObj) {
     }
 }
 
-void SpriteComponent::drawDebugInfo(ComponentDebug::DebugInfoList* inspect) const {
-    inspect->emplace_back("FileName", fileName());
-    inspect->emplace_back("Position", transform().getPosition());
-    inspect->emplace_back("Rotation", transform().getRotation());
-    inspect->emplace_back("Scale", transform().getScale());
+void SpriteComponent::drawInspector() {
+    ImGui::Text("FileName: %s", fileName().c_str());
+    //inspect->emplace_back("Position", transform().getPosition());
+    //inspect->emplace_back("Rotation", transform().getRotation());
+    //inspect->emplace_back("Scale", transform().getScale());
 }
 
 void SpriteComponent::draw(const Matrix4& proj) const {

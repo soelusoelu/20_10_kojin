@@ -1,7 +1,4 @@
 ﻿#include "CSVReader.h"
-#include "AssetsManager.h"
-#include "../System/World.h"
-#include "../Utility/FileUtil.h"
 #include <cassert>
 #include <fstream>
 #include <sstream>
@@ -55,11 +52,8 @@ void CSVReader::parse(const std::string& filePath) {
     //中身リセット
     mCSV.clear();
 
-    World::instance().assetsManager().setDataDirectory(filePath);
-    auto fileName = FileUtil::getFileNameFromDirectry(filePath);
-
     //読み込み開始
-    std::ifstream ifs(fileName, std::ios::in);
+    std::ifstream ifs(filePath, std::ios::in);
     assert(ifs);
 
     std::string line;
@@ -86,11 +80,8 @@ void CSVReader::parseString(const std::string& filePath) {
     //中身リセット
     mCSVString.clear();
 
-    World::instance().assetsManager().setDataDirectory(filePath);
-    auto fileName = FileUtil::getFileNameFromDirectry(filePath);
-
     //読み込み開始
-    std::ifstream ifs(fileName, std::ios::in);
+    std::ifstream ifs(filePath, std::ios::in);
     assert(ifs);
 
     std::string line;

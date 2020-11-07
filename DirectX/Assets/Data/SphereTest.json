@@ -1,0 +1,20 @@
+{
+  "components": [
+    {
+      "type": "DragAndDropCharacter",
+      "properties": {
+      }
+    },
+    {
+      "type": "MeshComponent",
+      "properties": {
+        "fileName": "Shape/Sphere.fbx"
+      }
+    },
+    {
+      "type": "AABBCollider",
+      "properties": {
+      }
+    }
+  ]
+}

@@ -1,4 +1,5 @@
 ﻿#include "DirectionalLight.h"
+#include "../../Imgui/imgui.h"
 #include "../../Transform/Transform3D.h"
 #include "../../Utility/LevelLoader.h"
 
@@ -21,8 +22,9 @@ void DirectionalLight::loadProperties(const rapidjson::Value& inObj) {
     JsonHelper::getVector3(inObj, "color", &mLightColor);
 }
 
-void DirectionalLight::drawDebugInfo(ComponentDebug::DebugInfoList* inspect) const {
-    inspect->emplace_back("Color", mLightColor);
+void DirectionalLight::drawInspector() {
+    float color[3] = { mLightColor.x, mLightColor.y, mLightColor.z };
+    ImGui::ColorPicker3("Color", color);
 }
 
 void DirectionalLight::setDirection(const Vector3& dir) {

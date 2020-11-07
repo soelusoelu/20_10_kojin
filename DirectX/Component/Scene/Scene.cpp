@@ -7,12 +7,6 @@ Scene::Scene(GameObject& gameObject) :
 
 Scene::~Scene() = default;
 
-void Scene::drawDebugInfo(ComponentDebug::DebugInfoList* inspect) const {
-    for (const auto& tag : mTagsToNext) {
-        inspect->emplace_back("ExclusionList", tag);
-    }
-}
-
 void Scene::next(const std::string& next) {
     mNext = next;
 }

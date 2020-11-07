@@ -4,6 +4,7 @@
 #include "../../DebugLayer/Debug.h"
 #include "../../GameObject/GameObject.h"
 #include "../../GameObject/GameObjectManager.h"
+#include "../../Imgui/imgui.h"
 #include "../../Transform/Transform3D.h"
 #include "../../Utility/LevelLoader.h"
 #include "../../Utility/StringUtil.h"
@@ -49,11 +50,11 @@ void LookAtObject::loadProperties(const rapidjson::Value& inObj) {
     JsonHelper::getFloat(inObj, "lookAtOffsetZ", &mLookAtOffsetZ);
 }
 
-void LookAtObject::drawDebugInfo(ComponentDebug::DebugInfoList* inspect) const {
-    inspect->emplace_back("CameraToTargetLenght", mCameraToTargetLength);
-    inspect->emplace_back("CameraPositionOffsetY", mCameraPositionOffsetY);
-    inspect->emplace_back("LookAtOffsetY", mLookAtOffsetY);
-    inspect->emplace_back("LookAtOffsetZ", mLookAtOffsetZ);
+void LookAtObject::drawInspector() {
+    ImGui::SliderFloat("CameraToTargetLenght", &mCameraToTargetLength, 0.f, 1000.f);
+    ImGui::SliderFloat("CameraPositionOffsetY", &mCameraPositionOffsetY, 0.f, 1000.f);
+    ImGui::SliderFloat("LookAtOffsetY", &mLookAtOffsetY, 0.f, 1000.f);
+    ImGui::SliderFloat("LookAtOffsetZ", &mLookAtOffsetZ, 0.f, 1000.f);
 }
 
 void LookAtObject::setTarget(const std::shared_ptr<GameObject>& target) {

@@ -1,0 +1,29 @@
+{
+  "tag": "Camera",
+  "properties": {
+    "position": [ 0.0, 20.0, -20.0 ],
+    "rotation": [ 20.0, 0.0, 0.0 ]
+  },
+  "components": [
+    {
+      "type": "Camera",
+      "properties": {
+        "fov": 45.0,
+        "nearClip": 0.01,
+        "farClip": 1000.0
+      }
+    },
+    {
+      "type": "ListenerComponent",
+      "properties": {
+      }
+    },
+    {
+      "type": "CameraMove",
+      "properties": {
+        "cameraSpeed": 40.0,
+        "rotateSpeed": 40.0
+      }
+    }
+  ]
+}

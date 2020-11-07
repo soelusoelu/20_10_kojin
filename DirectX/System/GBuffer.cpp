@@ -4,12 +4,10 @@
 #include "Shader/Shader.h"
 #include "../Component/Camera/Camera.h"
 #include "../Component/Light/DirectionalLight.h"
-#include "../Device/AssetsManager.h"
 #include "../DirectX/DirectXInclude.h"
 #include "../Light/LightManager.h"
 #include "../Mesh/Vertex.h"
 #include "../System/SystemInclude.h"
-#include "../System/World.h"
 
 GBuffer::GBuffer() :
     mSampler(nullptr),
@@ -79,7 +77,7 @@ void GBuffer::create() {
 }
 
 void GBuffer::renderToTexture() {
-    auto& dx = DirectX::instance();
+    auto& dx = MyDirectX::DirectX::instance();
 
     //各テクスチャをレンダーターゲットに設定
     static constexpr unsigned numGBuffer = static_cast<unsigned>(Type::NUM_GBUFFER_TEXTURES);
@@ -87,13 +85,13 @@ void GBuffer::renderToTexture() {
     for (size_t i = 0; i < numGBuffer; i++) {
         views[i] = mRenderTargets[i]->getRenderTarget();
     }
-    dx.setRenderTargets(views->GetAddressOf(), numGBuffer);
+    //dx.setRenderTargets(views->GetAddressOf(), numGBuffer);
 
     //クリア
     for (size_t i = 0; i < numGBuffer; i++) {
         mRenderTargets[i]->clearRenderTarget();
     }
-    dx.clearDepthStencilView();
+    //dx.clearDepthStencilView();
 
     //デプステスト有効化
     dx.depthStencilState()->depthTest(true);
@@ -104,7 +102,7 @@ void GBuffer::renderToTexture() {
 }
 
 void GBuffer::renderFromTexture(const Camera& camera, const LightManager& lightManager) {
-    auto& dx = DirectX::instance();
+    auto& dx = MyDirectX::DirectX::instance();
 
     //レンダーターゲットを通常に戻す
     dx.setRenderTarget();
@@ -156,7 +154,7 @@ void GBuffer::createSampler() {
 
 void GBuffer::createShader() {
     //シェーダー生成
-    mShader = World::instance().assetsManager().createShader("Deferred.hlsl");
+    mShader = std::make_unique<Shader>("Deferred.hlsl");
 }
 
 void GBuffer::createVertexBuffer() {

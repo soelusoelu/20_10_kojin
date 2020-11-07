@@ -1,4 +1,5 @@
 ﻿#include "Camera.h"
+#include "../../Imgui/imgui.h"
 #include "../../System/Window.h"
 #include "../../Transform/Transform3D.h"
 #include "../../Utility/LevelLoader.h"
@@ -17,7 +18,7 @@ Camera::~Camera() = default;
 
 void Camera::awake() {
     calcLookAt();
-    calcPerspectiveFOV(Window::standardWidth(), Window::standardHeight());
+    calcPerspectiveFOV(Window::width(), Window::height());
 }
 
 void Camera::lateUpdate() {
@@ -30,10 +31,16 @@ void Camera::loadProperties(const rapidjson::Value & inObj) {
     JsonHelper::getFloat(inObj, "farClip", &mFarClip);
 }
 
-void Camera::drawDebugInfo(ComponentDebug::DebugInfoList* inspect) const {
-    inspect->emplace_back("FOV", mFOV);
-    inspect->emplace_back("NearClip", mNearClip);
-    inspect->emplace_back("FarClip", mFarClip);
+void Camera::saveProperties(rapidjson::Document::AllocatorType& alloc, rapidjson::Value* inObj) const {
+    JsonHelper::setFloat(alloc, inObj, "fov", mFOV);
+    JsonHelper::setFloat(alloc, inObj, "nearClip", mNearClip);
+    JsonHelper::setFloat(alloc, inObj, "farClip", mFarClip);
+}
+
+void Camera::drawInspector() {
+    ImGui::SliderFloat("FOV", &mFOV, 45.f, 120.f);
+    ImGui::SliderFloat("NearClip", &mNearClip, 0.001f, 1.f);
+    ImGui::SliderFloat("FarClip", &mFarClip, 100.f, 1000.f);
 }
 
 const Matrix4& Camera::getView() const {
@@ -61,24 +68,30 @@ void Camera::lookAt(const Vector3 & position) {
 }
 
 Vector3 Camera::screenToWorldPoint(const Vector2 & position, float z) {
-    //各行列の逆行列を算出
-    auto invView = mView;
-    auto invProj = mProjection;
-    auto viewport = Matrix4::identity;
-    invView.inverse();
-    invProj.inverse();
-    viewport.m[0][0] = Window::width() / 2.f;
-    viewport.m[1][1] = -Window::height() / 2.f;
-    viewport.m[3][0] = Window::width() / 2.f;
-    viewport.m[3][1] = Window::height() / 2.f;
-    viewport.inverse();
+    //ビューポート、射影、ビュー、それぞれの逆行列を求める
+    auto invView = Matrix4::inverse(mView);
+    auto invProj = Matrix4::inverse(mProjection);
 
-    //逆変換
-    auto temp = viewport * invProj * invView;
-    Vector3 out = Vector3::zero;
-    //out = Vector3(position, z) * temp;
+    auto invViewport = Matrix4::identity;
+    invViewport.m[0][0] = Window::width() / 2.f;
+    invViewport.m[1][1] = -Window::height() / 2.f;
+    invViewport.m[3][0] = Window::width() / 2.f;
+    invViewport.m[3][1] = Window::height() / 2.f;
+    invViewport.inverse();
 
-    return out;
+    //ビューポート、射影、ビュー、それぞれの逆行列を掛ける
+    auto m = invViewport * invProj * invView;
+
+    //スクリーン座標をワールド座標に変換
+    return Vector3::transformWithPerspDiv(Vector3(position, z), m);
+}
+
+Ray Camera::screenToRay(const Vector2& position, float z) {
+    Ray ray;
+    ray.start = getPosition();
+    ray.end = screenToWorldPoint(position, z);
+
+    return ray;
 }
 
 bool Camera::viewFrustumCulling(const Vector3& pos, float radius) const {

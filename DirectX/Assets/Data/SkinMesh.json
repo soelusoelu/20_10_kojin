@@ -1,0 +1,15 @@
+{
+  "properties": {
+    "position": [ 0.0, 0.0, -5.0 ],
+    "rotation": [ 0.0, 0.0, 0.0 ]
+  },
+  "components": [
+    {
+      "type": "SkinMeshComponent",
+      "properties": {
+        "fileName": "hand_tex.fbx",
+        "shaderName": "SkinMesh.hlsl"
+      }
+    }
+  ]
+}

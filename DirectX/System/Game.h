@@ -31,5 +31,4 @@ private:
     std::unique_ptr<FPSCounter> mFPSCounter;
     SceneManager* mSceneManager;
     HINSTANCE mInstance;
-    HWND mhWnd;
 };

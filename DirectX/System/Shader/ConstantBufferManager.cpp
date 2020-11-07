@@ -2,16 +2,16 @@
 #include "ConstantBuffers.h"
 #include "../../DebugLayer/Debug.h"
 #include "../../DirectX/DirectXInclude.h"
-#include "../../System/World.h"
-#include "../../Utility/Directory.h"
 
 ConstantBufferManager::ConstantBufferManager() {
     mConstantBuffers.emplace("Texture.hlsl", BuffersSize{ sizeof(TextureConstantBuffer) });
     mConstantBuffers.emplace("Mesh.hlsl", BuffersSize{ sizeof(TransparentConstantBuffer), sizeof(MaterialConstantBuffer) });
     mConstantBuffers.emplace("MeshTexture.hlsl", BuffersSize{ sizeof(TransparentConstantBuffer), sizeof(MaterialConstantBuffer) });
     mConstantBuffers.emplace("NormalMap.hlsl", BuffersSize{ sizeof(TransparentConstantBuffer), sizeof(MaterialConstantBuffer) });
+    mConstantBuffers.emplace("SkinMesh.hlsl", BuffersSize{ sizeof(SkinMeshConstantBuffer), sizeof(MaterialConstantBuffer) });
     mConstantBuffers.emplace("GBuffer.hlsl", BuffersSize{ sizeof(MeshConstantBuffer), sizeof(MaterialConstantBuffer) });
     mConstantBuffers.emplace("Deferred.hlsl", BuffersSize{ sizeof(GBufferShaderConstantBuffer) });
+    mConstantBuffers.emplace("Point3D.hlsl", BuffersSize{ sizeof(PointConstantBuffer) });
     mConstantBuffers.emplace("Line2D.hlsl", BuffersSize{ sizeof(LineConstantBuffer) });
     mConstantBuffers.emplace("Line3D.hlsl", BuffersSize{ sizeof(LineConstantBuffer) });
     mConstantBuffers.emplace("PointLight.hlsl", BuffersSize{ sizeof(PointLightConstantBuffer) });

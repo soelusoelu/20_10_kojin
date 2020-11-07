@@ -1,4 +1,7 @@
-Texture2D g_tex : register(t0);
+Texture2D g_texColor : register(t0);
+Texture2D g_texNormal : register(t1);
+Texture2D g_texPosition : register(t2);
+Texture2D g_texSpecular : register(t3);
 SamplerState g_samLinear : register(s0);
 
 cbuffer global_0 : register(b0)
@@ -51,7 +54,7 @@ PS_OUTPUT PS(VS_OUTPUT input)
 
     //カラーテクスチャーへ出力
     Out.Color = diffuse;
-    Out.Color = g_tex.Sample(g_samLinear, input.UV);
+    Out.Color = g_texColor.Sample(g_samLinear, input.UV);
 
     //ワールド法線テクスチャーへ出力
     float3 normal = input.WorldNormal;

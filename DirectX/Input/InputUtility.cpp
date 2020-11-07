@@ -10,7 +10,7 @@ void InputUtility::create() {
     mJoyPad = new JoyPad();
 }
 
-bool InputUtility::initialize(HWND hWnd) {
+bool InputUtility::initialize(const HWND& hWnd) {
     //「DirectInput」オブジェクトの作成
     if (FAILED(DirectInput8Create(GetModuleHandle(NULL), DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&mDirectInput, nullptr))) {
         return false;

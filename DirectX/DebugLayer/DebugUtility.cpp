@@ -1,11 +1,13 @@
 ﻿#include "DebugUtility.h"
 #include "FixedDebugInformation.h"
 #include "Hierarchy.h"
+#include "ImGuiInspector.h"
 #include "Inspector.h"
-#include "LineRenderer/LineRenderer2D.h"
-#include "LineRenderer/LineRenderer3D.h"
 #include "Log.h"
 #include "Pause.h"
+#include "PointRenderer.h"
+#include "LineRenderer/LineRenderer2D.h"
+#include "LineRenderer/LineRenderer3D.h"
 #include "../Device/DrawString.h"
 #include "../System/GlobalFunction.h"
 #include "../System/SystemInclude.h"
@@ -15,8 +17,10 @@ void DebugUtility::create() {
     mLog = new Log();
     mFixedDebugInfo = new FixedDebugInformation(mDrawString);
     mHierarchy = new Hierarchy(mDrawString);
-    mInspector = new Inspector(mDrawString);
+    //mInspector = new Inspector(mDrawString);
+    mInspector = new ImGuiInspector();
     mPause = new Pause();
+    mPointRenderer = new PointRenderer();
     mLineRenderer2D = new LineRenderer2D();
     mLineRenderer3D = new LineRenderer3D();
 }
@@ -35,8 +39,8 @@ void DebugUtility::initialize() {
     mLog->initialize();
     mFixedDebugInfo->initialize();
     mHierarchy->initialize();
-    mInspector->initialize();
     mPause->initialize();
+    mPointRenderer->initialize();
     mLineRenderer2D->initialize();
     mLineRenderer3D->initialize();
 }
@@ -44,6 +48,7 @@ void DebugUtility::initialize() {
 void DebugUtility::finalize() {
     safeDelete(mLineRenderer3D);
     safeDelete(mLineRenderer2D);
+    safeDelete(mPointRenderer);
     safeDelete(mPause);
     safeDelete(mInspector);
     safeDelete(mHierarchy);
@@ -64,7 +69,7 @@ void DebugUtility::windowMessage(const std::string& message) {
 void DebugUtility::draw(const Matrix4& proj) {
     mLog->drawLogs(mDrawString);
     mFixedDebugInfo->draw();
-    mHierarchy->drawActors();
+    mHierarchy->drawGameObjects();
     mInspector->drawInspect();
     mPause->drawButton(proj);
     mDrawString->drawAll(proj);
@@ -86,12 +91,20 @@ Hierarchy& DebugUtility::hierarchy() {
     return *mHierarchy;
 }
 
-Inspector& DebugUtility::inspector() {
+//Inspector& DebugUtility::inspector() {
+//    return *mInspector;
+//}
+
+ImGuiInspector& DebugUtility::inspector() {
     return *mInspector;
 }
 
 Pause& DebugUtility::pause() {
     return *mPause;
+}
+
+PointRenderer& DebugUtility::pointRenderer() {
+    return *mPointRenderer;
 }
 
 LineRenderer2D& DebugUtility::lineRenderer2D() {

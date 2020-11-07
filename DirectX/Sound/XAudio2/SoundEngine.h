@@ -40,7 +40,7 @@ public:
     /// <param name="listener">登録したいリスナー</param>
     void setListener(const std::shared_ptr<Sound3DListener>& listener);
 
-    std::shared_ptr<SourceVoice> createSourceVoice(const std::string& filePath, const SourceVoiceInitParam& param) const;
+    std::shared_ptr<SourceVoice> createSourceVoice(const std::string& fileName, const SourceVoiceInitParam& param, const std::string& directoryPath = "Assets\\Sound\\") const;
     std::shared_ptr<SubmixVoice> createSubmixVoice(const SubmixVoiceInitParam& param) const;
 
     const SoundBase& getBase() const;

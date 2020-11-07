@@ -22,6 +22,8 @@ public:
     // Invert the matrix - super slow
     void inverse();
 
+    static Matrix4 inverse(const Matrix4& right);
+
     // Get the translation component of the matrix
     Vector3 getTranslation() const;
 

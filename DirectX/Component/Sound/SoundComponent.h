@@ -22,7 +22,8 @@ public:
     virtual void update() override;
     virtual void finalize() override;
     virtual void loadProperties(const rapidjson::Value& inObj) override;
-    virtual void drawDebugInfo(ComponentDebug::DebugInfoList* inspect) const override;
+    virtual void saveProperties(rapidjson::Document::AllocatorType& alloc, rapidjson::Value* inObj) const override;
+    virtual void drawInspector() override;
 
     //使用可能状態か
     bool isNull() const;

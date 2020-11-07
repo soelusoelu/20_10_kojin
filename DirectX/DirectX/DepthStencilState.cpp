@@ -31,7 +31,7 @@ const DepthStencilDesc& DepthStencilState::desc() const {
 void DepthStencilState::execute() const {
     Microsoft::WRL::ComPtr<ID3D11DepthStencilState> depthStencilState;
 
-    auto& dx = DirectX::instance();
+    auto& dx = MyDirectX::DirectX::instance();
     dx.device()->CreateDepthStencilState(&toDepthStencilDesc(mDesc), &depthStencilState);
     dx.deviceContext()->OMSetDepthStencilState(depthStencilState.Get(), 0);
 }

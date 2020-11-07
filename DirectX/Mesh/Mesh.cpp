@@ -1,83 +1,81 @@
 ﻿#include "Mesh.h"
+#include "OBJ.h"
+#include "FBX/FBX.h"
 #include "../DebugLayer/Debug.h"
-#include "../Device/AssetsManager.h"
 #include "../DirectX/DirectXInclude.h"
-#include "../System/World.h"
-#include "../System/Shader/Shader.h"
+#include "../Utility/FileUtil.h"
+#include <cassert>
 
 Mesh::Mesh() :
-    mMesh(nullptr),
-    mShader(nullptr),
-    mCenter(Vector3::zero),
-    mRadius(0.f) {
+    mMesh(nullptr) {
 }
 
 Mesh::~Mesh() = default;
 
-void Mesh::loadMesh(const std::string& fileName) {
+const Material& Mesh::getMaterial(unsigned index) const {
+    return mMaterials[index];
+}
+
+unsigned Mesh::getMeshCount() const {
+    return mMeshesVertices.size();
+}
+
+const MeshVertices& Mesh::getMeshVertices(unsigned index) const {
+    return mMeshesVertices[index];
+}
+
+const std::vector<Bone>& Mesh::getBones() const {
+    return mBones;
+}
+
+void Mesh::loadMesh(const std::string& filePath) {
     //すでに生成済みなら終了する
     if (mMesh) {
         return;
     }
 
-    initialize(fileName);
-}
-
-void Mesh::loadShader(const std::string& shaderName) {
-    createShader(shaderName);
-}
-
-void Mesh::setShaderData(const void* data, unsigned size, unsigned index) const {
-    //シェーダーにデータを転送する
-    mShader->transferData(data, size, index);
+    initialize(filePath);
 }
 
 void Mesh::draw(unsigned meshIndex) const {
-    //使用するシェーダーの登録
-    mShader->setShaderInfo();
     //バーテックスバッファーをセット
     mVertexBuffers[meshIndex]->setVertexBuffer();
     //インデックスバッファーをセット
     mIndexBuffers[meshIndex]->setIndexBuffer();
 
     //プリミティブをレンダリング
-    DirectX::instance().drawIndexed(mMesh->getIndices(meshIndex).size());
+    MyDirectX::DirectX::instance().drawIndexed(mMeshesIndices[meshIndex].size());
 }
 
-const Material& Mesh::getMaterial(unsigned index) const {
-    return mMesh->getMaterial(index);
-}
+void Mesh::initialize(const std::string& filePath) {
+    //ファイルパスからメッシュを作成
+    createMesh(filePath);
 
-unsigned Mesh::getMeshCount() const {
-    return mMesh->getMeshCount();
-}
+    //それぞれは同じサイズのはず
+    assert(mMeshesVertices.size() == mMeshesIndices.size());
+    assert(mMeshesVertices.size() == mMaterials.size());
 
-const Vector3& Mesh::getCenter() const {
-    return mCenter;
-}
-
-float Mesh::getRadius() const {
-    return mRadius;
-}
-
-void Mesh::initialize(const std::string& fileName) {
-    createMesh(fileName);
-    for (size_t i = 0; i < mMesh->getMeshCount(); i++) {
+    //メッシュの数だけバッファを作る
+    for (size_t i = 0; i < mMeshesVertices.size(); i++) {
         createVertexBuffer(i);
         createIndexBuffer(i);
     }
-    computeCenter();
-    computeRadius();
 }
 
-void Mesh::createMesh(const std::string& fileName) {
-    //アセットマネージャーからメッシュを作成する
-    mMesh = World::instance().assetsManager().createMeshLoader(fileName, mMeshesVertices);
-}
+void Mesh::createMesh(const std::string& filePath) {
+    //拡張子によって処理を分ける
+    auto ext = FileUtil::getFileExtension(filePath);
+    if (ext == ".obj") {
+        mMesh = std::make_unique<OBJ>();
+    } else if (ext == ".fbx") {
+        mMesh = std::make_unique<FBX>();
+    } else {
+        Debug::windowMessage(filePath + ": 対応していない拡張子です");
+        return;
+    }
 
-void Mesh::createShader(const std::string& fileName) {
-    //アセットマネージャーからシェーダーを作成する
-    mShader = World::instance().assetsManager().createShader(fileName);
+    //メッシュを解析する
+    mMesh->parse(filePath, mMeshesVertices, mMeshesIndices, mMaterials, mBones);
 }
 
 void Mesh::createVertexBuffer(unsigned meshIndex) {
@@ -94,7 +92,7 @@ void Mesh::createVertexBuffer(unsigned meshIndex) {
 }
 
 void Mesh::createIndexBuffer(unsigned meshIndex) {
-    const auto& indices = mMesh->getIndices(meshIndex);
+    const auto& indices = mMeshesIndices[meshIndex];
     BufferDesc bd;
     bd.size = sizeof(indices[0]) * indices.size();
     bd.usage = Usage::USAGE_DEFAULT;
@@ -103,69 +101,4 @@ void Mesh::createIndexBuffer(unsigned meshIndex) {
     sub.data = indices.data();
 
     mIndexBuffers.emplace_back(std::make_unique<IndexBuffer>(bd, sub));
-}
-
-void Mesh::computeCenter() {
-    auto min = Vector3::one * Math::infinity;
-    auto max = Vector3::one * Math::negInfinity;
-
-    //すべてのメッシュ情報から中心位置を割り出す
-    for (size_t i = 0; i < mMeshesVertices.size(); ++i) {
-        const auto& vertices = mMeshesVertices[i];
-        for (size_t j = 0; j < vertices.size(); ++j) {
-            const auto& p = vertices[j].pos;
-            if (p.x < min.x) {
-                min.x = p.x;
-            }
-            if (p.x > max.x) {
-                max.x = p.x;
-            }
-            if (p.y < min.y) {
-                min.y = p.y;
-            }
-            if (p.y > max.y) {
-                max.y = p.y;
-            }
-            if (p.z < min.z) {
-                min.z = p.z;
-            }
-            if (p.z > max.z) {
-                max.z = p.z;
-            }
-        }
-    }
-
-    mCenter = (max + min) / 2.f;
-}
-
-void Mesh::computeRadius() {
-    float min = Math::infinity;
-    float max = Math::negInfinity;
-
-    //すべてのメッシュ情報から半径を割り出す
-    for (size_t i = 0; i < mMeshesVertices.size(); ++i) {
-        const auto& vertices = mMeshesVertices[i];
-        for (size_t j = 0; j < vertices.size(); ++j) {
-            const auto& p = vertices[j].pos;
-            if (p.x < min) {
-                min = p.x;
-            }
-            if (p.x > max) {
-                max = p.x;
-            }
-            if (p.y < min) {
-                min = p.y;
-            }
-            if (p.y > max) {
-                max = p.y;
-            }
-            if (p.z < min) {
-                min = p.z;
-            }
-            if (p.z > max) {
-                max = p.z;
-            }
-        }
-    }
-    mRadius = (max - min) / 2.f;
 }

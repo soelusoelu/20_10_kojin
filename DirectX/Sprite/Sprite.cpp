@@ -1,8 +1,7 @@
 ﻿#include "Sprite.h"
 #include "SpriteManager.h"
-#include "../Device/AssetsManager.h"
 #include "../DirectX/DirectXInclude.h"
-#include "../System/World.h"
+#include "../System/AssetsManager.h"
 #include "../System/shader/ConstantBuffers.h"
 #include "../System/shader/Shader.h"
 #include "../System/Texture/TextureFromFile.h"
@@ -13,7 +12,7 @@
 Sprite::Sprite() :
     mTransform(std::make_unique<Transform2D>()),
     mTexture(nullptr),
-    mShader(World::instance().assetsManager().createShader("Texture.hlsl")),
+    mShader(std::make_unique<Shader>("Texture.hlsl")),
     mColor(ColorPalette::white, 1.f),
     mUV(0.f, 0.f, 1.f, 1.f),
     mFileName(),
@@ -56,7 +55,7 @@ void Sprite::draw(const Matrix4& proj) const {
     mShader->transferData(&cb, sizeof(cb));
 
     //プリミティブをレンダリング
-    DirectX::instance().drawIndexed(6);
+    MyDirectX::DirectX::instance().drawIndexed(6);
 }
 
 Transform2D& Sprite::transform() const {
@@ -122,7 +121,7 @@ void Sprite::setTextureFromFileName(const std::string& fileName) {
     if (mTexture) {
         mTexture.reset();
     }
-    mTexture = World::instance().assetsManager().createTexture(fileName);
+    mTexture = AssetsManager::instance().createTexture(fileName);
 
     //Transformに通知
     mTransform->setSize(mTexture->getTextureSize());

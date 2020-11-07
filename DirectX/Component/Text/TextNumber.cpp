@@ -1,5 +1,6 @@
 ﻿#include "TextNumber.h"
 #include "../../Device/DrawString.h"
+#include "../../Imgui/imgui.h"
 #include "../../Utility/LevelLoader.h"
 
 TextNumber::TextNumber(GameObject& gameObject) :
@@ -22,10 +23,10 @@ void TextNumber::loadProperties(const rapidjson::Value& inObj) {
     JsonHelper::getInt(inObj, "number", &mNumber);
 }
 
-void TextNumber::drawDebugInfo(ComponentDebug::DebugInfoList* inspect) const {
-    TextBase::drawDebugInfo(inspect);
+void TextNumber::drawInspector() {
+    TextBase::drawInspector();
 
-    inspect->emplace_back("Number", mNumber);
+    ImGui::Text("Text: %d", mNumber);
 }
 
 void TextNumber::setNumber(int number) {

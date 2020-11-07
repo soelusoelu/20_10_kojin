@@ -34,8 +34,8 @@ void SoundEngine::setListener(const std::shared_ptr<Sound3DListener>& listener) 
     mManager->setListener(listener);
 }
 
-std::shared_ptr<SourceVoice> SoundEngine::createSourceVoice(const std::string& filePath, const SourceVoiceInitParam& param) const {
-    auto sourceVoice = mCreater->createSourceVoice(filePath, param);
+std::shared_ptr<SourceVoice> SoundEngine::createSourceVoice(const std::string& fileName, const SourceVoiceInitParam& param, const std::string& directoryPath) const {
+    auto sourceVoice = mCreater->createSourceVoice(directoryPath + fileName, param);
     mManager->add(sourceVoice);
     return sourceVoice;
 }

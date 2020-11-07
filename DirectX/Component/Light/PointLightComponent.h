@@ -15,7 +15,8 @@ public:
     virtual void start() override;
     virtual void finalize() override;
     virtual void loadProperties(const rapidjson::Value& inObj) override;
-    virtual void drawDebugInfo(ComponentDebug::DebugInfoList* inspect) const override;
+    virtual void drawInspector() override;
+
     void draw(const Camera& camera, const PointLight& pointLight) const;
     void setLightColor(const Vector3& color);
     void setInnerRadius(float radius);

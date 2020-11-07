@@ -1,11 +1,11 @@
 ﻿#include "Sprite3D.h"
 #include "../../DebugLayer/Debug.h"
-#include "../../Device/AssetsManager.h"
 #include "../../DirectX/DirectX.h"
 #include "../../GameObject/GameObject.h"
+#include "../../Imgui/imgui.h"
 #include "../../Sprite/SpriteManager.h"
+#include "../../System/AssetsManager.h"
 #include "../../System/Window.h"
-#include "../../System/World.h"
 #include "../../System/Shader/ConstantBuffers.h"
 #include "../../System/Shader/Shader.h"
 #include "../../System/Texture/Texture.h"
@@ -36,8 +36,8 @@ void Sprite3D::awake() {
         return;
     }
 
-    mTexture = World::instance().assetsManager().createTexture(mFileName);
-    mShader = World::instance().assetsManager().createShader("Texture.hlsl");
+    mTexture = AssetsManager::instance().createTexture(mFileName);
+    mShader = std::make_unique<Shader>("Texture.hlsl");
 
     //テクスチャのアスペクト比を計算
     const auto& texSize = mTexture->getTextureSize();
@@ -89,11 +89,11 @@ void Sprite3D::loadProperties(const rapidjson::Value& inObj) {
     JsonHelper::getVector4(inObj, "uv", &mUV);
 }
 
-void Sprite3D::drawDebugInfo(ComponentDebug::DebugInfoList* inspect) const {
-    inspect->emplace_back("FileName", mFileName);
-    inspect->emplace_back("Position", mTransform->getPosition());
-    inspect->emplace_back("Rotation", mTransform->getRotation().euler());
-    inspect->emplace_back("Scale", mTransform->getScale());
+void Sprite3D::drawInspector() {
+    ImGui::Text("FileName: %s", mFileName.c_str());
+    //inspect->emplace_back("Position", mTransform->getPosition());
+    //inspect->emplace_back("Rotation", mTransform->getRotation().euler());
+    //inspect->emplace_back("Scale", mTransform->getScale());
 }
 
 void Sprite3D::draw(const Matrix4& viewProj) const {
@@ -112,7 +112,7 @@ void Sprite3D::draw(const Matrix4& viewProj) const {
     mShader->transferData(&cb, sizeof(cb));
 
     //プリミティブをレンダリング
-    DirectX::instance().drawIndexed(6);
+    MyDirectX::DirectX::instance().drawIndexed(6);
 }
 
 void Sprite3D::drawBillboard(const Matrix4& invView, const Matrix4& viewProj) {
@@ -132,7 +132,7 @@ void Sprite3D::drawBillboard(const Matrix4& invView, const Matrix4& viewProj) {
     mShader->transferData(&cb, sizeof(cb));
 
     //プリミティブをレンダリング
-    DirectX::instance().drawIndexed(6);
+    MyDirectX::DirectX::instance().drawIndexed(6);
 }
 
 Transform3D& Sprite3D::transform() const {

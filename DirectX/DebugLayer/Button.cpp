@@ -1,5 +1,4 @@
 ﻿#include "Button.h"
-#include "../Device/AssetsManager.h"
 #include "../Sprite/Sprite.h"
 #include "../Transform/Transform2D.h"
 

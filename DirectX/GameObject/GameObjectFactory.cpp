@@ -3,15 +3,25 @@
 #include "../Component/Component.h"
 #include "../Component/ComponentManager.h"
 #include "../Component/Camera/Camera.h"
-#include "../Component/Camera/LookAtObject.h"
+#include "../Component/Camera/CameraMove.h"
+#include "../Component/CharacterOperation/CharacterCost.h"
+#include "../Component/CharacterOperation/CharacterCreater.h"
+#include "../Component/CharacterOperation/CostRenderer.h"
+#include "../Component/CharacterOperation/DragAndDropCharacter.h"
+#include "../Component/CollideOperation/AABBMouseScaler.h"
+#include "../Component/CollideOperation/AABBSelector.h"
+#include "../Component/CollideOperation/CollideAdder.h"
+#include "../Component/CollideOperation/CollideMouseOperator.h"
+#include "../Component/CollideOperation/MeshAdder.h"
+#include "../Component/Collider/AABBCollider.h"
 #include "../Component/Collider/CircleCollider.h"
 #include "../Component/Collider/SphereCollider.h"
 #include "../Component/Light/DirectionalLight.h"
 #include "../Component/Light/PointLightComponent.h"
 #include "../Component/Mesh/MeshComponent.h"
-#include "../Component/Other/Fade.h"
+#include "../Component/Mesh/SkinMeshComponent.h"
 #include "../Component/Other/HitPointComponent.h"
-#include "../Component/Player/PlayerMove.h"
+#include "../Component/Sample/RayMouse.h"
 #include "../Component/Scene/GamePlay.h"
 #include "../Component/Scene/Scene.h"
 #include "../Component/Scene/Title.h"
@@ -36,8 +46,20 @@ GameObjectFactory::GameObjectFactory() {
     mInstantiated = true;
 
     ADD_COMPONENT(Camera);
-    ADD_COMPONENT(LookAtObject);
+    ADD_COMPONENT(CameraMove);
 
+    ADD_COMPONENT(CharacterCost);
+    ADD_COMPONENT(CharacterCreater);
+    ADD_COMPONENT(CostRenderer);
+    ADD_COMPONENT(DragAndDropCharacter);
+
+    ADD_COMPONENT(AABBMouseScaler);
+    ADD_COMPONENT(AABBSelector);
+    ADD_COMPONENT(CollideAdder);
+    ADD_COMPONENT(CollideMouseOperator);
+    ADD_COMPONENT(MeshAdder);
+
+    ADD_COMPONENT(AABBCollider);
     ADD_COMPONENT(CircleCollider);
     ADD_COMPONENT(SphereCollider);
 
@@ -45,11 +67,11 @@ GameObjectFactory::GameObjectFactory() {
     ADD_COMPONENT(PointLightComponent);
 
     ADD_COMPONENT(MeshComponent);
+    ADD_COMPONENT(SkinMeshComponent);
 
-    ADD_COMPONENT(Fade);
     ADD_COMPONENT(HitPointComponent);
 
-    ADD_COMPONENT(PlayerMove);
+    ADD_COMPONENT(RayMouse);
 
     ADD_COMPONENT(GamePlay);
     ADD_COMPONENT(Scene);
@@ -65,88 +87,97 @@ GameObjectFactory::GameObjectFactory() {
     ADD_COMPONENT(Text);
     ADD_COMPONENT(TextFloat);
     ADD_COMPONENT(TextNumber);
-
-    const std::string& fileName = "ActorsList.json";
-    if (!LevelLoader::loadJSON(fileName, &mDocument)) {
-        Debug::windowMessage(fileName + ": レベルファイルのロードに失敗しました");
-    }
 }
 
 GameObjectFactory::~GameObjectFactory() {
     mInstantiated = false;
 }
 
-std::shared_ptr<GameObject> GameObjectFactory::loadGameObjectFromFile(const std::string& type) const {
-    GameObjectPtr obj = nullptr;
-    const auto& objs = mDocument["gameObjects"];
-    if (objs.IsArray()) {
-        obj = loadGameObjectProperties(objs, type);
+std::shared_ptr<GameObject> GameObjectFactory::createGameObjectFromFile(const std::string& type, const std::string& directoryPath) {
+    //ディレクトパスとタイプからファイルパスを作成
+    auto filePath = directoryPath + type + ".json";
+
+    rapidjson::Document document;
+    if (!LevelLoader::loadJSON(filePath, &document)) {
+        Debug::windowMessage(filePath + ": レベルファイルのロードに失敗しました");
+        return nullptr;
     }
 
-    return obj;
+    return createGameObject(document, type);
 }
 
-std::shared_ptr<GameObject> GameObjectFactory::loadGameObjectProperties(const rapidjson::Value& inArray, const std::string& type) const {
-    GameObjectPtr gameObj = nullptr;
-    //アクターの配列をループ
-    for (rapidjson::SizeType i = 0; i < inArray.Size(); i++) {
-        //有効なオブジェクトか
-        const auto& obj = inArray[i];
-        if (!obj.IsObject()) {
-            continue;
-        }
-        //有効な型名か
-        std::string t;
-        if (!JsonHelper::getString(obj, "type", &t)) {
-            continue;
-        }
-        //指定のタイプと一致するか
-        if (t != type) {
-            continue;
-        }
-        //mapからゲームオブジェクトを生成
-        gameObj = GameObject::create();
-        gameObj->setTag(type);
-        if (obj.HasMember("properties")) {
-            gameObj->loadProperties(obj["properties"]);
-        }
-        //コンポーネントプロパティがあれば取得
-        if (!obj.HasMember("components")) {
-            break;
-        }
-        const auto& components = obj["components"];
-        if (components.IsArray()) {
-            loadComponents(*gameObj, components);
-            break;
-        }
-    }
+std::shared_ptr<GameObject> GameObjectFactory::createGameObject(const rapidjson::Document& inDocument, const std::string& type) {
+    //タグを読み込む
+    const auto& tag = loadTag(inDocument);
+    //ゲームオブジェクトを生成
+    auto gameObject = GameObject::create(type, tag);
+    //プロパティを読み込む
+    loadGameObjectProperties(*gameObject, inDocument);
 
-    return gameObj;
+    //コンポーネントがあれば取得
+    loadComponents(*gameObject, inDocument);
+
+    return gameObject;
 }
 
-void GameObjectFactory::loadComponents(GameObject& gameObject, const rapidjson::Value& inArray) const {
-    //コンポーネントの配列をループ
-    for (rapidjson::SizeType i = 0; i < inArray.Size(); i++) {
-        //有効なオブジェクトか
-        const auto& compObj = inArray[i];
-        if (!compObj.IsObject()) {
-            continue;
-        }
-        //有効な型名か
-        std::string type;
-        if (!JsonHelper::getString(compObj, "type", &type)) {
-            continue;
-        }
-        //mapに存在するか
-        auto itr = mComponents.find(type);
-        if (itr == mComponents.end()) {
-            Debug::windowMessage(type + "は有効な型ではありません");
-            continue;
-        }
-        //新規コンポーネントを生成
-        itr->second(gameObject, type, compObj["properties"]);
+std::string GameObjectFactory::loadTag(const rapidjson::Document& inDocument) {
+    //初期タグをNoneにする
+    std::string tag = "None";
+    //タグ属性があれば読み込む
+    JsonHelper::getString(inDocument, "tag", &tag);
+
+    return tag;
+}
+
+void GameObjectFactory::loadGameObjectProperties(GameObject& gameObject, const rapidjson::Document& inDocument) {
+    if (inDocument.HasMember("properties")) {
+        gameObject.loadProperties(inDocument["properties"]);
     }
 }
+
+void GameObjectFactory::loadComponents(GameObject& gameObject, const rapidjson::Document& inDocument) const {
+    //ファイルにcomponentsメンバがなければ終了
+    if (!inDocument.HasMember("components")) {
+        return;
+    }
+
+    const auto& components = inDocument["components"];
+    //componentsメンバが配列じゃなければなければ終了
+    if (!components.IsArray()) {
+        return;
+    }
+
+    for (rapidjson::SizeType i = 0; i < components.Size(); ++i) {
+        //各コンポーネントを読み込んでいく
+        loadComponent(gameObject, components[i]);
+    }
+}
+
+void GameObjectFactory::loadComponent(GameObject& gameObject, const rapidjson::Value& component) const {
+    //有効なオブジェクトか
+    if (!component.IsObject()) {
+        return;
+    }
+    //有効な型名か
+    std::string type;
+    if (!isValidType(type, component)) {
+        return;
+    }
+    //mapに存在するか
+    auto itr = mComponents.find(type);
+    if (itr == mComponents.end()) {
+        Debug::windowMessage(type + "は有効な型ではありません");
+        return;
+    }
+    //新規コンポーネントを生成
+    itr->second(gameObject, type, component["properties"]);
+}
+
+bool GameObjectFactory::isValidType(std::string& outType, const rapidjson::Value& inObj) const {
+    return (JsonHelper::getString(inObj, "type", &outType));
+}
+
+
 
 void GameObjectCreater::initialize() {
     mFactory = new GameObjectFactory();
@@ -157,5 +188,5 @@ void GameObjectCreater::finalize() {
 }
 
 std::shared_ptr<GameObject> GameObjectCreater::create(const std::string& type) {
-    return mFactory->loadGameObjectFromFile(type);
+    return mFactory->createGameObjectFromFile(type);
 }

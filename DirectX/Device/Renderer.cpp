@@ -16,17 +16,17 @@ void Renderer::initialize() {
 }
 
 void Renderer::renderToTexture() {
-    DirectX::instance().setViewport(Window::standardWidth(), Window::standardHeight());
+    MyDirectX::DirectX::instance().setViewport(Window::standardWidth(), Window::standardHeight());
     mGBuffer->renderToTexture();
 }
 
 void Renderer::renderFromTexture(const Camera& camera, const LightManager& lightManager) {
-    DirectX::instance().setViewport(Window::width(), Window::height());
+    MyDirectX::DirectX::instance().setViewport(Window::width(), Window::height());
     mGBuffer->renderFromTexture(camera, lightManager);
 }
 
 void Renderer::renderMesh() const {
-    auto& dx = DirectX::instance();
+    auto& dx = MyDirectX::DirectX::instance();
     //ビューポートの設定
     dx.setViewport(Window::width(), Window::height());
     //プリミティブ・トポロジーをセット
@@ -39,6 +39,19 @@ void Renderer::renderMesh() const {
     dx.blendState()->translucent();
 }
 
+void Renderer::renderPoint3D() const {
+    auto& dx = MyDirectX::DirectX::instance();
+    //ビューポートの設定
+    dx.setViewport(Window::width(), Window::height());
+    //プリミティブ・トポロジーをセット
+    dx.setPrimitive(PrimitiveType::POINT_LIST);
+    //半透明合成
+    dx.blendState()->translucent();
+    //デプステスト有効化
+    dx.depthStencilState()->depthTest(true);
+    dx.depthStencilState()->depthMask(true);
+}
+
 void Renderer::renderLine2D(Matrix4* proj) const {
     //原点をスクリーン左上にするために平行移動
     proj->m[3][0] = -1.f;
@@ -47,26 +60,25 @@ void Renderer::renderLine2D(Matrix4* proj) const {
     proj->m[0][0] = 2.f / Window::width();
     proj->m[1][1] = -2.f / Window::height();
 
-    auto& dx = DirectX::instance();
+    //デプステスト無効化
+    MyDirectX::DirectX::instance().depthStencilState()->depthTest(false);
+}
+
+void Renderer::renderLine3D() const {
+    auto& dx = MyDirectX::DirectX::instance();
     //ビューポートの設定
     dx.setViewport(Window::width(), Window::height());
     //プリミティブ・トポロジーをセット
     dx.setPrimitive(PrimitiveType::LINE_LIST);
     //半透明合成
     dx.blendState()->translucent();
-    //デプステスト無効化
-    DirectX::instance().depthStencilState()->depthTest(false);
-}
-
-void Renderer::renderLine3D() const {
     //デプステスト有効化
-    auto& dx = DirectX::instance();
     dx.depthStencilState()->depthTest(true);
     dx.depthStencilState()->depthMask(true);
 }
 
 void Renderer::renderSprite() const {
-    auto& dx = DirectX::instance();
+    auto& dx = MyDirectX::DirectX::instance();
 
     //ビューポートの設定
     dx.setViewport(Window::width(), Window::height());
@@ -91,20 +103,20 @@ void Renderer::renderSprite2D(Matrix4* proj) const {
     //バーテックスバッファーをセット
     Texture::vertexBuffer->setVertexBuffer();
     //デプステスト無効化
-    DirectX::instance().depthStencilState()->depthTest(false);
+    MyDirectX::DirectX::instance().depthStencilState()->depthTest(false);
 }
 
 void Renderer::renderSprite3D() const {
     //バーテックスバッファーをセット
     Texture::vertexBuffer3D->setVertexBuffer();
     //デプステスト有効化
-    auto& dx = DirectX::instance();
+    auto& dx = MyDirectX::DirectX::instance();
     dx.depthStencilState()->depthTest(true);
     dx.depthStencilState()->depthMask(true);
 }
 
 void Renderer::renderToDebug(Matrix4* proj) const {
-    auto& dx = DirectX::instance();
+    auto& dx = MyDirectX::DirectX::instance();
 
     dx.setDebugRenderTarget();
     dx.setViewport(Window::debugWidth(), Window::debugHeight());

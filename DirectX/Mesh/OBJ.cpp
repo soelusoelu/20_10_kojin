@@ -1,23 +1,34 @@
 ﻿#include "OBJ.h"
 #include "../DebugLayer/Debug.h"
-#include "../Device/AssetsManager.h"
-#include "../System/World.h"
+#include "../System/AssetsManager.h"
+#include "../Utility/FileUtil.h"
 #include <sstream>
 
 OBJ::OBJ() = default;
 
 OBJ::~OBJ() = default;
 
-void OBJ::perse(const std::string& fileName, std::vector<MeshVertices>& meshes) {
+void OBJ::parse(
+    const std::string& filePath,
+    std::vector<MeshVertices>& meshesVertices,
+    std::vector<Indices>& meshesIndices,
+    std::vector<Material>& materials,
+    std::vector<Bone>& bones
+) {
     //OBJファイルを開いて内容を読み込む
-    std::ifstream ifs(fileName);
+    std::ifstream ifs(filePath);
     if (ifs.fail()) {
-        Debug::windowMessage(fileName + ": ファイルが存在しません");
+        Debug::windowMessage(filePath + ": ファイルが存在しません");
         return;
     }
 
+    //ディレクトリパスを抜き出しておく
+    auto directoryPath = FileUtil::getDirectryFromFilePath(filePath);
+
     //現状1つ
-    meshes.resize(1);
+    meshesVertices.resize(1);
+    meshesIndices.resize(1);
+    materials.resize(1);
 
     //解析開始
     std::string line;
@@ -44,23 +55,11 @@ void OBJ::perse(const std::string& fileName, std::vector<MeshVertices>& meshes) 
         } else if (key == "vn") { //先頭文字列がvnなら法線
             loadNormal(lineStream);
         } else if (key == "f") { //先頭文字列がfならポリゴン
-            loadFace(lineStream, meshes.back());
+            loadFace(meshesVertices.back(), meshesIndices.back(), lineStream);
         } else if (key == "mtllib") {
-            loadMaterial(lineStream);
+            loadMaterial(materials.back(), lineStream, directoryPath);
         }
     }
-}
-
-const std::vector<unsigned short>& OBJ::getIndices(unsigned meshIndex) const {
-    return mIndices;
-}
-
-const Material& OBJ::getMaterial(unsigned index) const {
-    return mMaterials[index];
-}
-
-unsigned OBJ::getMeshCount() const {
-    return 1;
 }
 
 void OBJ::loadPosition(std::istringstream& iss) {
@@ -94,7 +93,11 @@ void OBJ::loadUV(std::istringstream& iss) {
     mUVs.emplace_back(uv);
 }
 
-void OBJ::loadFace(std::istringstream& iss, MeshVertices& meshVertices) {
+void OBJ::loadFace(
+    MeshVertices& meshVertices,
+    Indices& indices,
+    std::istringstream& iss
+) {
     //半角スペース区切りで行の続きを読み込む
     std::string indexString;
     while (std::getline(iss, indexString, ' ')) {
@@ -131,19 +134,26 @@ void OBJ::loadFace(std::istringstream& iss, MeshVertices& meshVertices) {
         meshVertices.emplace_back(vertex);
 
         //頂点インデックスに追加
-        mIndices.emplace_back(mIndices.size());
+        indices.emplace_back(indices.size());
     }
 }
 
-void OBJ::loadMaterial(std::istringstream& iss) {
+void OBJ::loadMaterial(
+    Material& material,
+    std::istringstream& iss,
+    const std::string& directoryPath
+) {
     //マテリアルのファイル名読み込み
     std::string fileName;
     iss >> fileName;
 
+    //取得したファイル名とディレクトリパスを結合する
+    auto filePath = directoryPath + fileName;
+
     //マテリアルファイルを開く
-    std::ifstream ifs(fileName);
+    std::ifstream ifs(filePath);
     if (ifs.fail()) {
-        Debug::windowMessage(fileName + ": ファイルが存在しません");
+        Debug::windowMessage(filePath + ": ファイルが存在しません");
         return;
     }
 
@@ -173,52 +183,47 @@ void OBJ::loadMaterial(std::istringstream& iss) {
 
         //マテリアルの各属性を読み込む
         if (key == "newmtl") {
-            loadMaterialName(lineStream);
+            loadMaterialName(material, lineStream);
         } else if (key == "Ka") {
-            loadAmbient(lineStream);
+            loadAmbient(material, lineStream);
         } else if (key == "Kd") {
-            loadDiffuse(lineStream);
+            loadDiffuse(material, lineStream);
         } else if (key == "Ks") {
-            loadSpecular(lineStream);
+            loadSpecular(material, lineStream);
         } else if (key == "map_Kd") {
-            loadTexture(lineStream);
+            loadTexture(material, lineStream, directoryPath);
         }
     }
 }
 
-void OBJ::loadMaterialName(std::istringstream& iss) {
-    mMaterials.resize(mMaterials.size() + 1);
-    iss >> mMaterials.back().materialName;
+void OBJ::loadMaterialName(Material& material, std::istringstream& iss) {
+    iss >> material.materialName;
 }
 
-void OBJ::loadAmbient(std::istringstream& iss) {
-    auto& mat = mMaterials.back();
-    iss >> mat.ambient.x;
-    iss >> mat.ambient.y;
-    iss >> mat.ambient.z;
+void OBJ::loadAmbient(Material& material, std::istringstream& iss) {
+    iss >> material.ambient.x;
+    iss >> material.ambient.y;
+    iss >> material.ambient.z;
 }
 
-void OBJ::loadDiffuse(std::istringstream& iss) {
-    auto& mat = mMaterials.back();
-    iss >> mat.diffuse.x;
-    iss >> mat.diffuse.y;
-    iss >> mat.diffuse.z;
+void OBJ::loadDiffuse(Material& material, std::istringstream& iss) {
+    iss >> material.diffuse.x;
+    iss >> material.diffuse.y;
+    iss >> material.diffuse.z;
 }
 
-void OBJ::loadSpecular(std::istringstream& iss) {
-    auto& mat = mMaterials.back();
-    iss >> mat.specular.x;
-    iss >> mat.specular.y;
-    iss >> mat.specular.z;
+void OBJ::loadSpecular(Material& material, std::istringstream& iss) {
+    iss >> material.specular.x;
+    iss >> material.specular.y;
+    iss >> material.specular.z;
 }
 
-void OBJ::loadTexture(std::istringstream& iss) {
-    auto& mat = mMaterials.back();
+void OBJ::loadTexture(Material& material, std::istringstream& iss, const std::string& directoryPath) {
     //テクスチャ名読み込み
     std::string textureName;
     iss >> textureName;
     //テクスチャ読み込み
-    mat.texture = World::instance().assetsManager().createTextureFromModel(textureName);
+    material.texture = AssetsManager::instance().createTexture(textureName, directoryPath);
 }
 
 bool OBJ::isSkip(const std::string& line) {

@@ -12,7 +12,7 @@ public:
     virtual void start() override;
     virtual void update() override;
     virtual void loadProperties(const rapidjson::Value& inObj) override;
-    virtual void drawDebugInfo(ComponentDebug::DebugInfoList* inspect) const override;
+    virtual void drawInspector() override;
     void setTarget(const std::shared_ptr<GameObject>& target);
 
 private:

@@ -6,12 +6,12 @@
 
 ShaderResourceView::ShaderResourceView(const Texture2D& texture2D) :
     mShaderResourceView(nullptr) {
-    DirectX::instance().device()->CreateShaderResourceView(texture2D.texture2D(), nullptr, &mShaderResourceView);
+    MyDirectX::DirectX::instance().device()->CreateShaderResourceView(texture2D.texture2D(), nullptr, &mShaderResourceView);
 }
 
 ShaderResourceView::ShaderResourceView(const Texture2D& texture2D, const ShaderResourceViewDesc& desc) :
     mShaderResourceView(nullptr) {
-    DirectX::instance().device()->CreateShaderResourceView(texture2D.texture2D(), &toSRVDesc(desc), &mShaderResourceView);
+    MyDirectX::DirectX::instance().device()->CreateShaderResourceView(texture2D.texture2D(), &toSRVDesc(desc), &mShaderResourceView);
 }
 
 ShaderResourceView::ShaderResourceView(ID3D11ShaderResourceView* view) :
@@ -23,11 +23,11 @@ ShaderResourceView::~ShaderResourceView() {
 }
 
 void ShaderResourceView::setVSShaderResources(unsigned start, unsigned numViews) const {
-    DirectX::instance().deviceContext()->VSSetShaderResources(start, numViews, &mShaderResourceView);
+    MyDirectX::DirectX::instance().deviceContext()->VSSetShaderResources(start, numViews, &mShaderResourceView);
 }
 
 void ShaderResourceView::setPSShaderResources(unsigned start, unsigned numViews) const {
-    DirectX::instance().deviceContext()->PSSetShaderResources(start, numViews, &mShaderResourceView);
+    MyDirectX::DirectX::instance().deviceContext()->PSSetShaderResources(start, numViews, &mShaderResourceView);
 }
 
 D3D11_SHADER_RESOURCE_VIEW_DESC ShaderResourceView::toSRVDesc(const ShaderResourceViewDesc& desc) const {

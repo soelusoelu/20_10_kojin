@@ -13,8 +13,9 @@
 Inspector::Inspector(DrawString* drawString) :
     mDrawString(drawString),
     mInspectorPositionX(0.f),
-    mTagScale(Vector2::one),
+    mNameScale(Vector2::one),
     mElementScale(Vector2::one),
+    mTagPosition(Vector2::zero),
     mTransformPosition(Vector2::zero),
     mComponentPosition(Vector2::zero),
     mElementPositionX(0.f),
@@ -32,7 +33,7 @@ void Inspector::loadProperties(const rapidjson::Value & inObj) {
     const auto& obj = inObj["inspector"];
     if (obj.IsObject()) {
         JsonHelper::getFloat(obj, "inspectorPositionX", &mInspectorPositionX);
-        JsonHelper::getVector2(obj, "tagScale", &mTagScale);
+        JsonHelper::getVector2(obj, "nameScale", &mNameScale);
         JsonHelper::getVector2(obj, "elementScale", &mElementScale);
         JsonHelper::getInt(obj, "offsetCharCountX", &mOffsetCharCountX);
     }
@@ -44,7 +45,9 @@ void Inspector::initialize() {
     mCharHeight = DrawString::HEIGHT * mElementScale.y;
 
     mOffsetX = mCharWidth * mOffsetCharCountX;
-    mTransformPosition = Vector2(mInspectorPositionX + mOffsetX, DrawString::HEIGHT * mTagScale.y + mCharHeight);
+    mTagPosition = Vector2(mInspectorPositionX + mOffsetX, DrawString::HEIGHT * mNameScale.y + mCharHeight);
+    mTransformPosition = mTagPosition;
+    mTransformPosition.y += mCharHeight * 2;
     mComponentPosition = mTransformPosition;
     mComponentPosition.y += mCharHeight * 5;
     mElementPositionX = mTransformPosition.x + mCharWidth * 2;
@@ -57,15 +60,16 @@ void Inspector::setTarget(const GameObjectPtr& target) {
 }
 
 void Inspector::drawInspect() const {
-    auto actor = mTarget.lock();
-    if (!actor) {
+    auto target = mTarget.lock();
+    if (!target) {
         return;
     }
 
-    drawTag(*actor);
-    drawTransform(actor->transform());
+    drawName(*target);
+    drawTag(*target);
+    drawTransform(target->transform());
 
-    const auto& compList = actor->componentManager().getAllComponents();
+    const auto& compList = target->componentManager().getAllComponents();
     //アクターがコンポーネントを所持していなければ終了
     if (compList.empty()) {
         return;
@@ -80,11 +84,18 @@ void Inspector::drawInspect() const {
     }
 }
 
-void Inspector::drawTag(const GameObject& target) const {
-    auto tag = target.tag();
+void Inspector::drawName(const GameObject& target) const {
+    auto name = target.name();
     auto pos = Vector2(mInspectorPositionX + (Window::debugWidth() - mInspectorPositionX) / 2.f, 0.f);
-    pos.x -= DrawString::WIDTH * mTagScale.x * tag.length() / 2.f;
-    mDrawString->drawString(tag, pos, mTagScale);
+    pos.x -= DrawString::WIDTH * mNameScale.x * name.length() / 2.f;
+    mDrawString->drawString(name, pos, mNameScale);
+}
+
+void Inspector::drawTag(const GameObject& target) const {
+    auto pos = mTagPosition;
+    mDrawString->drawString("Tag", pos, mElementScale);
+    pos.x = mValuePositionX;
+    mDrawString->drawString(target.tag(), pos, mElementScale);
 }
 
 void Inspector::drawTransform(const Transform3D& target) const {
@@ -129,21 +140,21 @@ void Inspector::drawComponent(const Component& component, Vector2 * position) co
     mDrawString->drawString(component.getComponentName(), pos, mElementScale);
 
     //コンポーネントのデバッグ情報を取得
-    ComponentDebug::DebugInfoList debugInfo;
-    component.drawDebugInfo(&debugInfo);
+    //ComponentDebug::DebugInfoList debugInfo;
+    //component.drawDebugInfo(&debugInfo);
 
-    //すべてのデバッグ情報を描画
-    for (const auto& info : debugInfo) {
-        pos.x = mElementPositionX;
-        auto ele = info.first;
-        if (ele.length() > mMaxElementCharCount) {
-            ele = ele.substr(0, mMaxElementCharCount);
-        }
-        pos.y += mCharHeight;
-        mDrawString->drawString(ele, pos, mElementScale);
-        pos.x = mValuePositionX;
-        mDrawString->drawString(anyToString(info.second), pos, mElementScale);
-    }
+    ////すべてのデバッグ情報を描画
+    //for (const auto& info : debugInfo) {
+    //    pos.x = mElementPositionX;
+    //    auto ele = info.first;
+    //    if (ele.length() > mMaxElementCharCount) {
+    //        ele = ele.substr(0, mMaxElementCharCount);
+    //    }
+    //    pos.y += mCharHeight;
+    //    mDrawString->drawString(ele, pos, mElementScale);
+    //    pos.x = mValuePositionX;
+    //    mDrawString->drawString(anyToString(info.second), pos, mElementScale);
+    //}
 
     *position = pos;
 }

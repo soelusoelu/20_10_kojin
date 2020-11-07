@@ -5,7 +5,10 @@
 #include "SubResourceDesc.h"
 #include "Texture2DDesc.h"
 #include "../System/SystemInclude.h"
+#include <dxgi1_6.h>
 #include <memory>
+
+#pragma comment(lib, "dxgi.lib")
 
 enum class PrimitiveType {
     POINT_LIST,
@@ -19,6 +22,8 @@ class BlendState;
 class DepthStencilState;
 class RasterizerState;
 class RenderTargetView;
+
+namespace MyDirectX {
 
 class DirectX {
 private:
@@ -52,7 +57,8 @@ private:
     DirectX(const DirectX&) = delete;
     DirectX& operator=(const DirectX&) = delete;
 
-    void createDeviceAndSwapChain(const HWND& hWnd);
+    void createDevice();
+    void createSwapChain(const HWND& hWnd);
     void createRenderTargetView();
     void createDepthStencilView();
     D3D11_PRIMITIVE_TOPOLOGY toPrimitiveMode(PrimitiveType primitive) const;
@@ -62,7 +68,8 @@ private:
 
     Microsoft::WRL::ComPtr<ID3D11Device> mDevice;
     Microsoft::WRL::ComPtr<ID3D11DeviceContext> mDeviceContext;
-    Microsoft::WRL::ComPtr<IDXGISwapChain> mSwapChain;
+    Microsoft::WRL::ComPtr<IDXGIFactory6> mDXGIFactory;
+    Microsoft::WRL::ComPtr<IDXGISwapChain4> mSwapChain;
     Microsoft::WRL::ComPtr<ID3D11DepthStencilView> mDepthStencilView;
 
     std::unique_ptr<RenderTargetView> mRenderTargetView;
@@ -71,3 +78,5 @@ private:
     std::shared_ptr<DepthStencilState> mDepthStencilState;
     std::shared_ptr<RasterizerState> mRasterizerState;
 };
+
+}

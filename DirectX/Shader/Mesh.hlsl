@@ -20,13 +20,13 @@ struct VS_OUTPUT
     float3 WorldPos : POSITION;
 };
 
-VS_OUTPUT VS(float4 pos : POSITION, float3 normal : NORMAL)
+VS_OUTPUT VS(float3 pos : POSITION, float3 normal : NORMAL)
 {
     VS_OUTPUT output = (VS_OUTPUT) 0;
-    output.Pos = mul(wvp, pos);
+    output.Pos = mul(wvp, float4(pos, 1));
     float3 norm = mul(world, float4(normal, 0)).xyz;
     output.Normal = normalize(norm);
-    output.WorldPos = mul(world, pos).xyz;
+    output.WorldPos = mul(world, float4(pos, 1)).xyz;
 
     return output;
 }

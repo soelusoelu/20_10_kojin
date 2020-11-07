@@ -1,6 +1,7 @@
 ﻿#include "Hierarchy.h"
 #include "Button.h"
 #include "../DebugLayer/DebugUtility.h"
+#include "../DebugLayer/ImGuiInspector.h"
 #include "../DebugLayer/Inspector.h"
 #include "../Device/DrawString.h"
 #include "../GameObject/GameObject.h"
@@ -90,7 +91,7 @@ void Hierarchy::update() {
     }
 }
 
-void Hierarchy::drawActors() const {
+void Hierarchy::drawGameObjects() const {
     for (const auto& b : mButtons) {
         auto obj = b.second;
         //オブジェクトが登録されてなかったら終了
@@ -102,6 +103,6 @@ void Hierarchy::drawActors() const {
         if (!obj->getActive()) {
             alpha = mNonActiveAlpha;
         }
-        mDrawString->drawString(obj->tag(), b.first->getPosition(), mScale, ColorPalette::white, alpha);
+        mDrawString->drawString(obj->name(), b.first->getPosition(), mScale, ColorPalette::white, alpha);
     }
 }

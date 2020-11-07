@@ -4,6 +4,7 @@
 #include <memory>
 
 class Scene;
+class GameObject;
 
 class Title : public Component {
 public:

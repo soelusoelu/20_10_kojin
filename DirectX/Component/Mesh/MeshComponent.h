@@ -2,6 +2,7 @@
 
 #include "../Component.h"
 #include "../../Math/Math.h"
+#include "../../Mesh/IMesh.h"
 #include "../../Mesh/Material.h"
 #include <memory>
 #include <string>
@@ -9,6 +10,7 @@
 
 class Mesh;
 class MeshManager;
+class Shader;
 class Camera;
 class DirectionalLight;
 
@@ -23,22 +25,27 @@ public:
     MeshComponent(GameObject& gameObject);
     virtual ~MeshComponent();
     virtual void awake() override;
+    virtual void start() override;
     virtual void onEnable(bool value) override;
     virtual void loadProperties(const rapidjson::Value& inObj) override;
-    virtual void drawDebugInfo(ComponentDebug::DebugInfoList* inspect) const override;
+    virtual void saveProperties(rapidjson::Document::AllocatorType& alloc, rapidjson::Value* inObj) const override;
+    virtual void drawInspector() override;
 
     //描画
-    void draw(const Camera& camera, const DirectionalLight& dirLight) const;
+    virtual void draw(const Camera& camera, const DirectionalLight& dirLight) const;
+
+    //メッシュを変更する
+    void createMesh(const std::string& fileName, const std::string& directoryPath);
+    //デフォルトのシェーダーに変更する
+    void setDefaultShader();
 
     //状態
     void destroy();
     void setActive(bool value);
     bool getActive() const;
     bool isDead() const;
-    //中心座標の取得
-    const Vector3& getCenter() const;
-    //半径の取得
-    float getRadius() const;
+    //メッシュインターフェースを取得する
+    const IMesh& getMesh() const;
     //アルファ値を設定する
     void setAlpha(float alpha);
     //アルファ値を取得する
@@ -48,11 +55,16 @@ public:
     static void setMeshManager(MeshManager* manager);
 
 private:
+    MeshComponent(const MeshComponent&) = delete;
+    MeshComponent& operator=(const MeshComponent&) = delete;
+
     void addToManager();
 
 protected:
     std::shared_ptr<Mesh> mMesh;
+    std::unique_ptr<Shader> mShader;
     std::string mFileName;
+    std::string mDirectoryPath;
     State mState;
     float mAlpha;
 

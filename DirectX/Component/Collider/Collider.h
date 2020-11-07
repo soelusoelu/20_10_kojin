@@ -19,7 +19,7 @@ public:
     virtual void start() override;
     virtual void lateUpdate() override;
     virtual void finalize() override;
-    virtual void drawDebugInfo(ComponentDebug::DebugInfoList* inspect) const override;
+    virtual void drawInspector() override;
     virtual void onEnable(bool value) override;
     //当たり判定を有効化
     void enabled();

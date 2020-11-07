@@ -20,7 +20,7 @@ public:
     virtual void finalize() override;
     virtual void onEnable(bool value) override;
     virtual void loadProperties(const rapidjson::Value& inObj) override;
-    virtual void drawDebugInfo(ComponentDebug::DebugInfoList* inspect) const override;
+    virtual void drawInspector() override;
 
     //描画
     void draw(const Matrix4& proj) const;

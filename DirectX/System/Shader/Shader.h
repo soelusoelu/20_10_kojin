@@ -16,7 +16,7 @@ class Shader {
     using BufferPtrArray = std::vector<BufferPtr>;
 
 public:
-    Shader(const std::string& fileName);
+    Shader(const std::string& fileName, const std::string& directoryPath = "Shader\\");
     ~Shader();
 
     //プログラムの終わりの終了処理
@@ -37,6 +37,9 @@ public:
     //自身を登録
     void setInputLayout() const;
 
+    //シェーダー名を取得する
+    const std::string& getShaderName() const;
+
 private:
     //シェーダの生成
     void createVertexShader(const std::string& fileName);
@@ -50,6 +53,7 @@ private:
     void unmap(unsigned index = 0, unsigned sub = 0) const;
 
 private:
+    std::string mShaderName;
     Microsoft::WRL::ComPtr<ID3DBlob> mVSBlob;
     Microsoft::WRL::ComPtr<ID3D11VertexShader> mVertexShader;
     Microsoft::WRL::ComPtr<ID3D11PixelShader> mPixelShader;

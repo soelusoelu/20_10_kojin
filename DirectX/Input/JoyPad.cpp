@@ -17,7 +17,7 @@ JoyPad::~JoyPad() {
     safeRelease<IDirectInputDevice8>(mPadDevice);
 }
 
-bool JoyPad::initialize(HWND hWnd, IDirectInput8* directInput) {
+bool JoyPad::initialize(const HWND& hWnd, IDirectInput8* directInput) {
     //利用可能なゲームコントローラーの列挙関数を実行
     if (FAILED(directInput->EnumDevices(DI8DEVCLASS_GAMECTRL, enumJoysticksCallback, NULL, DIEDFL_ATTACHEDONLY))) {
         return false;

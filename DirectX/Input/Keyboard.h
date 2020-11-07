@@ -17,7 +17,7 @@ public:
     virtual int vertical() const override;
     virtual bool getEnter() const override;
 
-    bool initialize(HWND hWnd, IDirectInput8* directInput);
+    bool initialize(const HWND& hWnd, IDirectInput8* directInput);
     void loadProperties(const rapidjson::Value& inObj);
     void update();
     //文字列をKeyCodeに変換

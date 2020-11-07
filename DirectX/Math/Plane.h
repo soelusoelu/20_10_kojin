@@ -18,10 +18,6 @@ public:
     Plane(const Vector3& p1, const Vector3& p2, const Vector3& p3);
     //法線ベクトル(a, b, c)と任意の点
     Plane(const Vector3& normal, const Vector3& p);
-    //法線ベクトルの取得(正規化はしていない)
+    //法線ベクトルの取得
     Vector3 normal() const;
-    //指定ベクトルと法線ベクトルの内積を計算
-    float dotNormal(const Vector3& vector) const;
-    //平面要素を正規化
-    void normalize();
 };

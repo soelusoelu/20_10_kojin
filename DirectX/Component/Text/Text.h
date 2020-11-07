@@ -9,7 +9,7 @@ public:
     ~Text();
     virtual void lateUpdate() override;
     virtual void loadProperties(const rapidjson::Value& inObj) override;
-    virtual void drawDebugInfo(ComponentDebug::DebugInfoList* inspect) const override;
+    virtual void drawInspector() override;
     void setText(const std::string& text);
     const std::string& text() const;
 

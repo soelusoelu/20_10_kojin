@@ -6,7 +6,8 @@
 GameObject::GameObject() :
     mTransform(nullptr),
     mComponentManager(nullptr),
-    mTag(""),
+    mName(),
+    mTag(),
     mIsActive(true) {
 }
 
@@ -48,8 +49,8 @@ bool GameObject::getActive() const {
     return mIsActive;
 }
 
-void GameObject::setTag(const std::string& tag) {
-    mTag = tag;
+const std::string& GameObject::name() const {
+    return mName;
 }
 
 const std::string& GameObject::tag() const {
@@ -72,9 +73,14 @@ GameObjectManager& GameObject::getGameObjectManager() {
     return *mGameObjectManager;
 }
 
-std::shared_ptr<GameObject> GameObject::create() {
+std::shared_ptr<GameObject> GameObject::create(const std::string& name, const std::string& tag) {
     auto obj = std::make_shared<GameObject>();
+    //名前とタグをそれぞれ設定
+    obj->mName = name;
+    obj->mTag = tag;
+    //初期化
     obj->initialize();
+
     return obj;
 }
 
@@ -83,7 +89,7 @@ void GameObject::initialize() {
         mGameObjectManager->add(shared_from_this());
     }
 
-    mTransform = std::make_unique<Transform3D>(shared_from_this());
+    mTransform = std::make_unique<Transform3D>();
     mComponentManager = std::make_unique<ComponentManager>();
 }
 

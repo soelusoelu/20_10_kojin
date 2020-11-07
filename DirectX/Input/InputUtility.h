@@ -15,7 +15,7 @@ public:
     //各種入力クラス生成
     static void create();
     //各種入力クラス初期化
-    static bool initialize(HWND hWnd);
+    static bool initialize(const HWND& hWnd);
     //ファイルから読み取り
     static void loadProperties(const rapidjson::Value& inObj);
     //終了処理

@@ -1,5 +1,6 @@
 ﻿#include "Text.h"
 #include "../../Device/DrawString.h"
+#include "../../Imgui/imgui.h"
 #include "../../Utility/LevelLoader.h"
 #include "../../Utility/StringUtil.h"
 
@@ -28,10 +29,10 @@ void Text::loadProperties(const rapidjson::Value& inObj) {
     JsonHelper::getString(inObj, "text", &mText);
 }
 
-void Text::drawDebugInfo(ComponentDebug::DebugInfoList* inspect) const {
-    TextBase::drawDebugInfo(inspect);
+void Text::drawInspector() {
+    TextBase::drawInspector();
 
-    inspect->emplace_back("Text", mText);
+    ImGui::Text("Text: %s", mText.c_str());
 }
 
 void Text::setText(const std::string & text) {

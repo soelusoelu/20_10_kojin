@@ -49,7 +49,7 @@ bool Keyboard::getEnter() const {
     return getKeyDown(mEnterKey);
 }
 
-bool Keyboard::initialize(HWND hWnd, IDirectInput8* directInput) {
+bool Keyboard::initialize(const HWND& hWnd, IDirectInput8* directInput) {
     //「DirectInputデバイス」オブジェクトの作成
     if (FAILED(directInput->CreateDevice(GUID_SysKeyboard, &mKeyDevice, NULL))) {
         return false;

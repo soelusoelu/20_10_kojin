@@ -1,0 +1,20 @@
+{
+  "properties": {
+    "position": [ 0.0, 1.0, 0.0 ],
+    "scale": [ 2.0, 2.0, 2.0 ]
+  },
+  "components": [
+    {
+      "type": "MeshComponent",
+      "properties": {
+        "fileName": "Shape/Sphere.obj"
+      }
+    },
+    {
+      "type": "PlayerMove",
+      "properties": {
+        "moveSpeed": 30.0
+      }
+    }
+  ]
+}

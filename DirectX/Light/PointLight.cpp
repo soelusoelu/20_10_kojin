@@ -1,9 +1,8 @@
 ﻿#include "PointLight.h"
-#include "../Device/AssetsManager.h"
 #include "../DirectX/InputElement.h"
 #include "../Mesh/IMeshLoader.h"
 #include "../Mesh/Material.h"
-#include "../System/World.h"
+#include "../System/AssetsManager.h"
 #include "../System/Shader/Shader.h"
 #include "../Utility/LevelLoader.h"
 

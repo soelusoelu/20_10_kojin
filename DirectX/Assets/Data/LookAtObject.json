@@ -1,0 +1,13 @@
+{
+  "components": [
+    {
+      "type": "LookAtObject",
+      "properties": {
+        "cameraToTargetLenght": 15.0,
+        "cameraPositionOffsetY": 7.0,
+        "lookAtOffsetY": 2.0,
+        "lookAtOffsetZ": 5.0
+      }
+    }
+  ]
+}

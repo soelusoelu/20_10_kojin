@@ -1,13 +1,8 @@
 ﻿#include "WaveformOutput.h"
 #include "../../DebugLayer/Debug.h"
-#include "../../System/World.h"
-#include "../../Utility/Directory.h"
 #include <fstream>
 
 void WaveformOutput::outputWaveform(const std::string& filePath, const float* waveform, unsigned size) {
-    //ファイルの出力先を指定する
-    World::instance().directory().setRootDirectory();
-
     std::ofstream ofs(filePath);
     //ファイルパスが無効なら終了
     if (!ofs) {
@@ -22,9 +17,6 @@ void WaveformOutput::outputWaveform(const std::string& filePath, const float* wa
 }
 
 void WaveformOutput::outputComplexes(const std::string& filePath, const std::complex<float>* complexes, unsigned size) {
-    //ファイルの出力先を指定する
-    World::instance().directory().setRootDirectory();
-
     std::ofstream ofs(filePath);
     //ファイルパスが無効なら終了
     if (!ofs) {

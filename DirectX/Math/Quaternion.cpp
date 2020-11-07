@@ -118,10 +118,10 @@ Quaternion Quaternion::slerp(const Quaternion& a, const Quaternion& b, float f) 
     float scale0, scale1;
 
     if (cosom < 0.9999f) {
-        const float omega = Math::acos(cosom);
-        const float invSin = 1.f / Math::sin(omega);
-        scale0 = Math::sin((1.f - f) * omega) * invSin;
-        scale1 = Math::sin(f * omega) * invSin;
+        const float omega = acosf(cosom);
+        const float invSin = 1.f / sinf(omega);
+        scale0 = sinf((1.f - f) * omega) * invSin;
+        scale1 = sinf(f * omega) * invSin;
     } else {
         // Use linear interpolation if the quaternions
         // are collinear

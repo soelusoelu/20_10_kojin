@@ -23,6 +23,7 @@ public:
     void drawInspect() const;
 
 private:
+    void drawName(const GameObject& target) const;
     void drawTag(const GameObject& target) const;
     void drawTransform(const Transform3D& target) const;
     void drawPosition(const Transform3D& target, const Vector2& position) const;
@@ -41,8 +42,9 @@ private:
     DrawString* mDrawString;
     std::weak_ptr<GameObject> mTarget;
     float mInspectorPositionX;
-    Vector2 mTagScale;
+    Vector2 mNameScale;
     Vector2 mElementScale;
+    Vector2 mTagPosition;
     Vector2 mTransformPosition;
     Vector2 mComponentPosition;
     //変数名のX軸の位置

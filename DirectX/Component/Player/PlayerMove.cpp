@@ -1,5 +1,6 @@
 ﻿#include "PlayerMove.h"
 #include "../../Device/Time.h"
+#include "../../Imgui/imgui.h"
 #include "../../Input/Input.h"
 #include "../../Transform/Transform3D.h"
 #include "../../Utility/LevelLoader.h"
@@ -37,6 +38,6 @@ void PlayerMove::loadProperties(const rapidjson::Value& inObj) {
     JsonHelper::getFloat(inObj, "moveSpeed", &mMoveSpeed);
 }
 
-void PlayerMove::drawDebugInfo(ComponentDebug::DebugInfoList* inspect) const {
-    inspect->emplace_back("MoveSpeed", mMoveSpeed);
+void PlayerMove::drawInspector() {
+    ImGui::SliderFloat("MoveSpeed", &mMoveSpeed, 0.f, 1000.f);
 }

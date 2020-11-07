@@ -14,7 +14,7 @@ public:
     virtual void lateUpdate() override;
     virtual void onEnable(bool value) override;
     virtual void loadProperties(const rapidjson::Value& inObj) override;
-    virtual void drawDebugInfo(ComponentDebug::DebugInfoList* inspect) const override;
+    virtual void drawInspector() override;
     void setPosition(const Vector2& pos);
     const Vector2& getPosition() const;
     void setScale(const Vector2& scale);

@@ -17,6 +17,15 @@ struct MeshConstantBuffer {
     Matrix4 wvp;
 };
 
+//スキンメッシュ
+struct SkinMeshConstantBuffer {
+    ALIGN16 Vector3 lightDir; //ワールド行列
+    ALIGN16 Vector3 cameraPos; //カメラ位置
+    ALIGN16 Matrix4 world;
+    ALIGN16 Matrix4 wvp;
+    ALIGN16 Matrix4 bones[256];
+};
+
 //マテリアル
 struct MaterialConstantBuffer {
     ALIGN16 Vector3 ambient;
@@ -30,6 +39,12 @@ struct TransparentConstantBuffer {
     ALIGN16 Matrix4 wvp; //ワールドから射影までの変換行列
     ALIGN16 Vector3 lightDir; //ワールド行列
     ALIGN16 Vector3 cameraPos; //カメラ位置
+};
+
+//ポイント
+struct PointConstantBuffer {
+    Matrix4 wvp;
+    Vector4 color;
 };
 
 //ライン

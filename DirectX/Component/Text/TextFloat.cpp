@@ -1,5 +1,6 @@
 ﻿#include "TextFloat.h"
 #include "../../Device/DrawString.h"
+#include "../../Imgui/imgui.h"
 #include "../../Utility/LevelLoader.h"
 
 TextFloat::TextFloat(GameObject& gameObject) :
@@ -24,11 +25,11 @@ void TextFloat::loadProperties(const rapidjson::Value& inObj) {
     JsonHelper::getInt(inObj, "decimalDigits", &mDecimalDigits);
 }
 
-void TextFloat::drawDebugInfo(ComponentDebug::DebugInfoList* inspect) const {
-    TextBase::drawDebugInfo(inspect);
+void TextFloat::drawInspector() {
+    TextBase::drawInspector();
 
-    inspect->emplace_back("Number", mNumber);
-    inspect->emplace_back("DecimalDigits", mDecimalDigits);
+    ImGui::Text("Text: %f", mNumber);
+    ImGui::Text("DecimalDigits: %d", mDecimalDigits);
 }
 
 void TextFloat::setNumber(float number) {

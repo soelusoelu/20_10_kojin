@@ -21,6 +21,8 @@ public:
 
     //3Dメッシュ処理
     void renderMesh() const;
+    //3Dポイント処理
+    void renderPoint3D() const;
     //2Dライン処理
     void renderLine2D(Matrix4* proj) const;
     //3Dライン処理

@@ -5,7 +5,7 @@
 
 RenderTargetView::RenderTargetView(const Texture2D& texture2D, const RenderTargetViewDesc* desc) :
     mRenderTargetView(nullptr) {
-    auto dev = DirectX::instance().device();
+    auto dev = MyDirectX::DirectX::instance().device();
     if (desc) {
         dev->CreateRenderTargetView(texture2D.texture2D(), &toRTVDesc(desc), &mRenderTargetView);
     } else {
@@ -21,7 +21,7 @@ ID3D11RenderTargetView* RenderTargetView::getRenderTarget() const {
 
 void RenderTargetView::clearRenderTarget(float r, float g, float b, float a) const {
     const float clearColor[4] = { r, g, b, a };
-    DirectX::instance().deviceContext()->ClearRenderTargetView(mRenderTargetView.Get(), clearColor);
+    MyDirectX::DirectX::instance().deviceContext()->ClearRenderTargetView(mRenderTargetView.Get(), clearColor);
 }
 
 D3D11_RENDER_TARGET_VIEW_DESC RenderTargetView::toRTVDesc(const RenderTargetViewDesc* desc) const {

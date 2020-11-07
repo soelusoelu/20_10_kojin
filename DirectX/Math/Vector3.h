@@ -52,6 +52,11 @@ public:
     // Vector -=
     Vector3& operator-=(const Vector3& right);
 
+    //ほぼ同じ値のVector3か
+    bool equal(const Vector3& right) const;
+
+    static bool equal(const Vector3& left, const Vector3& right);
+
     // Length squared of vector
     float lengthSq() const;
 

@@ -20,6 +20,8 @@ public:
     static int debugWidth();
     static int debugHeight();
     static Vector2 windowToClientSize();
+    //ゲームウィンドウをフルHDサイズに変える補正値を取得する
+    static Vector2 getWindowCompensate();
     void loadProperties(const rapidjson::Value& inObj);
 
 private:

@@ -269,6 +269,12 @@ void Matrix4::inverse() {
     }
 }
 
+Matrix4 Matrix4::inverse(const Matrix4& right) {
+    auto temp = right;
+    temp.inverse();
+    return temp;
+}
+
 Vector3 Matrix4::getTranslation() const {
     return Vector3(m[3][0], m[3][1], m[3][2]);
 }

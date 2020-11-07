@@ -15,5 +15,5 @@ void VertexBuffer::setVertexBuffer(unsigned start, unsigned numStream, unsigned 
         INPUT_ELEMENT_DESC構造体のサイズが入った配列への先頭ポインタ(stride(読み込み単位)として扱うため)
         頂点バッファ配列の各頂点バッファの頭出しをするオフセット値の配列
     */
-    DirectX::instance().deviceContext()->IASetVertexBuffers(start, numStream, &mBuffer, &mDesc.oneSize, &offset);
+    MyDirectX::DirectX::instance().deviceContext()->IASetVertexBuffers(start, numStream, &mBuffer, &mDesc.oneSize, &offset);
 }

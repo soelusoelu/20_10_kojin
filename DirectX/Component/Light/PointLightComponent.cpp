@@ -1,6 +1,7 @@
 ﻿#include "PointLightComponent.h"
 #include "../Camera/Camera.h"
 #include "../../DirectX/DirectXInclude.h"
+#include "../../Imgui/imgui.h"
 #include "../../Light/LightManager.h"
 #include "../../Light/PointLight.h"
 #include "../../Mesh/IMeshLoader.h"
@@ -39,11 +40,12 @@ void PointLightComponent::loadProperties(const rapidjson::Value& inObj) {
     JsonHelper::getFloat(inObj, "intensity", &mIntensity);
 }
 
-void PointLightComponent::drawDebugInfo(ComponentDebug::DebugInfoList* inspect) const {
-    inspect->emplace_back("Color", mLightColor);
-    inspect->emplace_back("InnerRadius", mInnerRadius);
-    inspect->emplace_back("OuterRadius", mOuterRadius);
-    inspect->emplace_back("Intensity", mIntensity);
+void PointLightComponent::drawInspector() {
+    float color[3] = { mLightColor.x, mLightColor.y, mLightColor.z };
+    ImGui::ColorPicker3("Color", color);
+    ImGui::SliderFloat("InnerRadius", &mInnerRadius, 0.01f, mOuterRadius);
+    ImGui::SliderFloat("OuterRadius", &mOuterRadius, mInnerRadius, 100.f);
+    ImGui::SliderFloat("Intensity", &mIntensity, 0.f, 10.f);
 }
 
 void PointLightComponent::draw(const Camera& camera, const PointLight& pointLight) const {

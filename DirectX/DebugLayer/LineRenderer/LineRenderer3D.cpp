@@ -1,7 +1,5 @@
 ﻿#include "LineRenderer3D.h"
 #include "../../DirectX/DirectXInclude.h"
-#include "../../Device/AssetsManager.h"
-#include "../../System/World.h"
 #include "../../System/Shader/ConstantBuffers.h"
 #include "../../System/Shader/Shader.h"
 #include "../../Transform/Transform3D.h"
@@ -36,7 +34,7 @@ const void* LineRenderer3D::getVertexData() const {
 
 void LineRenderer3D::createShader() {
     //シェーダー作成
-    mShader = World::instance().assetsManager().createShader("Line3D.hlsl");
+    mShader = std::make_unique<Shader>("Line3D.hlsl");
 }
 
 void LineRenderer3D::drawLines(const Matrix4& proj) const {
@@ -63,5 +61,5 @@ void LineRenderer3D::drawLine(const Line3DParam& param, const Matrix4& proj) con
     mShader->transferData(&cb, sizeof(cb));
 
     //描画
-    DirectX::instance().drawIndexed(2);
+    MyDirectX::DirectX::instance().drawIndexed(2);
 }

@@ -14,11 +14,6 @@ class GameObject;
 class Transform3D;
 class ComponentManager;
 
-namespace ComponentDebug {
-    using DebugInfo = std::pair<std::string, std::any>;
-    using DebugInfoList = std::list<DebugInfo>;
-}
-
 class Component : public Object {
 public:
     Component() = delete;
@@ -42,9 +37,7 @@ public:
     virtual void loadProperties(const rapidjson::Value& inObj) {};
     virtual void saveProperties(rapidjson::Document::AllocatorType& alloc, rapidjson::Value* inObj) const {};
     //Inspectorに表示する情報
-    //first: 変数名
-    //second: 値
-    virtual void drawDebugInfo(ComponentDebug::DebugInfoList* inspect) const {};
+    virtual void drawInspector() {};
 
     //コンポーネントがアタッチされているゲームオブジェクトを返す
     GameObject& gameObject() const;
@@ -58,10 +51,27 @@ public:
     std::shared_ptr<T> getComponent() const {
         return componentManager().getComponent<T>();
     }
+
     //指定した型のコンポーネントをすべて取得
     template<typename T>
     std::vector<std::shared_ptr<T>> getComponents() const {
         return componentManager().getComponents<T>();
+    }
+
+    //コンポーネントの追加
+    template <typename T>
+    static std::shared_ptr<T> addComponent(GameObject& gameObject, const std::string& componentName) {
+        auto t = std::make_shared<T>(gameObject);
+        t->mComponentName = componentName;
+        t->componentManager().addComponent(t);
+        t->awake();
+        return t;
+    }
+
+    //自身にコンポーネントを追加する
+    template <typename T>
+    std::shared_ptr<T> addComponent(const std::string& componentName) {
+        return addComponent<T>(mGameObject, componentName);
     }
 
     //指定されたプロパティでコンポーネントを生成

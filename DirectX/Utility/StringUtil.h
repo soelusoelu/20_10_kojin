@@ -19,6 +19,8 @@ public:
     static StringArray split(const std::string& src, const char delimiter);
     //charからWcharへの文字変換
     static const wchar_t* charToWchar(const char* src);
+    //Wcharからstringへの文字変換
+    static std::string wcharToString(const wchar_t* src);
     //boolからstringへの変換
     static std::string boolToString(bool value);
     //intからstringへの変換

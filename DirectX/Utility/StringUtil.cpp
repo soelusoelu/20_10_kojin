@@ -31,6 +31,13 @@ const wchar_t* StringUtil::charToWchar(const char* src) {
     return dst;
 }
 
+std::string StringUtil::wcharToString(const wchar_t* src) {
+    char dst[256];
+    WideCharToMultiByte(CP_ACP, 0, src, -1, dst, _countof(dst), nullptr, nullptr);
+
+    return dst;
+}
+
 std::string StringUtil::boolToString(bool value) {
     return (value) ? "true" : "false";
 }

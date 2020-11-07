@@ -26,10 +26,10 @@ void MeshManager::draw(const Camera& camera, const DirectionalLight& dirLight) c
             continue;
         }
 
-        //DirectX::instance().rasterizerState()->setCulling(CullMode::FRONT);
+        //MyDirectX::DirectX::instance().rasterizerState()->setCulling(CullMode::FRONT);
         //mesh->draw(camera, dirLight);
 
-        DirectX::instance().rasterizerState()->setCulling(CullMode::BACK);
+        MyDirectX::DirectX::instance().rasterizerState()->setCulling(CullMode::BACK);
         mesh->draw(camera, dirLight);
     }
 }
@@ -60,8 +60,8 @@ bool MeshManager::isDraw(const MeshComponent& mesh, const Camera& camera) const 
     if (mesh.isDead()) {
         return false;
     }
-    auto pos = mesh.transform().getPosition();
-    auto radius = mesh.getRadius() * mesh.transform().getScale().x;
+    //auto pos = mesh.transform().getPosition();
+    //auto radius = mesh.getMesh().getRadius() * mesh.transform().getScale().x;
     //if (!camera.viewFrustumCulling(pos, radius)) {
     //    return false;
     //}

@@ -2,8 +2,7 @@
 #include "../GameObject/GameObject.h"
 #include "../Utility/LevelLoader.h"
 
-Transform3D::Transform3D(const std::shared_ptr<GameObject>& gameObject) :
-    mGameObject(gameObject),
+Transform3D::Transform3D() :
     mWorldTransform(Matrix4::identity),
     mPosition(Vector3::zero),
     mRotation(Quaternion::identity),
@@ -21,12 +20,8 @@ Transform3D::~Transform3D() {
         return;
     }
     for (const auto& child : mChildren) {
-        child->gameObject()->destroy();
+        //child->gameObject().destroy();
     }
-}
-
-std::shared_ptr<GameObject> Transform3D::gameObject() const {
-    return mGameObject.lock();
 }
 
 bool Transform3D::computeWorldTransform() {
@@ -179,44 +174,20 @@ Vector3 Transform3D::right() const {
     return Vector3::transform(Vector3::right, mRotation);
 }
 
-void Transform3D::addChild(const TransformPtr& child) {
+void Transform3D::addChild(std::shared_ptr<Transform3D>& child) {
     mChildren.emplace_back(child);
     child->setParent(shared_from_this());
-}
-
-void Transform3D::removeChild(const Transform3D& child) {
-    removeChild(child.gameObject()->tag());
-}
-
-void Transform3D::removeChild(const std::string& tag) {
-    for (auto itr = mChildren.begin(); itr != mChildren.end(); ++itr) {
-        if ((*itr)->gameObject()->tag() == tag) {
-            (*itr)->gameObject()->destroy();
-            mChildren.erase(itr);
-            return;
-        }
-    }
-}
-
-std::shared_ptr<Transform3D> Transform3D::getChild(const std::string& tag) const {
-    TransformPtr child = nullptr;
-    for (const auto& c : mChildren) {
-        if (c->gameObject()->tag() == tag) {
-            child = c;
-        }
-    }
-    return child;
 }
 
 std::list<std::shared_ptr<Transform3D>> Transform3D::getChildren() const {
     return mChildren;
 }
 
-std::shared_ptr<Transform3D> Transform3D::parent() const {
-    return mParent;
+Transform3D& Transform3D::parent() const {
+    return *mParent;
 }
 
-std::shared_ptr<Transform3D> Transform3D::root() const {
+Transform3D& Transform3D::root() const {
     auto root = mParent;
     while (root) {
         auto p = root->mParent;
@@ -225,7 +196,7 @@ std::shared_ptr<Transform3D> Transform3D::root() const {
         }
         root = p;
     }
-    return root;
+    return *root;
 }
 
 size_t Transform3D::getChildCount() const {
@@ -250,7 +221,7 @@ void Transform3D::saveProperties(rapidjson::Document::AllocatorType& alloc, rapi
     JsonHelper::setVector3(alloc, inObj, "scale", mScale);
 }
 
-void Transform3D::setParent(const TransformPtr& parent) {
+void Transform3D::setParent(const std::shared_ptr<Transform3D>& parent) {
     mParent = parent;
 }
 
@@ -260,7 +231,7 @@ void Transform3D::shouldRecomputeTransform() {
     if (mChildren.empty()) {
         return;
     }
-    for (auto&& child : mChildren) {
+    for (const auto& child : mChildren) {
         child->mIsRecomputeTransform = true;
     }
 }

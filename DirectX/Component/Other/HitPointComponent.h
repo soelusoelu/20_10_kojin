@@ -7,7 +7,9 @@ public:
     HitPointComponent(GameObject& gameObject);
     ~HitPointComponent();
     virtual void loadProperties(const rapidjson::Value& inObj) override;
-    virtual void drawDebugInfo(ComponentDebug::DebugInfoList* inspect) const override;
+    virtual void saveProperties(rapidjson::Document::AllocatorType& alloc, rapidjson::Value* inObj) const override;
+    virtual void drawInspector() override;
+
     //ダメージに応じてHPを減らす
     void takeDamage(int damage);
     //ヒール量に応じてHPを増やす

@@ -4,7 +4,7 @@
 
 Sampler::Sampler(const SamplerDesc& desc) :
     mDesc(desc) {
-    DirectX::instance().device()->CreateSamplerState(&toSamplerDesc(desc), &mSampler);
+    MyDirectX::DirectX::instance().device()->CreateSamplerState(&toSamplerDesc(desc), &mSampler);
 }
 
 Sampler::~Sampler() {
@@ -12,11 +12,11 @@ Sampler::~Sampler() {
 }
 
 void Sampler::setVSSamplers(unsigned start, unsigned numSamplers) {
-    DirectX::instance().deviceContext()->VSSetSamplers(start, numSamplers, &mSampler);
+    MyDirectX::DirectX::instance().deviceContext()->VSSetSamplers(start, numSamplers, &mSampler);
 }
 
 void Sampler::setPSSamplers(unsigned start, unsigned numSamplers) {
-    DirectX::instance().deviceContext()->PSSetSamplers(start, numSamplers, &mSampler);
+    MyDirectX::DirectX::instance().deviceContext()->PSSetSamplers(start, numSamplers, &mSampler);
 }
 
 const SamplerDesc& Sampler::desc() const {

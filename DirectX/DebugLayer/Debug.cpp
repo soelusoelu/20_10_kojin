@@ -3,6 +3,7 @@
 #include "LineRenderer/LineRenderer2D.h"
 #include "LineRenderer/LineRenderer3D.h"
 #include "Log.h"
+#include "PointRenderer.h"
 
 void Debug::windowMessage(const std::string& message) {
 #ifdef _DEBUG
@@ -25,6 +26,12 @@ void Debug::logError(const std::string& message) {
 void Debug::logWarning(const std::string& message) {
 #ifdef _DEBUG
     DebugUtility::log().logWarning(message);
+#endif // _DEBUG
+}
+
+void Debug::renderPoint(const Vector3& point, const Vector3& color) {
+#ifdef _DEBUG
+    DebugUtility::pointRenderer().renderPoint(point, color);
 #endif // _DEBUG
 }
 
