@@ -1,13 +1,14 @@
 {
   "properties": {
-    "position": [ 0.0, 0.0, -5.0 ],
-    "rotation": [ -90.0, 180.0, 0.0 ]
+    "position": [ 0.0, 7.0, 0.0 ],
+    "rotation": [ -90.0, 180.0, 0.0 ],
+    "scale": [ 0.25, 0.25, 0.25 ]
   },
   "components": [
     {
       "type": "SkinMeshComponent",
       "properties": {
-        "fileName": "sophia_animated_003_idling_fbx\\rp_sophia_animated_003_idling.fbx",
+        "fileName": "zunko_model_data/TouhokuZunko_FromBlender_20140620_3.fbx",
         "shaderName": "SkinMesh.hlsl"
       }
     }

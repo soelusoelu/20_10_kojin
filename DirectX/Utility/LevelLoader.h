@@ -50,4 +50,5 @@ public:
     static void setVector3(rapidjson::Document::AllocatorType& alloc, rapidjson::Value* inObject, const char* name, const Vector3& value);
     static void setVector4(rapidjson::Document::AllocatorType& alloc, rapidjson::Value* inObject, const char* name, const Vector4& value);
     static void setQuaternion(rapidjson::Document::AllocatorType& alloc, rapidjson::Value* inObject, const char* name, const Quaternion& value);
+    static void setStringArray(rapidjson::Document::AllocatorType& alloc, rapidjson::Value* inObject, const char* name, const std::vector<std::string>& values);
 };

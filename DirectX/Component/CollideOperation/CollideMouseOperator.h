@@ -9,6 +9,7 @@ class MeshComponent;
 class AABBSelector;
 class MeshAdder;
 class CollideAdder;
+class GameObjectSaveAndLoader;
 
 class CollideMouseOperator : public Component {
 public:
@@ -16,6 +17,9 @@ public:
     ~CollideMouseOperator();
     virtual void start() override;
     virtual void update() override;
+
+    //ゲームオブジェクトのセーブ/ロード用に受け取る
+    void setSaveAndLoader(const std::shared_ptr<GameObjectSaveAndLoader>& saveLoader);
 
 private:
     CollideMouseOperator(const CollideMouseOperator&) = delete;
@@ -39,6 +43,9 @@ private:
     std::shared_ptr<AABBSelector> mAABBSelector;
     std::shared_ptr<MeshAdder> mMeshAdder;
     std::shared_ptr<CollideAdder> mCollideAdder;
+
+    //外部から受け取る
+    std::shared_ptr<GameObjectSaveAndLoader> mSaveLoader;
 
     //全地形メッシュ配列
     std::vector<std::shared_ptr<MeshComponent>> mGroundMeshes;

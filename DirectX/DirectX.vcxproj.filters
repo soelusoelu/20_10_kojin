@@ -194,9 +194,10 @@
     <ClCompile Include="DebugLayer\ImGuiInspector.cpp" />
     <ClCompile Include="Component\CharacterOperation\CharacterCost.cpp" />
     <ClCompile Include="Component\CharacterOperation\CostRenderer.cpp" />
+    <ClCompile Include="DebugLayer\ImGuiWrapper.cpp" />
+    <ClCompile Include="Component\Other\GameObjectSaveAndLoader.cpp" />
+    <ClCompile Include="Component\Other\SaveThis.cpp" />
     <ClCompile Include="Mesh\Fbx\FbxBoneWeightParser.cpp" />
-    <ClCompile Include="Component\Player\PlayerMove.cpp" />
-    <ClCompile Include="Component\Camera\LookAtObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component\ComponentManager.h" />
@@ -426,8 +427,9 @@
     <ClInclude Include="Component\CharacterOperation\CharacterCost.h" />
     <ClInclude Include="Component\CharacterOperation\CharacterCreateInfo.h" />
     <ClInclude Include="Component\CharacterOperation\CostRenderer.h" />
+    <ClInclude Include="DebugLayer\ImGuiWrapper.h" />
+    <ClInclude Include="Component\Other\GameObjectSaveAndLoader.h" />
+    <ClInclude Include="Component\Other\SaveThis.h" />
     <ClInclude Include="Mesh\Fbx\FbxBoneWeightParser.h" />
-    <ClInclude Include="Component\Player\PlayerMove.h" />
-    <ClInclude Include="Component\Camera\LookAtObject.h" />
   </ItemGroup>
 </Project>

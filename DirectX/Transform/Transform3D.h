@@ -12,7 +12,7 @@ public:
     ~Transform3D();
 
     //ワールド行列更新
-    bool computeWorldTransform();
+    void computeWorldTransform();
     //ワールド行列の取得
     const Matrix4& getWorldTransform() const;
 
@@ -31,6 +31,8 @@ public:
     void setRotation(const Quaternion& rot);
     //軸を中心に回転量を設定
     void setRotation(const Vector3& axis, float angle);
+    //オイラー角で回転量を設定
+    void setRotation(const Vector3& eulers);
     //親子関係を考慮した回転量の取得
     Quaternion getRotation() const;
     //ローカル回転量の取得
@@ -72,14 +74,15 @@ public:
     void loadProperties(const rapidjson::Value& inObj);
     void saveProperties(rapidjson::Document::AllocatorType& alloc, rapidjson::Value* inObj) const;
 
+    //インスペクター
+    void drawInspector();
+
 private:
     Transform3D(const Transform3D&) = delete;
     Transform3D& operator=(const Transform3D&) = delete;
 
     //親の設定
     void setParent(const std::shared_ptr<Transform3D>& parent);
-    //ワールド行列の計算が必要になった際のフラグ設定
-    void shouldRecomputeTransform();
 
 private:
     Matrix4 mWorldTransform;
@@ -89,5 +92,4 @@ private:
     Vector3 mScale;
     std::shared_ptr<Transform3D> mParent;
     std::list<std::shared_ptr<Transform3D>> mChildren;
-    bool mIsRecomputeTransform;
 };

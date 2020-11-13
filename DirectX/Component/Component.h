@@ -25,12 +25,10 @@ public:
     virtual void start() {};
     //毎フレーム呼ばれる
     virtual void update() {};
-    //全ゲームオブジェクトの全アップデート後に呼ばれる
+    //全ゲームオブジェクトのアップデート後に呼ばれる
     virtual void lateUpdate() {};
     //終了処理
     virtual void finalize() {};
-    //オーナーのTransformが更新されたら
-    virtual void onUpdateWorldTransform() {};
     //アクティブ・非アクティブ時の切り替え
     virtual void onEnable(bool value) {};
     //ロード/セーブ

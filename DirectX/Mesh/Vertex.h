@@ -8,7 +8,7 @@ struct MeshVertex {
     Vector3 normal;
     Vector2 uv;
 
-    //スキンメッシュアニメーション用
+    //スキンメッシュ用
     float weight[4];
     unsigned short index[4];
 

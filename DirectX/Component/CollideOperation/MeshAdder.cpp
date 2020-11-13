@@ -2,6 +2,7 @@
 #include "../Mesh/MeshComponent.h"
 #include "../../DebugLayer/Debug.h"
 #include "../../GameObject/GameObject.h"
+#include "../../GameObject/GameObjectManager.h"
 #include "../../Utility/FileUtil.h"
 
 MeshAdder::MeshAdder(GameObject& gameObject)
@@ -28,7 +29,9 @@ std::shared_ptr<MeshComponent> MeshAdder::addMeshCreateGameObject(const std::str
     //ファイル名から拡張子を取り出す
     const auto& ext = FileUtil::getFileExtension(fileName);
     //ファイル名から拡張子を抜いた部分をゲームオブジェクトの名前とする
-    const auto& name = fileName.substr(0, fileName.length() - ext.length());
+    auto name = fileName.substr(0, fileName.length() - ext.length());
+    //すでにあるメッシュが選択された場合に名前被りを避けるため
+    gameObject().getGameObjectManager().setNameNumber(name);
     //ゲームオブジェクト生成
     auto newGameObject = GameObject::create(name, tag);
 

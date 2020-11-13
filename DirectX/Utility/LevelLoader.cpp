@@ -343,3 +343,18 @@ void JsonHelper::setQuaternion(rapidjson::Document::AllocatorType & alloc, rapid
     //inObjectに配列として追加
     inObject->AddMember(rapidjson::StringRef(name), v, alloc);
 }
+
+void JsonHelper::setStringArray(rapidjson::Document::AllocatorType& alloc, rapidjson::Value* inObject, const char* name, const std::vector<std::string>& values) {
+    //配列を生成
+    rapidjson::Value v(rapidjson::kArrayType);
+
+    //配列要素を順に追加していく
+    rapidjson::Value temp;
+    for (const auto& value : values) {
+        temp.SetString(value.c_str(), static_cast<rapidjson::SizeType>(value.length()), alloc);
+        v.PushBack(temp, alloc);
+    }
+
+    //inObjectに配列として追加
+    inObject->AddMember(rapidjson::StringRef(name), v, alloc);
+}

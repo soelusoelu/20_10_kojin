@@ -71,18 +71,18 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Program Files\Autodesk\FBX\FBX SDK\2019.0\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Program Files\Autodesk\FBX\FBX SDK\2019.0\lib\vs2015\x86\debug;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Program Files\Autodesk\FBX\FBX SDK\2019.0\include;C:\Program Files %28x86%29\Windows Kits\10\Include\10.0.18362.0\um;C:\Program Files %28x86%29\Windows Kits\10\Include\10.0.18362.0\shared;C:\K018A1813\rapidjson-master\include;C:\K018A1813\Microsoft DirectX SDK %28June 2010%29\Include;C:\K018A1813\rapidjson-master\include\rapidjson;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files\Autodesk\FBX\FBX SDK\2019.0\lib\vs2015\x86\debug;C:\Program Files %28x86%29\Windows Kits\10\Lib\10.0.18362.0\ucrt\x86;C:\Program Files %28x86%29\Windows Kits\10\Lib\10.0.18362.0\um\x86;C:\K018A1813\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>D:\Download\Autodesk\FBX\FBX SDK\2019.0\include;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\Download\Autodesk\FBX\FBX SDK\2019.0\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Program Files %28x86%29\Windows Kits\10\Include\10.0.18362.0\um;C:\Program Files %28x86%29\Windows Kits\10\Include\10.0.18362.0\shared;C:\K018A1813\rapidjson-master\include;C:\Program Files %28x86%29\Windows Kits\10\Include\10.0.18362.0\shared;C:\Program Files %28x86%29\Windows Kits\10\Include\10.0.18362.0\um;C:\K018A1813\Microsoft DirectX SDK %28June 2010%29\Include;C:\K018A1813\rapidjson-master\include\rapidjson;D:\Download\Autodesk\FBX\FBX SDK\2019.0\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files %28x86%29\Windows Kits\10\Lib\10.0.18362.0\ucrt\x64;C:\Program Files %28x86%29\Windows Kits\10\Lib\10.0.18362.0\um\x64;C:\K018A1813\Microsoft DirectX SDK %28June 2010%29\Lib\x64;D:\Download\Autodesk\FBX\FBX SDK\2019.0\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Program Files\Autodesk\FBX\FBX SDK\2019.0\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Program Files\Autodesk\FBX\FBX SDK\2019.0\lib\vs2015\x86\release;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Program Files\Autodesk\FBX\FBX SDK\2019.0\include;C:\Program Files %28x86%29\Windows Kits\10\Include\10.0.18362.0\um;C:\Program Files %28x86%29\Windows Kits\10\Include\10.0.18362.0\shared;C:\K018A1813\rapidjson-master\include;C:\K018A1813\Microsoft DirectX SDK %28June 2010%29\Include;C:\K018A1813\rapidjson-master\include\rapidjson;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files %28x86%29\Windows Kits\10\Lib\10.0.18362.0\ucrt\x86;C:\Program Files %28x86%29\Windows Kits\10\Lib\10.0.18362.0\um\x86;C:\K018A1813\Microsoft DirectX SDK %28June 2010%29\Lib\x86;C:\Program Files\Autodesk\FBX\FBX SDK\2019.0\lib\vs2015\x86\release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -165,8 +165,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Component\Camera\LookAtObject.cpp" />
     <ClCompile Include="Component\CharacterOperation\CharacterCost.cpp" />
+    <ClCompile Include="Component\CharacterOperation\CostRenderer.cpp" />
     <ClCompile Include="Component\CollideOperation\AABBSelector.cpp" />
     <ClCompile Include="Component\CollideOperation\AABBMouseScaler.cpp" />
     <ClCompile Include="Component\CollideOperation\CollideAdder.cpp" />
@@ -178,15 +178,14 @@
     <ClCompile Include="Collision\AABB.cpp" />
     <ClCompile Include="Collision\Sphere.cpp" />
     <ClCompile Include="Collision\Circle.cpp" />
-    <ClCompile Include="Component\Player\PlayerMove.cpp" />
     <ClCompile Include="Component\Sample\RayMouse.cpp" />
     <ClCompile Include="Collision\Ray.cpp" />
     <ClCompile Include="Component\CharacterOperation\DragAndDropCharacter.cpp" />
     <ClCompile Include="Collision\Square.cpp" />
     <ClCompile Include="Component\CollideOperation\MeshAdder.cpp" />
-    <ClCompile Include="Component\CharacterOperation\CostRenderer.cpp" />
     <ClCompile Include="DebugLayer\ImGuiInspector.cpp" />
-    <ClCompile Include="Mesh\Fbx\FbxBoneWeightParser.cpp" />
+    <ClCompile Include="DebugLayer\ImGuiWrapper.cpp" />
+    <ClCompile Include="Component\Other\GameObjectSaveAndLoader.cpp" />
     <ClCompile Include="Imgui\imgui.cpp" />
     <ClCompile Include="Imgui\imgui_demo.cpp" />
     <ClCompile Include="Imgui\imgui_draw.cpp" />
@@ -195,10 +194,12 @@
     <ClCompile Include="Imgui\imgui_widgets.cpp" />
     <ClCompile Include="Mesh\Fbx\FbxAnimationTime.cpp" />
     <ClCompile Include="Mesh\Fbx\FbxBoneParser.cpp" />
+    <ClCompile Include="Mesh\Fbx\FbxBoneWeightParser.cpp" />
     <ClCompile Include="Mesh\Fbx\FbxMeshParser.cpp" />
     <ClCompile Include="Mesh\Fbx\FbxMaterialParser.cpp" />
     <ClCompile Include="Component\Mesh\SkinMeshComponent.cpp" />
     <ClCompile Include="DebugLayer\PointRenderer.cpp" />
+    <ClCompile Include="Component\Other\SaveThis.cpp" />
     <ClCompile Include="System\Shader\InputElementManager.cpp" />
     <ClCompile Include="System\Shader\ConstantBufferManager.cpp" />
     <ClCompile Include="DebugLayer\LineRenderer\LineRenderer.cpp" />
@@ -348,9 +349,9 @@
     <ClCompile Include="Component\Sound\WaveformRenderSample.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Component\Camera\LookAtObject.h" />
     <ClInclude Include="Component\CharacterOperation\CharacterCost.h" />
     <ClInclude Include="Component\CharacterOperation\CharacterCreateInfo.h" />
+    <ClInclude Include="Component\CharacterOperation\CostRenderer.h" />
     <ClInclude Include="Component\CollideOperation\AABBSelector.h" />
     <ClInclude Include="Component\CollideOperation\AABBMouseScaler.h" />
     <ClInclude Include="Component\CollideOperation\CollideAdder.h" />
@@ -364,10 +365,9 @@
     <ClInclude Include="Collision\Circle.h" />
     <ClInclude Include="Component\CharacterOperation\DragAndDropCharacter.h" />
     <ClInclude Include="Component\CollideOperation\MeshAdder.h" />
-    <ClInclude Include="Component\CharacterOperation\CostRenderer.h" />
-    <ClInclude Include="Component\Player\PlayerMove.h" />
     <ClInclude Include="DebugLayer\ImGuiInspector.h" />
-    <ClInclude Include="Mesh\Fbx\FbxBoneWeightParser.h" />
+    <ClInclude Include="DebugLayer\ImGuiWrapper.h" />
+    <ClInclude Include="Component\Other\GameObjectSaveAndLoader.h" />
     <ClInclude Include="Imgui\imconfig.h" />
     <ClInclude Include="Imgui\imgui.h" />
     <ClInclude Include="Imgui\imgui_impl_dx11.h" />
@@ -379,6 +379,7 @@
     <ClInclude Include="Mesh\Bone.h" />
     <ClInclude Include="Mesh\Fbx\FbxAnimationTime.h" />
     <ClInclude Include="Mesh\Fbx\FbxBoneParser.h" />
+    <ClInclude Include="Mesh\Fbx\FbxBoneWeightParser.h" />
     <ClInclude Include="Mesh\Fbx\FbxMeshParser.h" />
     <ClInclude Include="Mesh\Fbx\FbxMaterialParser.h" />
     <ClInclude Include="Mesh\IMesh.h" />
@@ -388,6 +389,7 @@
     <ClInclude Include="Collision\Square.h" />
     <ClInclude Include="Component\Mesh\SkinMeshComponent.h" />
     <ClInclude Include="DebugLayer\PointRenderer.h" />
+    <ClInclude Include="Component\Other\SaveThis.h" />
     <ClInclude Include="System\Shader\InputElementManager.h" />
     <ClInclude Include="System\Shader\ConstantBufferManager.h" />
     <ClInclude Include="DebugLayer\LineRenderer\LineRenderer.h" />
@@ -694,7 +696,7 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DirectXTex\DirectXTex\DirectXTex_Desktop_2019_Win10.vcxproj">
+    <ProjectReference Include="..\DirectXTex\DirectXTex_Desktop_2019_Win10.vcxproj">
       <Project>{371b9fa9-4c90-4ac6-a123-aced756d6c77}</Project>
     </ProjectReference>
   </ItemGroup>

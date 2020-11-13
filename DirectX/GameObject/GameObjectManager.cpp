@@ -3,6 +3,7 @@
 #include "../DebugLayer/DebugUtility.h"
 #include "../DebugLayer/Hierarchy.h"
 #include "../Utility/LevelLoader.h"
+#include "../Utility/StringUtil.h"
 #include <algorithm>
 #include <iterator>
 
@@ -104,6 +105,11 @@ std::vector<std::shared_ptr<GameObject>> GameObjectManager::findGameObjects(cons
     return gameObjectArray;
 }
 
+void GameObjectManager::setNameNumber(std::string& name) const {
+    bool isEnd = false;
+    checkNameNumber(name, isEnd);
+}
+
 void GameObjectManager::remove() {
     auto itr = mGameObjects.begin();
     while (itr != mGameObjects.end()) {
@@ -121,4 +127,25 @@ void GameObjectManager::movePendingToMain() {
     }
     std::copy(mPendingGameObjects.begin(), mPendingGameObjects.end(), std::back_inserter(mGameObjects));
     mPendingGameObjects.clear();
+}
+
+void GameObjectManager::checkNameNumber(std::string& name, bool& isEnd, int number) const {
+    std::string numberedName = name;
+    //再帰してたら名前の後ろに数字をつける
+    if (number > 0) {
+        numberedName += StringUtil::intToString(number);
+    }
+    for (const auto& obj : mGameObjects) {
+        if (obj->name() == numberedName) {
+            //名前が一致するゲームオブジェクトが存在したら、末尾の数字を1増やして再帰する
+            ++number;
+            checkNameNumber(name, isEnd, number);
+        }
+    }
+
+    if (isEnd) {
+        return;
+    }
+    name = numberedName;
+    isEnd = true;
 }

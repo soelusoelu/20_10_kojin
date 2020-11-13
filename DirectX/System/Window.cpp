@@ -65,7 +65,7 @@ void Window::createWindow(HINSTANCE hInstance) {
     );
 
     //ウインドウの表示
-    ShowWindow(mhWnd, SW_SHOW);
+    ShowWindow(mhWnd, SW_MAXIMIZE);
     UpdateWindow(mhWnd);
 }
 

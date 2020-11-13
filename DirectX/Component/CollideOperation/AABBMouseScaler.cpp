@@ -68,7 +68,7 @@ void AABBMouseScaler::saveProperties(rapidjson::Document::AllocatorType& alloc, 
 }
 
 void AABBMouseScaler::drawInspector() {
-    ImGui::SliderFloat("EditPointRadius", &mEditPointRadius, 0.1f, 3.f);
+    ImGui::SliderFloat("EditPointRadius", &mEditPointRadius, 0.01f, 3.f);
     ImGui::SliderFloat("CollisionExpantionAmount", &mCollisionExpantionAmount, 0.1f, 10.f);
 }
 

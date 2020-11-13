@@ -23,8 +23,8 @@ void SphereCollider::start() {
     }
 }
 
-void SphereCollider::onUpdateWorldTransform() {
-    Collider::onUpdateWorldTransform();
+void SphereCollider::lateUpdate() {
+    Collider::lateUpdate();
 
     if (!mIsAutoUpdate) {
         return;

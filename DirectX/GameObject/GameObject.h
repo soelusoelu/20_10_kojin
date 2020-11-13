@@ -52,8 +52,6 @@ private:
 
     //初期化
     void initialize();
-    //ワールド行列の更新
-    void computeWorldTransform();
 
 private:
     std::unique_ptr<Transform3D> mTransform;

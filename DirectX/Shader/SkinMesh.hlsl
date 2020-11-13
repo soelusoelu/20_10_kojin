@@ -28,12 +28,7 @@ struct VS_OUTPUT
 VS_OUTPUT VS(float4 pos : POSITION, float3 normal : NORMAL, float2 uv : TEXCOORD, float4 weight : BLENDWEIGHT, min16uint4 index : BLENDINDICES)
 {
     VS_OUTPUT output = (VS_OUTPUT) 0;
-    matrix comb = (matrix) 0;
-    //comb[0][0] = 1;
-    //comb[1][1] = 1;
-    //comb[2][2] = 1;
-    //comb[3][3] = 1;
-    //comb = bones[index[0]];
+    matrix comb = (float4x4) 0;
     for (int i = 0; i < 4; ++i)
     {
         comb += bones[index[i]] * weight[i];

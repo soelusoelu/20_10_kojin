@@ -1,4 +1,5 @@
 ﻿#include "DirectionalLight.h"
+#include "../../DebugLayer/ImGuiWrapper.h"
 #include "../../Imgui/imgui.h"
 #include "../../Transform/Transform3D.h"
 #include "../../Utility/LevelLoader.h"
@@ -11,7 +12,7 @@ DirectionalLight::DirectionalLight(GameObject& gameObject) :
 
 DirectionalLight::~DirectionalLight() = default;
 
-void DirectionalLight::onUpdateWorldTransform() {
+void DirectionalLight::lateUpdate() {
     mDirection = Vector3::transform(Vector3::up, transform().getRotation());
 }
 
@@ -23,8 +24,7 @@ void DirectionalLight::loadProperties(const rapidjson::Value& inObj) {
 }
 
 void DirectionalLight::drawInspector() {
-    float color[3] = { mLightColor.x, mLightColor.y, mLightColor.z };
-    ImGui::ColorPicker3("Color", color);
+    ImGuiWrapper::colorEdit3("Color", mLightColor);
 }
 
 void DirectionalLight::setDirection(const Vector3& dir) {

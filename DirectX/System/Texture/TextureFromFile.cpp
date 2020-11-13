@@ -2,7 +2,7 @@
 #include "../../DebugLayer/Debug.h"
 #include "../../DirectX/DirectXInclude.h"
 #include "../../System/SystemInclude.h"
-#include <DirectXTex/DirectXTex.h>
+#include <DirectXTex.h>
 
 TextureFromFile::TextureFromFile(const std::string& filePath) :
     Texture() {

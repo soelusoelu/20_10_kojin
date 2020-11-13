@@ -27,7 +27,7 @@ void GameObject::lateUpdate() {
     if (getActive()) {
         mComponentManager->lateUpdate();
 
-        computeWorldTransform();
+        mTransform->computeWorldTransform();
     }
 }
 
@@ -91,10 +91,4 @@ void GameObject::initialize() {
 
     mTransform = std::make_unique<Transform3D>();
     mComponentManager = std::make_unique<ComponentManager>();
-}
-
-void GameObject::computeWorldTransform() {
-    if (mTransform->computeWorldTransform()) {
-        mComponentManager->onUpdateWorldTransform();
-    }
 }

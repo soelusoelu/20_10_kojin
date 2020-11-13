@@ -16,8 +16,7 @@ CharacterCreater::CharacterCreater(GameObject& gameObject)
     , mClickedSpriteID(0)
     , mSpriteStartPos(Vector2::zero)
     , mSpriteScale(Vector2::zero)
-    , mSpriteSpace(0.f)
-{
+    , mSpriteSpace(0.f) {
 }
 
 CharacterCreater::~CharacterCreater() = default;

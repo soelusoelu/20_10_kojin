@@ -1,31 +1,49 @@
 {
-  "components": [
-    {
-      "type": "CollideMouseOperator",
-      "properties": {
-      }
+    "tag": "None",
+    "properties": {
+        "position": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "rotation": [
+            -0.0,
+            0.0,
+            0.0
+        ],
+        "scale": [
+            1.0,
+            1.0,
+            1.0
+        ]
     },
-    {
-      "type": "AABBSelector",
-      "properties": {
-      }
-    },
-    {
-      "type": "AABBMouseScaler",
-      "properties": {
-        "editPointRadius": 0.5,
-        "collisionExpantionAmount": 2.0
-      }
-    },
-    {
-      "type": "MeshAdder",
-      "properties": {
-      }
-    },
-    {
-      "type": "CollideAdder",
-      "properties": {
-      }
-    }
-  ]
+    "components": [
+        {
+            "type": "CollideMouseOperator",
+            "properties": {}
+        },
+        {
+            "type": "AABBSelector",
+            "properties": {}
+        },
+        {
+            "type": "AABBMouseScaler",
+            "properties": {
+                "editPointRadius": 0.25,
+                "collisionExpantionAmount": 1.0
+            }
+        },
+        {
+            "type": "MeshAdder",
+            "properties": {}
+        },
+        {
+            "type": "CollideAdder",
+            "properties": {}
+        },
+        {
+            "type": "SaveThis",
+            "properties": {}
+        }
+    ]
 }

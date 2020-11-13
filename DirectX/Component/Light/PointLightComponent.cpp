@@ -1,5 +1,6 @@
 ﻿#include "PointLightComponent.h"
 #include "../Camera/Camera.h"
+#include "../../DebugLayer/ImGuiWrapper.h"
 #include "../../DirectX/DirectXInclude.h"
 #include "../../Imgui/imgui.h"
 #include "../../Light/LightManager.h"
@@ -41,8 +42,7 @@ void PointLightComponent::loadProperties(const rapidjson::Value& inObj) {
 }
 
 void PointLightComponent::drawInspector() {
-    float color[3] = { mLightColor.x, mLightColor.y, mLightColor.z };
-    ImGui::ColorPicker3("Color", color);
+    ImGuiWrapper::colorEdit3("Color", mLightColor);
     ImGui::SliderFloat("InnerRadius", &mInnerRadius, 0.01f, mOuterRadius);
     ImGui::SliderFloat("OuterRadius", &mOuterRadius, mInnerRadius, 100.f);
     ImGui::SliderFloat("Intensity", &mIntensity, 0.f, 10.f);

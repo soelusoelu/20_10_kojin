@@ -46,15 +46,6 @@ void ComponentManager::addComponent(const ComponentPtr& component) {
     mStartComponents.emplace_back(component);
 }
 
-void ComponentManager::onUpdateWorldTransform() const {
-    for (const auto& comp : mStartComponents) {
-        comp->onUpdateWorldTransform();
-    }
-    for (const auto& comp : mComponents) {
-        comp->onUpdateWorldTransform();
-    }
-}
-
 void ComponentManager::onEnable(bool value) const {
     for (const auto& comp : mStartComponents) {
         comp->onEnable(value);

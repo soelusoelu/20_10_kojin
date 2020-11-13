@@ -26,8 +26,6 @@ public:
     //コンポーネントの追加
     void addComponent(const ComponentPtr& component);
 
-    //所有するすべてのコンポーネントのonUpdateWorldTransformを実行
-    void onUpdateWorldTransform() const;
     //所有するすべてのコンポーネントのonSetActiveを実行
     void onEnable(bool value) const;
 

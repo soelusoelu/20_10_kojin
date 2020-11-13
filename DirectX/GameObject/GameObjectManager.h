@@ -29,6 +29,8 @@ public:
     const GameObjectPtr& find(const std::string& tag) const;
     //tagに一致するアクティブな全ゲームオブジェクトの検索
     GameObjectPtrArray findGameObjects(const std::string& tag) const;
+    //ゲームオブジェクトの名前がかぶらないように番号で調整する
+    void setNameNumber(std::string& name) const;
 
 private:
     //コピー禁止
@@ -39,6 +41,8 @@ private:
     void remove();
     //待機中のゲームオブジェクトをメインリストに移す
     void movePendingToMain();
+    //ゲームオブジェクトの名前を走査していく
+    void checkNameNumber(std::string& name, bool& isEnd, int number = 0) const;
 
 private:
     //ゲームオブジェクトリスト

@@ -25,11 +25,6 @@ private:
 
     void drawName(const GameObject& target) const;
     void drawTag(const GameObject& target) const;
-    void drawTransform(const Transform3D& target) const;
-    void drawPosition(const Transform3D& target) const;
-    void drawRotation(const Transform3D& target) const;
-    void drawScale(const Transform3D& target) const;
-    void drawComponent(Component& component) const;
 
 private:
     std::weak_ptr<GameObject> mTarget;

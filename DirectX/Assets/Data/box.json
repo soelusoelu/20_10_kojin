@@ -1,32 +1,28 @@
 {
-    "tag": "None",
+    "tag": "Ground",
     "properties": {
         "position": [
-            0.0,
-            3.9600000381469728,
-            0.0
+            -1.100000023841858,
+            0.5400000214576721,
+            -4.210000038146973
         ],
         "rotation": [
             -0.0,
-            -98.89900207519531,
+            0.0,
             0.0
         ],
         "scale": [
-            1.0,
-            1.0,
-            1.0
+            0.5,
+            0.5,
+            0.5
         ]
     },
     "components": [
         {
-            "type": "DragAndDropCharacter",
-            "properties": {}
-        },
-        {
             "type": "MeshComponent",
             "properties": {
-                "fileName": "Shape/Sphere.fbx",
-                "directoryPath": "Assets\\Model\\",
+                "fileName": "box.fbx",
+                "directoryPath": "Assets\\Model\\Shape\\",
                 "shaderName": "Mesh.hlsl",
                 "alpha": 1.0
             }
@@ -35,17 +31,21 @@
             "type": "AABBCollider",
             "properties": {
                 "min": [
-                    -0.9510578513145447,
-                    -0.9999999403953552,
+                    -1.0,
+                    -1.0,
                     -1.0
                 ],
                 "max": [
-                    0.9510578513145447,
-                    0.9999999403953552,
+                    1.0,
+                    1.0,
                     1.0
                 ],
                 "isRenderCollision": true
             }
+        },
+        {
+            "type": "SaveThis",
+            "properties": {}
         }
     ]
 }

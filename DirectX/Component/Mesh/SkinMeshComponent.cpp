@@ -1,7 +1,6 @@
 ﻿#include "SkinMeshComponent.h"
 #include "../Camera/Camera.h"
 #include "../Light/DirectionalLight.h"
-#include "../../DebugLayer/Debug.h"
 #include "../../Device/Time.h"
 #include "../../Mesh/Material.h"
 #include "../../Mesh/Mesh.h"
@@ -20,7 +19,13 @@ SkinMeshComponent::~SkinMeshComponent() = default;
 
 void SkinMeshComponent::update() {
     auto& bones = mMesh->getBones();
-    ++mCurrentFrame;
+    mBones.resize(bones.size());
+    for (size_t i = 0; i < bones.size(); i++) {
+        mBones[i].offsetMat = bones[i].frameMat[mCurrentFrame];
+        mBones[i].initMat = bones[i].frameMat[mCurrentFrame];
+    }
+    test(mBones[0], nullptr);
+    ++mCurrentFrame;;
     if (mCurrentFrame >= bones[0].numFrame) {
         mCurrentFrame = 0;
     }
@@ -35,7 +40,15 @@ void SkinMeshComponent::draw(const Camera& camera, const DirectionalLight& dirLi
     auto& bones = mMesh->getBones();
     for (size_t i = 0; i < bones.size(); i++) {
         //meshcb.bones[i] = Matrix4::identity;
+        //meshcb.bones[i] = bones[i].initMat;
+        //meshcb.bones[i] = bones[i].offsetMat * bones[i].initMat;
+        //meshcb.bones[i] = bones[i].offsetMat * Matrix4::inverse(bones[i].offsetMat);
         meshcb.bones[i] = bones[i].offsetMat * bones[i].frameMat[mCurrentFrame];
+        //meshcb.bones[i] = bones[i].offsetMat * bones[i].frameMat[mCurrentFrame] * Matrix4::inverse(bones[i].offsetMat);
+        //meshcb.bones[i] = Matrix4::inverse(bones[i].initMat) * bones[i].frameMat[mCurrentFrame] * bones[i].initMat;
+        //meshcb.bones[i] = bones[i].offsetMat * bones[i].frameMat[mCurrentFrame] * bones[i].initMat;
+        //meshcb.bones[i] = bones[i].offsetMat * mBones[i].initMat;
+        //meshcb.bones[i] = bones[i].offsetMat * bones[i].frameMat[mCurrentFrame] * mBones[i].initMat;
     }
     const auto& world = transform().getWorldTransform();
     meshcb.world = world;
@@ -66,13 +79,13 @@ void SkinMeshComponent::draw(const Camera& camera, const DirectionalLight& dirLi
         //描画
         mMesh->draw(i);
     }
+}
 
-    for (size_t i = 0; i < bones.size(); i++) {
-        if (bones[i].parent) {
-            Debug::renderLine(
-                Vector3::transform(Vector3::zero, bones[i].frameMat[mCurrentFrame]),
-                Vector3::transform(Vector3::zero, bones[i].parent->frameMat[mCurrentFrame])
-            );
-        }
+void SkinMeshComponent::test(Bone& me, const Matrix4* parentWorld) const {
+    if (parentWorld) {
+        me.initMat *= *parentWorld;
+    }
+    for (size_t i = 0; i < me.children.size(); i++) {
+        test(*me.children[i], &me.offsetMat);
     }
 }

@@ -1,5 +1,7 @@
 ﻿#include "Transform3D.h"
+#include "../DebugLayer/ImGuiWrapper.h"
 #include "../GameObject/GameObject.h"
+#include "../Imgui/imgui.h"
 #include "../Utility/LevelLoader.h"
 
 Transform3D::Transform3D() :
@@ -8,8 +10,7 @@ Transform3D::Transform3D() :
     mRotation(Quaternion::identity),
     mPivot(Vector3::zero),
     mScale(Vector3::one), 
-    mParent(nullptr),
-    mIsRecomputeTransform(true) {
+    mParent(nullptr) {
 }
 
 Transform3D::~Transform3D() {
@@ -24,18 +25,11 @@ Transform3D::~Transform3D() {
     }
 }
 
-bool Transform3D::computeWorldTransform() {
-    if (mIsRecomputeTransform) {
-        mWorldTransform = Matrix4::createTranslation(-mPivot); //中心 + ピボットを原点に
-        mWorldTransform *= Matrix4::createScale(getScale());
-        mWorldTransform *= Matrix4::createFromQuaternion(getRotation());
-        mWorldTransform *= Matrix4::createTranslation(getPosition());
-
-        mIsRecomputeTransform = false;
-
-        return true;
-    }
-    return false;
+void Transform3D::computeWorldTransform() {
+    mWorldTransform = Matrix4::createTranslation(-mPivot); //ピボットを原点に
+    mWorldTransform *= Matrix4::createScale(getScale());
+    mWorldTransform *= Matrix4::createFromQuaternion(getRotation());
+    mWorldTransform *= Matrix4::createTranslation(getPosition());
 }
 
 const Matrix4& Transform3D::getWorldTransform() const {
@@ -44,7 +38,6 @@ const Matrix4& Transform3D::getWorldTransform() const {
 
 void Transform3D::setPosition(const Vector3& pos) {
     mPosition = pos;
-    shouldRecomputeTransform();
 }
 
 Vector3 Transform3D::getPosition() const {
@@ -63,19 +56,16 @@ const Vector3& Transform3D::getLocalPosition() const {
 
 void Transform3D::translate(const Vector3& translation) {
     mPosition += translation;
-    shouldRecomputeTransform();
 }
 
 void Transform3D::translate(float x, float y, float z) {
     mPosition.x += x;
     mPosition.y += y;
     mPosition.z += z;
-    shouldRecomputeTransform();
 }
 
 void Transform3D::setRotation(const Quaternion& rot) {
     mRotation = rot;
-    shouldRecomputeTransform();
 }
 
 void Transform3D::setRotation(const Vector3& axis, float angle) {
@@ -86,8 +76,10 @@ void Transform3D::setRotation(const Vector3& axis, float angle) {
     mRotation.y = axis.y * sinAngle;
     mRotation.z = axis.z * sinAngle;
     mRotation.w = Math::cos(angle);
+}
 
-    shouldRecomputeTransform();
+void Transform3D::setRotation(const Vector3& eulers) {
+    mRotation.setEuler(eulers);
 }
 
 Quaternion Transform3D::getRotation() const {
@@ -115,19 +107,16 @@ void Transform3D::rotate(const Vector3& axis, float angle) {
     inc.w = Math::cos(angle);
 
     mRotation = Quaternion::concatenate(mRotation, inc);
-
-    shouldRecomputeTransform();
 }
 
 void Transform3D::rotate(const Vector3& eulers) {
+    rotate(Vector3::forward, eulers.z);
     rotate(Vector3::right, eulers.x);
     rotate(Vector3::up, eulers.y);
-    rotate(Vector3::forward, eulers.z);
 }
 
 void Transform3D::setPivot(const Vector3& pivot) {
     mPivot = pivot;
-    shouldRecomputeTransform();
 }
 
 const Vector3& Transform3D::getPivot() const {
@@ -136,14 +125,12 @@ const Vector3& Transform3D::getPivot() const {
 
 void Transform3D::setScale(const Vector3& scale) {
     mScale = scale;
-    shouldRecomputeTransform();
 }
 
 void Transform3D::setScale(float scale) {
     mScale.x = scale;
     mScale.y = scale;
     mScale.z = scale;
-    shouldRecomputeTransform();
 }
 
 Vector3 Transform3D::getScale() const {
@@ -208,9 +195,10 @@ void Transform3D::loadProperties(const rapidjson::Value& inObj) {
     JsonHelper::getVector3(inObj, "position", &mPosition);
     Vector3 rot;
     if (JsonHelper::getVector3(inObj, "rotation", &rot)) {
-        rotate(rot);
+        setRotation(rot);
     }
     JsonHelper::getVector3(inObj, "scale", &mScale);
+
     computeWorldTransform();
 }
 
@@ -221,17 +209,19 @@ void Transform3D::saveProperties(rapidjson::Document::AllocatorType& alloc, rapi
     JsonHelper::setVector3(alloc, inObj, "scale", mScale);
 }
 
-void Transform3D::setParent(const std::shared_ptr<Transform3D>& parent) {
-    mParent = parent;
+void Transform3D::drawInspector() {
+    ImGui::Text("Transform");
+
+    ImGuiWrapper::dragVector3("Position", mPosition, 0.01f);
+
+    auto euler = mRotation.euler();
+    if (ImGuiWrapper::dragVector3("Rotation", euler, 0.1f)) {
+        mRotation.setEuler(euler);
+    }
+
+    ImGuiWrapper::dragVector3("Scale", mScale, 0.01f);
 }
 
-void Transform3D::shouldRecomputeTransform() {
-    mIsRecomputeTransform = true;
-
-    if (mChildren.empty()) {
-        return;
-    }
-    for (const auto& child : mChildren) {
-        child->mIsRecomputeTransform = true;
-    }
+void Transform3D::setParent(const std::shared_ptr<Transform3D>& parent) {
+    mParent = parent;
 }

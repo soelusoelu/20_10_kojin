@@ -32,6 +32,10 @@ public:
 
     void normalize();
 
+    //オイラー角をもとにクォータニオンを設定する
+    void setEuler(const Vector3& euler);
+
+    //クォータニオンからオイラー角を取得する
     Vector3 euler() const;
 
     // Normalize the provided quaternion

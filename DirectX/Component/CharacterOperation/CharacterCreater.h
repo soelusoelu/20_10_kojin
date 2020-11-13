@@ -1,4 +1,4 @@
-﻿ #pragma once
+﻿#pragma once
 
 #include "CharacterCreateInfo.h"
 #include "../Component.h"

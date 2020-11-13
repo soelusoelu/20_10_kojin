@@ -5,6 +5,8 @@
 #include "../Camera/Camera.h"
 #include "../Collider/AABBCollider.h"
 #include "../Mesh/MeshComponent.h"
+#include "../Other/GameObjectSaveAndLoader.h"
+#include "../Other/SaveThis.h"
 #include "../../Collision/Collision.h"
 #include "../../GameObject/GameObject.h"
 #include "../../GameObject/GameObjectManager.h"
@@ -16,6 +18,7 @@ CollideMouseOperator::CollideMouseOperator(GameObject& gameObject)
     , mAABBSelector(nullptr)
     , mCollideAdder(nullptr)
     , mMeshAdder(nullptr)
+    , mSaveLoader(nullptr)
     , mSelecteMesh(nullptr)
 {
 }
@@ -59,6 +62,10 @@ void CollideMouseOperator::update() {
     if (Input::mouse().getMouseButtonDown(MouseCode::RightButton)) {
         addMesh();
     }
+}
+
+void CollideMouseOperator::setSaveAndLoader(const std::shared_ptr<GameObjectSaveAndLoader>& saveLoader) {
+    mSaveLoader = saveLoader;
 }
 
 void CollideMouseOperator::clickMouseLeftButton() {
@@ -130,10 +137,15 @@ void CollideMouseOperator::addMesh() {
 
     //メッシュにコライダーを追加する
     addCollider(*newMesh);
+    //保存機能を追加する
+    newMesh->addComponent<SaveThis>("SaveThis");
     //このメッシュを選択対象にする
     changeSelectMesh(newMesh);
     //地形配列に追加する
     mGroundMeshes.emplace_back(newMesh);
+
+    //ファイル保存対象を追加
+    mSaveLoader->addSaveGameObject(newMesh->gameObject().name());
 }
 
 void CollideMouseOperator::addCollider(MeshComponent& mesh) {

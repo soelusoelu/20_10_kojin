@@ -11,7 +11,7 @@ public:
     SphereCollider(GameObject& gameObject);
     ~SphereCollider();
     virtual void start() override;
-    virtual void onUpdateWorldTransform() override;
+    virtual void lateUpdate() override;
     virtual void drawInspector() override;
 
     //中心位置と半径を直接設定する
