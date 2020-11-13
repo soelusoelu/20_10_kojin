@@ -16,6 +16,7 @@ public:
         std::vector<MeshVertices>& meshesVertices,
         std::vector<Indices>& meshesIndices,
         std::vector<Material>& materials,
+        std::vector<Motion>& motions,
         std::vector<Bone>& bones
     ) override;
 

@@ -1,8 +1,10 @@
 ﻿#include "FbxBoneParser.h"
-#include "FbxAnimationTime.h"
+#include "FbxBoneWeightParser.h"
+#include "FbxUtility.h"
 
-FbxBoneParser::FbxBoneParser() :
-    mAnimationTime(std::make_unique<FbxAnimationTime>()) {
+FbxBoneParser::FbxBoneParser()
+    : mBoneWeightParser(std::make_unique<FbxBoneWeightParser>())
+{
 }
 
 FbxBoneParser::~FbxBoneParser() = default;
@@ -10,26 +12,22 @@ FbxBoneParser::~FbxBoneParser() = default;
 void FbxBoneParser::parse(
     std::vector<MeshVertices>& meshesVertices,
     std::vector<Bone>& bones,
-    FbxScene* fbxScene
+    const std::vector<FbxMesh*>& fbxMeshes
 ) {
-    //アニメーション時間を取得する
-    mAnimationTime->parse(fbxScene);
-
-    //FbxMeshの数を取得
-    auto numMeshes = fbxScene->GetSrcObjectCount<FbxMesh>();
-
-    //シーンからメッシュを取得する
-    FbxMesh* fbxMesh = fbxScene->GetSrcObject<FbxMesh>();
+    for (int i = 0; i < fbxMeshes.size(); ++i) {
+        //ボーンウェイトの読み込み
+        mBoneWeightParser->parse(meshesVertices[i], fbxMeshes[i]);
+    }
 
     //スキン情報の有無
-    int skinCount = fbxMesh->GetDeformerCount(FbxDeformer::eSkin);
+    int skinCount = fbxMeshes[0]->GetDeformerCount(FbxDeformer::eSkin);
     if (skinCount <= 0) {
         return;
     }
 
     for (int i = 0; i < skinCount; ++i) {
         //i番目のスキンを取得
-        FbxDeformer* fbxDeformer = fbxMesh->GetDeformer(i, FbxDeformer::eSkin);
+        FbxDeformer* fbxDeformer = fbxMeshes[0]->GetDeformer(i, FbxDeformer::eSkin);
         FbxSkin* fbxSkin = static_cast<FbxSkin*>(fbxDeformer);
 
         //ボーンを読み込んでいく
@@ -38,6 +36,12 @@ void FbxBoneParser::parse(
         //親子付け
         setParentChildren(bones, fbxSkin);
     }
+}
+
+FbxCluster* FbxBoneParser::getFbxCluster(
+    int index
+) const {
+    return mFbxClusterArray[index];
 }
 
 void FbxBoneParser::loadBone(
@@ -52,64 +56,37 @@ void FbxBoneParser::loadBone(
 
     //ボーンの数に合わせて拡張
     bones.resize(boneCount);
+    mFbxClusterArray.resize(boneCount);
 
     //ボーンの数だけ読み込んでいく
     for (int i = 0; i < boneCount; ++i) {
         //i番目のボーンを取得
-        FbxCluster* bone = fbxSkin->GetCluster(i);
+        FbxCluster* fbxCluster = fbxSkin->GetCluster(i);
+        mFbxClusterArray[i] = fbxCluster;
 
-        //キーフレーム読み込み
-        loadKeyFrames(bones[i], bone);
+        auto& bone = bones[i];
+        //ボーンにパラメータを設定する
+        setBoneParameter(bone, fbxCluster);
 
         //セットに登録
-        mBoneMap.emplace(bones[i].name, &bones[i]);
+        mBoneMap.emplace(bone.name, &bone);
     }
 }
 
-void FbxBoneParser::loadKeyFrames(
-    Bone& bone,
-    FbxCluster* fbxCluster
-) {
+void FbxBoneParser::setBoneParameter(Bone& bone, FbxCluster* fbxCluster) {
     //ノードを取得
     FbxNode* fbxNode = fbxCluster->GetLink();
 
     //ボーン名取得
     bone.name = fbxNode->GetName();
 
-    //フレーム数を取得
-    bone.numFrame = mAnimationTime->getStopFrame();
-
     //モデルの初期姿勢を取得する
     FbxAMatrix linkMatrix;
     fbxCluster->GetTransformLinkMatrix(linkMatrix);
-    bone.initMat = substitutionMatrix(linkMatrix);
+    bone.initMat = FbxUtility::substitutionMatrix(linkMatrix);
 
     //初期姿勢からオフセット行列を計算する
     bone.offsetMat = Matrix4::inverse(bone.initMat);
-
-    //フレーム数分拡張しとく
-    bone.frameMat.resize(bone.numFrame);
-
-    //フレーム数分フレーム時姿勢を取得する
-    for (int j = 0; j < bone.numFrame; ++j) {
-        //指定フレームでの時間を取得する
-        auto time = mAnimationTime->getTime(j);
-        //指定フレームでの姿勢
-        bone.frameMat[j] = substitutionMatrix(fbxNode->EvaluateGlobalTransform(time));
-    }
-}
-
-Matrix4 FbxBoneParser::substitutionMatrix(
-    const FbxMatrix& src
-) const {
-    Matrix4 dst;
-    for (int i = 0; i < 4; ++i) {
-        for (int j = 0; j < 4; ++j) {
-            dst.m[i][j] = static_cast<float>(src.mData[i][j]);
-        }
-    }
-
-    return dst;
 }
 
 void FbxBoneParser::setParentChildren(

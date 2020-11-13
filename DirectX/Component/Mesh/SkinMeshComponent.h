@@ -10,9 +10,9 @@ public:
     ~SkinMeshComponent();
     virtual void update() override;
     virtual void draw(const Camera& camera, const DirectionalLight& dirLight) const override;
-    void test(Bone& me, const Matrix4* parentWorld) const;
 
 private:
+    int mCurrentMotionNo;
     int mCurrentFrame;
     std::vector<Bone> mBones;
 };

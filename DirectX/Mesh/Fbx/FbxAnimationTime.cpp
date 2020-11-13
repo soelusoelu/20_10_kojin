@@ -1,59 +1,58 @@
 ﻿#include "FbxAnimationTime.h"
 
-FbxAnimationTime::FbxAnimationTime() :
-    mPeriod(),
-    mStart(),
-    mStop(),
-    mStartFrame(0),
-    mStopFrame(0),
-    mFramePerSec(0) {
-}
+FbxAnimationTime::FbxAnimationTime() = default;
 
 FbxAnimationTime::~FbxAnimationTime() = default;
 
-void FbxAnimationTime::parse(FbxScene* fbxScene) {
+void FbxAnimationTime::parse(
+    std::vector<Motion>& motions,
+    std::vector<FbxMotionTime>& motionsTime,
+    FbxScene* fbxScene
+) {
     //テイクから基準時間を取得
     FbxArray<FbxString*> takeNames;
     fbxScene->FillAnimStackNameArray(takeNames);
-    int numTake = takeNames.GetCount();
-    bool isTakeExist = false;
-    for (int i = 0; i < numTake; ++i) {
+
+    //モーション数を設定する
+    motions.resize(takeNames.GetCount());
+    motionsTime.resize(motions.size());
+
+    //モーションの数だけ時間を取得する
+    for (int i = 0; i < motions.size(); ++i) {
+        motions[i].name = static_cast<std::string>(*takeNames[i]);
         FbxTakeInfo* currentTakeInfo = fbxScene->GetTakeInfo(*takeNames[i]);
         if (currentTakeInfo) {
-            mStart = currentTakeInfo->mLocalTimeSpan.GetStart();
-            mStop = currentTakeInfo->mLocalTimeSpan.GetStop();
-            isTakeExist = true;
-            break;
+            //モーション時間を計算し取得する
+            calculateMotionTime(motions[i], motionsTime[i], fbxScene, currentTakeInfo);
         }
     }
-
-    //テイクが確認できなかったらアニメーション無し
-    if (!isTakeExist) {
-        mStart = 0;
-        mStop = 0;
-    }
-
-    //時間モードから単位時間を算出
-    FbxGlobalSettings& globalSettings = fbxScene->GetGlobalSettings();
-    FbxTime::EMode timeMode = globalSettings.GetTimeMode();
-    mPeriod.SetTime(0, 0, 0, 1, 0, timeMode);
-
-    mStartFrame = static_cast<int>(mStart.Get() / mPeriod.Get());
-    mStopFrame = static_cast<int>(mStop.Get() / mPeriod.Get());
-
-    //1フレームの時間を算出
-    FbxTime framePerSecTime;
-    framePerSecTime.SetTime(0, 0, 1, 0, 0, timeMode);
-    mFramePerSec = static_cast<int>(framePerSecTime.Get() / mPeriod.Get());
 
     //FbxArrayを削除する
     FbxArrayDelete(takeNames);
 }
 
-int FbxAnimationTime::getStopFrame() const {
-    return mStopFrame;
-}
+void FbxAnimationTime::calculateMotionTime(
+    Motion& motion,
+    FbxMotionTime& motionTime,
+    FbxScene* fbxScene,
+    const FbxTakeInfo* fbxTakeInfo
+) {
+    motionTime.start = fbxTakeInfo->mLocalTimeSpan.GetStart();
+    motionTime.stop = fbxTakeInfo->mLocalTimeSpan.GetStop();
 
-FbxTime FbxAnimationTime::getTime(int frame) const {
-    return mStart + mPeriod * frame;
+    //時間モードから単位時間を算出
+    FbxGlobalSettings& globalSettings = fbxScene->GetGlobalSettings();
+    FbxTime::EMode timeMode = globalSettings.GetTimeMode();
+    motionTime.period.SetTime(0, 0, 0, 1, 0, timeMode);
+
+    motionTime.startFrame = static_cast<int>(motionTime.start.Get() / motionTime.period.Get());
+    motionTime.stopFrame = static_cast<int>(motionTime.stop.Get() / motionTime.period.Get());
+
+    //1フレームの時間を算出
+    FbxTime framePerSecTime;
+    framePerSecTime.SetTime(0, 0, 1, 0, 0, timeMode);
+    motionTime.framePerSec = static_cast<float>(framePerSecTime.Get() / motionTime.period.Get());
+
+    //モーションのフレーム数を設定
+    motion.numFrame = motionTime.stopFrame - motionTime.startFrame;
 }

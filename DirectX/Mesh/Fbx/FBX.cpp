@@ -1,8 +1,7 @@
 ﻿#include "FBX.h"
-#include "FbxBoneParser.h"
-#include "FbxBoneWeightParser.h"
 #include "FbxMaterialParser.h"
 #include "FbxMeshParser.h"
+#include "FbxMotionParser.h"
 #include "../Material.h"
 #include "../../DebugLayer/Debug.h"
 #include "../../Utility/FileUtil.h"
@@ -10,8 +9,7 @@
 FBX::FBX()
     : mMeshParser(std::make_unique<FbxMeshParser>())
     , mMaterialParser(std::make_unique<FbxMaterialParser>())
-    , mBoneParser(std::make_unique<FbxBoneParser>())
-    , mBoneWeightParser(std::make_unique<FbxBoneWeightParser>())
+    , mMotionParser(std::make_unique<FbxMotionParser>())
 {
 }
 
@@ -22,6 +20,7 @@ void FBX::parse(
     std::vector<MeshVertices>& meshesVertices,
     std::vector<Indices>& meshesIndices,
     std::vector<Material>& materials,
+    std::vector<Motion>& motions,
     std::vector<Bone>& bones
 ) {
     //マネージャーを生成
@@ -55,13 +54,12 @@ void FBX::parse(
         meshesVertices,
         meshesIndices,
         materials,
-        bones,
         scene,
         filePath
     );
 
-    //ボーンの読み込み
-    mBoneParser->parse(meshesVertices, bones, scene);
+    //モーション読み込み
+    mMotionParser->parse(meshesVertices, motions, bones, scene, mFbxMeshes);
 
     //マネージャー解放
     manager->Destroy();
@@ -71,7 +69,6 @@ void FBX::createMeshes(
     std::vector<MeshVertices>& meshesVertices,
     std::vector<Indices>& meshesIndices,
     std::vector<Material>& materials,
-    std::vector<Bone>& bones,
     const FbxScene* fbxScene,
     const std::string& filePath
 ) {
@@ -82,18 +79,20 @@ void FBX::createMeshes(
     meshesVertices.resize(numMeshes);
     meshesIndices.resize(numMeshes);
     materials.resize(numMeshes);
+    mFbxMeshes.resize(numMeshes);
 
     //ファイルパスからディレクトリパスを抜き出す
     auto directoryPath = FileUtil::getDirectryFromFilePath(filePath);
 
     //FbxMeshの数だけメッシュを作成する
-    for (size_t i = 0; i < numMeshes; ++i) {
+    for (int i = 0; i < numMeshes; ++i) {
         auto mesh = fbxScene->GetSrcObject<FbxMesh>(i);
+        mFbxMeshes[i] = mesh;
+
         createMesh(
             meshesVertices[i],
             meshesIndices[i],
             materials[i],
-            bones,
             mesh,
             directoryPath
         );
@@ -104,7 +103,6 @@ void FBX::createMesh(
     MeshVertices& meshVertices,
     Indices& indices,
     Material& material,
-    std::vector<Bone>& bones,
     FbxMesh* fbxMesh,
     const std::string& directoryPath
 ) {
@@ -112,6 +110,4 @@ void FBX::createMesh(
     mMeshParser->parse(meshVertices, indices, fbxMesh);
     //マテリアルの読み込み
     mMaterialParser->parse(material, fbxMesh, directoryPath);
-    //ボーンウェイトの読み込み
-    mBoneWeightParser->parse(meshVertices, fbxMesh);
 }

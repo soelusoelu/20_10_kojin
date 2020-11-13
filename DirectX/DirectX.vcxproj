@@ -186,6 +186,8 @@
     <ClCompile Include="DebugLayer\ImGuiInspector.cpp" />
     <ClCompile Include="DebugLayer\ImGuiWrapper.cpp" />
     <ClCompile Include="Component\Other\GameObjectSaveAndLoader.cpp" />
+    <ClCompile Include="Mesh\Fbx\FbxUtility.cpp" />
+    <ClCompile Include="Mesh\Fbx\FbxMotionParser.cpp" />
     <ClCompile Include="Imgui\imgui.cpp" />
     <ClCompile Include="Imgui\imgui_demo.cpp" />
     <ClCompile Include="Imgui\imgui_draw.cpp" />
@@ -368,6 +370,8 @@
     <ClInclude Include="DebugLayer\ImGuiInspector.h" />
     <ClInclude Include="DebugLayer\ImGuiWrapper.h" />
     <ClInclude Include="Component\Other\GameObjectSaveAndLoader.h" />
+    <ClInclude Include="Mesh\Fbx\FbxUtility.h" />
+    <ClInclude Include="Mesh\Fbx\FbxMotionParser.h" />
     <ClInclude Include="Imgui\imconfig.h" />
     <ClInclude Include="Imgui\imgui.h" />
     <ClInclude Include="Imgui\imgui_impl_dx11.h" />
@@ -382,7 +386,9 @@
     <ClInclude Include="Mesh\Fbx\FbxBoneWeightParser.h" />
     <ClInclude Include="Mesh\Fbx\FbxMeshParser.h" />
     <ClInclude Include="Mesh\Fbx\FbxMaterialParser.h" />
+    <ClInclude Include="Mesh\Fbx\FbxMotionTime.h" />
     <ClInclude Include="Mesh\IMesh.h" />
+    <ClInclude Include="Mesh\Motion.h" />
     <ClInclude Include="Mesh\Vertex.h" />
     <ClInclude Include="Component\Sample\RayMouse.h" />
     <ClInclude Include="Collision\Ray.h" />

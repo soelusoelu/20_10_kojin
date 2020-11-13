@@ -2,8 +2,8 @@
 
 #include "Bone.h"
 #include "Material.h"
+#include "Motion.h"
 #include "Vertex.h"
-#include "../Math/Math.h"
 #include <string>
 #include <vector>
 
@@ -20,6 +20,7 @@ public:
         std::vector<MeshVertices>& meshesVertices,
         std::vector<Indices>& meshesIndices,
         std::vector<Material>& materials,
+        std::vector<Motion>& motions,
         std::vector<Bone>& bones
     ) = 0;
 };

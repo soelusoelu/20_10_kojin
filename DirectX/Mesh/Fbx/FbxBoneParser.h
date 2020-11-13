@@ -1,15 +1,16 @@
 ﻿#pragma once
 
+#include "FbxMotionTime.h"
 #include "../Bone.h"
 #include "../IMeshLoader.h"
+#include "../Motion.h"
 #include "../../Math/Math.h"
 #include <fbxsdk.h>
-#include <memory>
 #include <string>
 #include <unordered_map>
 #include <vector>
 
-class FbxAnimationTime;
+class FbxBoneWeightParser;
 
 //FBXボーン解析クラス
 class FbxBoneParser {
@@ -21,8 +22,13 @@ public:
     void parse(
         std::vector<MeshVertices>& meshesVertices,
         std::vector<Bone>& bones,
-        FbxScene* fbxScene
+        const std::vector<FbxMesh*>& fbxMeshes
     );
+
+    //FbxClusterを取得する
+    FbxCluster* getFbxCluster(
+        int index
+    ) const;
 
 private:
     //ボーン読み込み
@@ -31,16 +37,11 @@ private:
         FbxSkin* fbxSkin
     );
 
-    //キーフレーム読み込み
-    void loadKeyFrames(
+    //ボーンのパラメータを設定する
+    void setBoneParameter(
         Bone& bone,
         FbxCluster* fbxCluster
     );
-
-    //FbxMatirxからMatrix4へ変換する
-    Matrix4 substitutionMatrix(
-        const FbxMatrix& src
-    ) const;
 
     //ボーンの親子付け
     void setParentChildren(
@@ -55,7 +56,10 @@ private:
     );
 
 private:
-    std::unique_ptr<FbxAnimationTime> mAnimationTime;
+    //ウェイト読み込み
+    std::unique_ptr<FbxBoneWeightParser> mBoneWeightParser;
     //ボーンの名前から検索できるように
     std::unordered_map<std::string, Bone*> mBoneMap;
+    //クラスター配列
+    std::vector<FbxCluster*> mFbxClusterArray;
 };

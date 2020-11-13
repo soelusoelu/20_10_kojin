@@ -198,6 +198,8 @@
     <ClCompile Include="Component\Other\GameObjectSaveAndLoader.cpp" />
     <ClCompile Include="Component\Other\SaveThis.cpp" />
     <ClCompile Include="Mesh\Fbx\FbxBoneWeightParser.cpp" />
+    <ClCompile Include="Mesh\Fbx\FbxMotionParser.cpp" />
+    <ClCompile Include="Mesh\Fbx\FbxUtility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component\ComponentManager.h" />
@@ -431,5 +433,9 @@
     <ClInclude Include="Component\Other\GameObjectSaveAndLoader.h" />
     <ClInclude Include="Component\Other\SaveThis.h" />
     <ClInclude Include="Mesh\Fbx\FbxBoneWeightParser.h" />
+    <ClInclude Include="Mesh\Motion.h" />
+    <ClInclude Include="Mesh\Fbx\FbxMotionParser.h" />
+    <ClInclude Include="Mesh\Fbx\FbxMotionTime.h" />
+    <ClInclude Include="Mesh\Fbx\FbxUtility.h" />
   </ItemGroup>
 </Project>

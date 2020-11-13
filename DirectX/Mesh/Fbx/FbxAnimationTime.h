@@ -1,6 +1,9 @@
 ﻿#pragma once
 
+#include "FbxMotionTime.h"
+#include "../Motion.h"
 #include <fbxsdk.h>
+#include <vector>
 
 //FBXアニメーションの時間を扱うクラス
 class FbxAnimationTime {
@@ -9,23 +12,17 @@ public:
     ~FbxAnimationTime();
 
     //解析
-    void parse(FbxScene* fbxScene);
-    //アニメーション終了フレームを取得する
-    int getStopFrame() const;
-    //指定フレームの時間を取得する
-    FbxTime getTime(int frame) const;
+    void parse(
+        std::vector<Motion>& motions,
+        std::vector<FbxMotionTime>& motionsTime,
+        FbxScene* fbxScene
+    );
 
 private:
-    //単位時間
-    FbxTime mPeriod;
-    //スタート時間
-    FbxTime mStart;
-    //ストップ時間
-    FbxTime mStop;
-    //スタートフレーム
-    int mStartFrame;
-    //ストップフレーム
-    int mStopFrame;
-    //1秒あたりのフレーム数
-    int mFramePerSec;
+    void calculateMotionTime(
+        Motion& motion,
+        FbxMotionTime& motionTime,
+        FbxScene* fbxScene,
+        const FbxTakeInfo* fbxTakeInfo
+    );
 };
