@@ -39,7 +39,7 @@ void FbxBoneWeightParser::parse(
     }
 
     //ウェイト正規化
-    //normalizeWeight(meshVertices);
+    normalizeWeight(meshVertices);
 }
 
 void FbxBoneWeightParser::addWeight(
@@ -47,32 +47,24 @@ void FbxBoneWeightParser::addWeight(
     int boneIndex,
     float weight
 ) {
-    //ウェイトを格納できる場所を探す
-    int pos;
-    if (!getInsertPos(vertex, pos)) {
-        return;
-    }
-
-    //頂点情報にウェイトを追加
-    vertex.index[pos] = boneIndex;
-    vertex.weight[pos] = weight;
-}
-
-bool FbxBoneWeightParser::getInsertPos(
-    const MeshVertex& vertex,
-    int& pos
-) {
+    int insertPos = 0;
+    //ウェイトの格納位置を探す
     for (int i = 0; i < MAX_INFLUENCE; ++i) {
-        //ウェイトが0なら格納できる
-        if (Math::nearZero(vertex.weight[i])) {
-            //ウェイトを格納できる位置を記録して終了
-            pos = i;
-            return true;
+        if (weight > vertex.weight[i]) {
+            insertPos = i;
+            break;
         }
     }
-
-    //格納できる場所がない
-    return false;
+    //ウェイトが大きい順に格納していく
+    //追加ウェイトより小さいウェイトを一つ右にずらしていく
+    for (int i = insertPos; i < MAX_INFLUENCE; ++i) {
+        auto tempW = vertex.weight[i];
+        auto tempI = vertex.index[i];
+        vertex.weight[i] = weight;
+        vertex.index[i] = boneIndex;
+        weight = tempW;
+        boneIndex = tempI;
+    }
 }
 
 void FbxBoneWeightParser::normalizeWeight(

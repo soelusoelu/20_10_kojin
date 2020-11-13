@@ -18,6 +18,7 @@ Title::~Title() = default;
 void Title::start() {
     mScene = getComponent<Scene>();
     GameObjectCreater::create("SkinMesh");
+    //GameObjectCreater::create("SkinMeshPole");
 }
 
 void Title::update() {

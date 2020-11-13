@@ -1,13 +1,13 @@
 {
   "properties": {
     "position": [ 0.0, 0.0, -5.0 ],
-    "rotation": [ 0.0, 0.0, 0.0 ]
+    "rotation": [ -90.0, 180.0, 0.0 ]
   },
   "components": [
     {
       "type": "SkinMeshComponent",
       "properties": {
-        "fileName": "hand_tex.fbx",
+        "fileName": "sophia_animated_003_idling_fbx\\rp_sophia_animated_003_idling.fbx",
         "shaderName": "SkinMesh.hlsl"
       }
     }

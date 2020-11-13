@@ -26,12 +26,6 @@ private:
         float weight
     );
 
-    //ウェイトを格納できる位置を取得する
-    bool getInsertPos(
-        const MeshVertex& vertex,
-        int& pos
-    );
-
     //頂点ウェイトを正規化する
     void normalizeWeight(
         MeshVertices& meshVertice
