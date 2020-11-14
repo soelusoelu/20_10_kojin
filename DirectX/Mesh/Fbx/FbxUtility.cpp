@@ -10,3 +10,12 @@ Matrix4 FbxUtility::substitutionMatrix(const FbxMatrix& src) {
 
     return dst;
 }
+
+Vector3 FbxUtility::fbxDouble3ToVector3(const FbxDouble3& src) {
+    Vector3 dst;
+    dst.x = static_cast<float>(src[0]);
+    dst.y = static_cast<float>(src[1]);
+    dst.z = static_cast<float>(src[2]);
+
+    return dst;
+}

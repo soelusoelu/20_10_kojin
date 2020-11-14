@@ -21,6 +21,11 @@ void FbxMotionParser::parse(
     //アニメーション時間を取得する
     mAnimationTime->parse(motions, mMotionsTime, fbxScene);
 
+    //モーションがないなら終了
+    if (motions.empty()) {
+        return;
+    }
+
     //ボーンの読み込み
     mBoneParser->parse(meshesVertices, bones, fbxMeshes);
 

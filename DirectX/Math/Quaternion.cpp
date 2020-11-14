@@ -21,6 +21,10 @@ Quaternion::Quaternion(const Vector3& axis, float angle) {
     w = Math::cos(angle / 2.f);
 }
 
+Quaternion::Quaternion(const Vector3& euler) {
+    setEuler(euler);
+}
+
 void Quaternion::set(float inX, float inY, float inZ, float inW) {
     x = inX;
     y = inY;

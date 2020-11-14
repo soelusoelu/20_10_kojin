@@ -200,6 +200,8 @@
     <ClCompile Include="Mesh\Fbx\FbxBoneWeightParser.cpp" />
     <ClCompile Include="Mesh\Fbx\FbxMotionParser.cpp" />
     <ClCompile Include="Mesh\Fbx\FbxUtility.cpp" />
+    <ClCompile Include="Component\Camera\LookAtObject.cpp" />
+    <ClCompile Include="Component\Player\PlayerMove.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component\ComponentManager.h" />
@@ -437,5 +439,7 @@
     <ClInclude Include="Mesh\Fbx\FbxMotionParser.h" />
     <ClInclude Include="Mesh\Fbx\FbxMotionTime.h" />
     <ClInclude Include="Mesh\Fbx\FbxUtility.h" />
+    <ClInclude Include="Component\Camera\LookAtObject.h" />
+    <ClInclude Include="Component\Player\PlayerMove.h" />
   </ItemGroup>
 </Project>

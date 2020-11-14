@@ -9,4 +9,9 @@ namespace FbxUtility {
 Matrix4 substitutionMatrix(
     const FbxMatrix& src
 );
+
+//FbxDouble3からVector3へ変換する
+Vector3 fbxDouble3ToVector3(
+    const FbxDouble3& src
+);
 };

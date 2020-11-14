@@ -165,6 +165,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Component\Camera\LookAtObject.cpp" />
     <ClCompile Include="Component\CharacterOperation\CharacterCost.cpp" />
     <ClCompile Include="Component\CharacterOperation\CostRenderer.cpp" />
     <ClCompile Include="Component\CollideOperation\AABBSelector.cpp" />
@@ -178,6 +179,7 @@
     <ClCompile Include="Collision\AABB.cpp" />
     <ClCompile Include="Collision\Sphere.cpp" />
     <ClCompile Include="Collision\Circle.cpp" />
+    <ClCompile Include="Component\Player\PlayerMove.cpp" />
     <ClCompile Include="Component\Sample\RayMouse.cpp" />
     <ClCompile Include="Collision\Ray.cpp" />
     <ClCompile Include="Component\CharacterOperation\DragAndDropCharacter.cpp" />
@@ -351,6 +353,7 @@
     <ClCompile Include="Component\Sound\WaveformRenderSample.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Component\Camera\LookAtObject.h" />
     <ClInclude Include="Component\CharacterOperation\CharacterCost.h" />
     <ClInclude Include="Component\CharacterOperation\CharacterCreateInfo.h" />
     <ClInclude Include="Component\CharacterOperation\CostRenderer.h" />
@@ -367,6 +370,7 @@
     <ClInclude Include="Collision\Circle.h" />
     <ClInclude Include="Component\CharacterOperation\DragAndDropCharacter.h" />
     <ClInclude Include="Component\CollideOperation\MeshAdder.h" />
+    <ClInclude Include="Component\Player\PlayerMove.h" />
     <ClInclude Include="DebugLayer\ImGuiInspector.h" />
     <ClInclude Include="DebugLayer\ImGuiWrapper.h" />
     <ClInclude Include="Component\Other\GameObjectSaveAndLoader.h" />
