@@ -2,7 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <FxCompile Include="Shader\Texture.hlsl" />
-    <FxCompile Include="Shader\Mesh.hlsl" />
     <FxCompile Include="Shader\Deferred.hlsl" />
     <FxCompile Include="Shader\GBuffer.hlsl" />
     <FxCompile Include="Shader\PointLight.hlsl" />
@@ -10,10 +9,10 @@
     <FxCompile Include="Shader\Line2D.hlsl" />
     <FxCompile Include="Shader\Line3D.hlsl" />
     <FxCompile Include="Shader\SimpleMesh.hlsl" />
-    <FxCompile Include="Shader\MeshTexture.hlsl" />
     <FxCompile Include="Shader\NormalMap.hlsl" />
     <FxCompile Include="Shader\SkinMesh.hlsl" />
     <FxCompile Include="Shader\Point3D.hlsl" />
+    <FxCompile Include="Shader\Mesh.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component\ComponentManager.cpp" />

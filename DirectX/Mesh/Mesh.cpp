@@ -3,6 +3,7 @@
 #include "FBX/FBX.h"
 #include "../DebugLayer/Debug.h"
 #include "../DirectX/DirectXInclude.h"
+#include "../System/Texture/TextureFromMemory.h"
 #include "../Utility/FileUtil.h"
 #include <cassert>
 
@@ -88,6 +89,13 @@ void Mesh::createMesh(const std::string& filePath) {
 
     //メッシュを解析する
     mMesh->parse(filePath, mMeshesVertices, mMeshesIndices, mMaterials, mMotions, mBones);
+
+    //テクスチャがないマテリアルは白テクスチャを代替する
+    for (auto&& mat : mMaterials) {
+        if (!mat.texture) {
+            mat.texture = std::make_shared<TextureFromMemory>(1, 1);
+        }
+    }
 }
 
 void Mesh::createVertexBuffer(unsigned meshIndex) {

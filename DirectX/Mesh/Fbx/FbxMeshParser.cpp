@@ -54,6 +54,7 @@ void FbxMeshParser::parse(
         vertex.normal.x = static_cast<float>(-normalArray[i][0]);
         vertex.normal.y = static_cast<float>(normalArray[i][1]);
         vertex.normal.z = static_cast<float>(normalArray[i][2]);
+        vertex.normal = Vector3::transform(vertex.normal, mat);
 
         //UVは使用している場合のみ
         if (uvArray.Size() > 0) {

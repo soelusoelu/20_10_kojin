@@ -4,7 +4,7 @@
 #include <memory>
 #include <string>
 
-class TextureFromFile;
+class Texture;
 
 struct Material {
     Vector3 ambient; //アンビエント
@@ -15,8 +15,8 @@ struct Material {
     float transparency; //透明値
     float shininess;
     std::string materialName; //マテリアル名
-    std::shared_ptr<TextureFromFile> texture;
-    std::shared_ptr<TextureFromFile> normalMapTexture;
+    std::shared_ptr<Texture> texture;
+    std::shared_ptr<Texture> normalMapTexture;
 
     Material() :
         ambient(Vector3::zero),

@@ -1,5 +1,6 @@
 ﻿#include "FbxMaterialParser.h"
 #include "../../System/AssetsManager.h"
+#include "../../System/Texture/TextureFromFile.h"
 #include "../../Utility/FileUtil.h"
 
 FbxMaterialParser::FbxMaterialParser() = default;

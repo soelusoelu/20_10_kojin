@@ -6,7 +6,6 @@
 ConstantBufferManager::ConstantBufferManager() {
     mConstantBuffers.emplace("Texture.hlsl", BuffersSize{ sizeof(TextureConstantBuffer) });
     mConstantBuffers.emplace("Mesh.hlsl", BuffersSize{ sizeof(TransparentConstantBuffer), sizeof(MaterialConstantBuffer) });
-    mConstantBuffers.emplace("MeshTexture.hlsl", BuffersSize{ sizeof(TransparentConstantBuffer), sizeof(MaterialConstantBuffer) });
     mConstantBuffers.emplace("NormalMap.hlsl", BuffersSize{ sizeof(TransparentConstantBuffer), sizeof(MaterialConstantBuffer) });
     mConstantBuffers.emplace("SkinMesh.hlsl", BuffersSize{ sizeof(SkinMeshConstantBuffer), sizeof(MaterialConstantBuffer) });
     mConstantBuffers.emplace("GBuffer.hlsl", BuffersSize{ sizeof(MeshConstantBuffer), sizeof(MaterialConstantBuffer) });

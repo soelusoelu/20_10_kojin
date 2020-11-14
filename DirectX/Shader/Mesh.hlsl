@@ -1,3 +1,6 @@
+Texture2D tex : register(t0);
+SamplerState samplerState : register(s0);
+
 cbuffer global_0 : register(b0)
 {
     matrix world : packoffset(c0); //ÉèÅ[ÉãÉhçsóÒ
@@ -17,16 +20,18 @@ struct VS_OUTPUT
 {
     float4 Pos : SV_POSITION;
     float3 Normal : NORMAL;
+    float2 UV : TEXCOORD0;
     float3 WorldPos : POSITION;
 };
 
-VS_OUTPUT VS(float3 pos : POSITION, float3 normal : NORMAL)
+VS_OUTPUT VS(float4 pos : POSITION, float3 normal : NORMAL, float2 uv : TEXCOORD)
 {
     VS_OUTPUT output = (VS_OUTPUT) 0;
-    output.Pos = mul(wvp, float4(pos, 1));
+    output.Pos = mul(wvp, pos);
     float3 norm = mul(world, float4(normal, 0)).xyz;
     output.Normal = normalize(norm);
-    output.WorldPos = mul(world, float4(pos, 1)).xyz;
+    output.UV = uv;
+    output.WorldPos = mul(world, pos).xyz;
 
     return output;
 }
@@ -41,6 +46,9 @@ float4 PS(VS_OUTPUT input) : SV_Target
     float spec = pow(saturate(dot(Reflect, viewDir)), 4);
 
     float3 color = saturate(ambient + diffuse.rgb * NL + specular * spec);
+    float4 texColor = tex.Sample(samplerState, input.UV);
 
-    return float4(color, diffuse.a);
+    color *= texColor.rgb;
+
+    return float4(color, texColor.a * diffuse.a);
 }

@@ -9,7 +9,7 @@
 #include "../../System/AssetsManager.h"
 #include "../../System/Shader/ConstantBuffers.h"
 #include "../../System/Shader/Shader.h"
-#include "../../System/Texture/TextureFromFile.h"
+#include "../../System/Texture/Texture.h"
 #include "../../Transform/Transform3D.h"
 #include "../../Utility/LevelLoader.h"
 
@@ -101,10 +101,8 @@ void MeshComponent::draw(const Camera& camera, const DirectionalLight& dirLight)
         //データ転送
         mShader->transferData(&matcb, sizeof(matcb), 1);
 
-        //テクスチャが有るなら登録
-        if (mat.texture) {
-            mat.texture->setTextureInfo();
-        }
+        //テクスチャ登録
+        mat.texture->setTextureInfo();
 
         //描画
         mMesh->draw(i);
@@ -119,10 +117,6 @@ void MeshComponent::createMesh(const std::string& fileName, const std::string& d
 
 void MeshComponent::setDefaultShader() {
     std::string shader = "Mesh.hlsl";
-    //テクスチャが有るなら
-    if (mMesh->getMaterial(0).texture) {
-        shader = "MeshTexture.hlsl";
-    }
     //ノーマルマップが有るなら
     if (mMesh->getMaterial(0).normalMapTexture) {
         shader = "NormalMap.hlsl";
