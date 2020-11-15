@@ -52,7 +52,7 @@ void MeshComponent::loadProperties(const rapidjson::Value& inObj) {
     //シェーダー名が取得できたら読み込む
     if (JsonHelper::getString(inObj, "shaderName", &shader)) {
         //シェーダーを生成する
-        mShader = std::make_unique<Shader>(shader);
+        mShader = AssetsManager::instance().createShader(shader);
     } else {
         //できなかったらデフォルトを使う
         setDefaultShader();
@@ -122,7 +122,7 @@ void MeshComponent::setDefaultShader() {
         shader = "NormalMap.hlsl";
     }
     //シェーダーを生成する
-    mShader = std::make_unique<Shader>(shader);
+    mShader = AssetsManager::instance().createShader(shader);
 }
 
 void MeshComponent::destroy() {

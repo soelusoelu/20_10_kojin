@@ -62,7 +62,7 @@ private:
 
 protected:
     std::shared_ptr<Mesh> mMesh;
-    std::unique_ptr<Shader> mShader;
+    std::shared_ptr<Shader> mShader;
     std::string mFileName;
     std::string mDirectoryPath;
     State mState;

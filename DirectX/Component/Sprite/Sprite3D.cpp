@@ -37,7 +37,7 @@ void Sprite3D::awake() {
     }
 
     mTexture = AssetsManager::instance().createTexture(mFileName);
-    mShader = std::make_unique<Shader>("Texture.hlsl");
+    mShader = AssetsManager::instance().createShader("Texture.hlsl");
 
     //テクスチャのアスペクト比を計算
     const auto& texSize = mTexture->getTextureSize();

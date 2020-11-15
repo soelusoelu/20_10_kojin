@@ -41,7 +41,7 @@ private:
     void drawLine(const Line2DParam& param, const Matrix4& proj) const;
 
 private:
-    std::unique_ptr<Shader> mShader;
+    std::shared_ptr<Shader> mShader;
     std::list<Line2DParam> mLines;
     std::unique_ptr<Transform2D> mTransform;
 };

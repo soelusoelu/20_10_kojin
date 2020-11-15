@@ -1,5 +1,6 @@
 ﻿#include "PointRenderer.h"
 #include "../DirectX/DirectXInclude.h"
+#include "../System/AssetsManager.h"
 #include "../System/Shader/ConstantBuffers.h"
 #include "../System/Shader/Shader.h"
 #include "../Transform/Transform3D.h"
@@ -24,7 +25,7 @@ void PointRenderer::draw(const Matrix4& viewProj) const {
 
 void PointRenderer::initialize() {
     //シェーダーを作成する
-    mShader = std::make_unique<Shader>("Point3D.hlsl");
+    mShader = AssetsManager::instance().createShader("Point3D.hlsl");
 }
 
 void PointRenderer::clear() {

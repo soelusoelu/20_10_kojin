@@ -41,7 +41,7 @@ private:
     void drawLine(const Line3DParam& param, const Matrix4& proj) const;
 
 private:
-    std::unique_ptr<Shader> mShader;
+    std::shared_ptr<Shader> mShader;
     std::list<Line3DParam> mLines;
     std::unique_ptr<Transform3D> mTransform;
 };

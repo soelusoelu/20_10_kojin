@@ -33,6 +33,9 @@ public:
     void setTextureInfo(unsigned start = 0, unsigned numSamplers = 1) const;
 
 private:
+    Texture(const Texture&) = delete;
+    Texture& operator=(const Texture&) = delete;
+
     void createVertexBuffer();
     void createIndexBuffer();
     void createSampler();

@@ -1,5 +1,6 @@
 ﻿#include "LineRenderer3D.h"
 #include "../../DirectX/DirectXInclude.h"
+#include "../../System/AssetsManager.h"
 #include "../../System/Shader/ConstantBuffers.h"
 #include "../../System/Shader/Shader.h"
 #include "../../Transform/Transform3D.h"
@@ -34,7 +35,7 @@ const void* LineRenderer3D::getVertexData() const {
 
 void LineRenderer3D::createShader() {
     //シェーダー作成
-    mShader = std::make_unique<Shader>("Line3D.hlsl");
+    mShader = AssetsManager::instance().createShader("Line3D.hlsl");
 }
 
 void LineRenderer3D::drawLines(const Matrix4& proj) const {

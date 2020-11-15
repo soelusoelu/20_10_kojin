@@ -16,7 +16,7 @@ class Shader {
     using BufferPtrArray = std::vector<BufferPtr>;
 
 public:
-    Shader(const std::string& fileName, const std::string& directoryPath = "Shader\\");
+    Shader(const std::string& fileName, const std::string& directoryPath);
     ~Shader();
 
     //プログラムの終わりの終了処理
@@ -41,6 +41,9 @@ public:
     const std::string& getShaderName() const;
 
 private:
+    Shader(const Shader&) = delete;
+    Shader& operator=(const Shader&) = delete;
+
     //シェーダの生成
     void createVertexShader(const std::string& fileName);
     void createPixelShader(const std::string& fileName);

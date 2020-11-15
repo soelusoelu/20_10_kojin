@@ -6,6 +6,7 @@
 
 class Mesh;
 class TextureFromFile;
+class Shader;
 
 class AssetsManager {
 private:
@@ -28,6 +29,9 @@ public:
     //ファイルパスからメッシュを取得する
     std::shared_ptr<Mesh> createMesh(const std::string& fileName, const std::string& directoryPath = "Assets\\Model\\");
 
+    //ファイルパスからシェーダーを取得する
+    std::shared_ptr<Shader> createShader(const std::string& fileName, const std::string& directoryPath = "Shader\\");
+
 private:
     AssetsManager(const AssetsManager&) = delete;
     AssetsManager& operator=(const AssetsManager&) = delete;
@@ -42,4 +46,5 @@ private:
 
     std::unordered_map<std::string, std::shared_ptr<TextureFromFile>> mTextures;
     std::unordered_map<std::string, std::shared_ptr<Mesh>> mMeshes;
+    std::unordered_map<std::string, std::shared_ptr<Shader>> mShaders;
 };

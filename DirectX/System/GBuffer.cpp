@@ -1,4 +1,5 @@
 ﻿#include "GBuffer.h"
+#include "AssetsManager.h"
 #include "Window.h"
 #include "Shader/ConstantBuffers.h"
 #include "Shader/Shader.h"
@@ -154,7 +155,7 @@ void GBuffer::createSampler() {
 
 void GBuffer::createShader() {
     //シェーダー生成
-    mShader = std::make_unique<Shader>("Deferred.hlsl");
+    mShader = AssetsManager::instance().createShader("Deferred.hlsl");
 }
 
 void GBuffer::createVertexBuffer() {

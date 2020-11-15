@@ -1,6 +1,7 @@
 ﻿#include "AssetsManager.h"
 #include "../Mesh/Mesh.h"
 #include "../System/GlobalFunction.h"
+#include "../System/Shader/Shader.h"
 #include "../System/Texture/TextureFromFile.h"
 
 AssetsManager::AssetsManager() = default;
@@ -61,6 +62,24 @@ std::shared_ptr<Mesh> AssetsManager::createMesh(const std::string& fileName, con
 
     //読み込んだメッシュを返す
     return mMeshes[directoryPath + fileName];
+}
+
+std::shared_ptr<Shader> AssetsManager::createShader(const std::string& fileName, const std::string& directoryPath) {
+    std::shared_ptr<Shader> shader = nullptr;
+
+    //ディレクトパスとファイル名を結合する
+    auto filePath = directoryPath + fileName;
+
+    //読み込み済みなら
+    if (mShaders.find(filePath) != mShaders.end()) {
+        shader = mShaders[filePath];
+    } else {
+        //シェーダーを生成し格納
+        shader = std::make_shared<Shader>(fileName, directoryPath);
+        mShaders.emplace(filePath, shader);
+    }
+
+    return shader;
 }
 
 bool AssetsManager::loadedTexture(const std::string& filePath) const {
