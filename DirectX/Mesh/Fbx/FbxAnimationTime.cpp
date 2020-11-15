@@ -4,41 +4,24 @@ FbxAnimationTime::FbxAnimationTime() = default;
 
 FbxAnimationTime::~FbxAnimationTime() = default;
 
-void FbxAnimationTime::parse(
-    std::vector<Motion>& motions,
-    std::vector<FbxMotionTime>& motionsTime,
-    FbxScene* fbxScene
-) {
-    //テイクから基準時間を取得
-    FbxArray<FbxString*> takeNames;
-    fbxScene->FillAnimStackNameArray(takeNames);
+FbxMotionTime FbxAnimationTime::getMotionTime(
+    FbxScene * fbxScene,
+    const FbxAnimStack * fbxAnimStack
+) const {
+    FbxMotionTime motionTime;
 
-    //モーション数を設定する
-    motions.resize(takeNames.GetCount());
-    motionsTime.resize(motions.size());
+    getMotionTime(motionTime, fbxScene, fbxAnimStack);
 
-    //モーションの数だけ時間を取得する
-    for (int i = 0; i < motions.size(); ++i) {
-        motions[i].name = static_cast<std::string>(*takeNames[i]);
-        FbxTakeInfo* currentTakeInfo = fbxScene->GetTakeInfo(*takeNames[i]);
-        if (currentTakeInfo) {
-            //モーション時間を計算し取得する
-            calculateMotionTime(motions[i], motionsTime[i], fbxScene, currentTakeInfo);
-        }
-    }
-
-    //FbxArrayを削除する
-    FbxArrayDelete(takeNames);
+    return motionTime;
 }
 
-void FbxAnimationTime::calculateMotionTime(
-    Motion& motion,
+void FbxAnimationTime::getMotionTime(
     FbxMotionTime& motionTime,
     FbxScene* fbxScene,
-    const FbxTakeInfo* fbxTakeInfo
-) {
-    motionTime.start = fbxTakeInfo->mLocalTimeSpan.GetStart();
-    motionTime.stop = fbxTakeInfo->mLocalTimeSpan.GetStop();
+    const FbxAnimStack* fbxAnimStack
+) const {
+    motionTime.start = fbxAnimStack->LocalStart.Get();
+    motionTime.stop = fbxAnimStack->LocalStop.Get();
 
     //時間モードから単位時間を算出
     FbxGlobalSettings& globalSettings = fbxScene->GetGlobalSettings();
@@ -52,7 +35,4 @@ void FbxAnimationTime::calculateMotionTime(
     FbxTime framePerSecTime;
     framePerSecTime.SetTime(0, 0, 1, 0, 0, timeMode);
     motionTime.framePerSec = static_cast<float>(framePerSecTime.Get() / motionTime.period.Get());
-
-    //モーションのフレーム数を設定
-    motion.numFrame = motionTime.stopFrame - motionTime.startFrame;
 }

@@ -18,18 +18,19 @@ void FbxMotionParser::parse(
     FbxScene* fbxScene,
     const std::vector<FbxMesh*>& fbxMeshes
 ) {
-    //アニメーション時間を取得する
-    mAnimationTime->parse(motions, mMotionsTime, fbxScene);
-
-    //モーションがないなら終了
-    if (motions.empty()) {
+    //アニメーション数を取得する
+    auto numAnim = fbxScene->GetSrcObjectCount<FbxAnimStack>();
+    //アニメーションがないなら終了
+    if (numAnim <= 0) {
         return;
     }
+
+    //モーション数を設定する
+    motions.resize(numAnim);
 
     //ボーンの読み込み
     mBoneParser->parse(meshesVertices, bones, fbxMeshes);
 
-    //モーション数 * ボーン数だけキーフレームを読み込む
     for (int i = 0; i < motions.size(); ++i) {
         //アニメーションを取得する
         FbxAnimStack* anim = fbxScene->GetSrcObject<FbxAnimStack>(i);
@@ -37,13 +38,29 @@ void FbxMotionParser::parse(
         fbxScene->SetCurrentAnimationStack(anim);
 
         auto& motion = motions[i];
-        auto& motionTime = mMotionsTime[i];
-        //ボーン数分拡張しとく
-        motion.frameMat.resize(bones.size());
-        for (int j = 0; j < bones.size(); ++j) {
-            //キーフレーム読み込み
-            loadKeyFrames(motion, motionTime, mBoneParser->getFbxCluster(j)->GetLink(), j);
-        }
+        const auto& motionTime = mAnimationTime->getMotionTime(fbxScene, anim);
+
+        //モーションの名前を設定
+        motion.name = anim->GetName();
+
+        //モーションのフレーム数を設定
+        motion.numFrame = motionTime.stopFrame - motionTime.startFrame;
+
+        //キーフレームの読み込み
+        loadAllKeyFrames(motion, motionTime, bones.size());
+    }
+}
+
+void FbxMotionParser::loadAllKeyFrames(
+    Motion& motion,
+    const FbxMotionTime& motionTime,
+    unsigned boneCount
+) {
+    //ボーン数分拡張しとく
+    motion.frameMat.resize(boneCount);
+    for (unsigned j = 0; j < boneCount; ++j) {
+        //キーフレーム読み込み
+        loadKeyFrames(motion, motionTime, mBoneParser->getFbxCluster(j)->GetLink(), j);
     }
 }
 

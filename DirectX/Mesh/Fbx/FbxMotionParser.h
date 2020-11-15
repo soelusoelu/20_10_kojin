@@ -29,6 +29,13 @@ private:
     FbxMotionParser(const FbxMotionParser&) = delete;
     FbxMotionParser& operator=(const FbxMotionParser&) = delete;
 
+    //全キーフレームを読み込む
+    void loadAllKeyFrames(
+        Motion& motion,
+        const FbxMotionTime& motionTime,
+        unsigned boneCount
+    );
+
     //キーフレーム読み込み
     void loadKeyFrames(
         Motion& motion,
@@ -40,5 +47,4 @@ private:
 private:
     std::unique_ptr<FbxAnimationTime> mAnimationTime;
     std::unique_ptr<FbxBoneParser> mBoneParser;
-    std::vector<FbxMotionTime> mMotionsTime;
 };
