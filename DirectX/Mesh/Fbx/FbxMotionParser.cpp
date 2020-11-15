@@ -31,6 +31,11 @@ void FbxMotionParser::parse(
 
     //モーション数 * ボーン数だけキーフレームを読み込む
     for (int i = 0; i < motions.size(); ++i) {
+        //アニメーションを取得する
+        FbxAnimStack* anim = fbxScene->GetSrcObject<FbxAnimStack>(i);
+        //シーン切り替え
+        fbxScene->SetCurrentAnimationStack(anim);
+
         auto& motion = motions[i];
         auto& motionTime = mMotionsTime[i];
         //ボーン数分拡張しとく
