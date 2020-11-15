@@ -23,9 +23,9 @@ void Title::start() {
 }
 
 void Title::update() {
-    if (Input::keyboard().getEnter()) {
-        mScene->next("GamePlay");
-    }
+    //if (Input::keyboard().getEnter()) {
+    //    mScene->next("GamePlay");
+    //}
 
     Debug::renderLine(Vector3::left * 100.f, Vector3::right * 100.f, ColorPalette::red);
     Debug::renderLine(Vector3::down * 100.f, Vector3::up * 100.f, ColorPalette::green);

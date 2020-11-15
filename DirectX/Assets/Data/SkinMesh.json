@@ -6,7 +6,7 @@
     {
       "type": "SkinMeshComponent",
       "properties": {
-        "fileName": "Practice\\motion.fbx",
+        "fileName": "Practice\\MyModel2.fbx",
         "shaderName": "SkinMesh.hlsl"
       }
     }

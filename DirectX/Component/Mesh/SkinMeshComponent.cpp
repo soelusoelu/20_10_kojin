@@ -2,6 +2,7 @@
 #include "../Camera/Camera.h"
 #include "../Light/DirectionalLight.h"
 #include "../../Device/Time.h"
+#include "../../Input/Input.h"
 #include "../../Mesh/Material.h"
 #include "../../Mesh/Mesh.h"
 #include "../../System/Shader/ConstantBuffers.h"
@@ -19,6 +20,10 @@ SkinMeshComponent::SkinMeshComponent(GameObject& gameObject)
 SkinMeshComponent::~SkinMeshComponent() = default;
 
 void SkinMeshComponent::update() {
+    if (Input::keyboard().getKeyDown(KeyCode::Space)) {
+        mCurrentMotionNo = ++mCurrentMotionNo % mMesh->getMotionCount();
+        mCurrentFrame = 0;
+    }
     auto& motion = mMesh->getMotion(mCurrentMotionNo);
     ++mCurrentFrame;
     if (mCurrentFrame >= motion.numFrame) {
