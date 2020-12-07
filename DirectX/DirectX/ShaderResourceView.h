@@ -8,9 +8,8 @@ class Texture2D;
 
 class ShaderResourceView {
 public:
-    ShaderResourceView(const Texture2D& texture2D);
-    ShaderResourceView(const Texture2D& texture2D, const ShaderResourceViewDesc& desc);
-    ShaderResourceView(ID3D11ShaderResourceView* view);
+    ShaderResourceView(const Texture2D& texture2D, const ShaderResourceViewDesc* desc = nullptr);
+    ShaderResourceView(Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> view);
     ~ShaderResourceView();
     void setVSShaderResources(unsigned start = 0, unsigned numViews = 1) const;
     void setPSShaderResources(unsigned start = 0, unsigned numViews = 1) const;
@@ -23,5 +22,5 @@ private:
     ShaderResourceView& operator=(const ShaderResourceView&) = delete;
 
 private:
-    ID3D11ShaderResourceView* mShaderResourceView;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> mShaderResourceView;
 };

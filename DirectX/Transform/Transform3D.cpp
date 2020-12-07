@@ -198,6 +198,7 @@ void Transform3D::loadProperties(const rapidjson::Value& inObj) {
         setRotation(rot);
     }
     JsonHelper::getVector3(inObj, "scale", &mScale);
+    JsonHelper::getVector3(inObj, "pivot", &mPivot);
 
     computeWorldTransform();
 }
@@ -207,11 +208,10 @@ void Transform3D::saveProperties(rapidjson::Document::AllocatorType& alloc, rapi
     JsonHelper::setVector3(alloc, inObj, "position", mPosition);
     JsonHelper::setVector3(alloc, inObj, "rotation", mRotation.euler());
     JsonHelper::setVector3(alloc, inObj, "scale", mScale);
+    JsonHelper::setVector3(alloc, inObj, "pivot", mPivot);
 }
 
 void Transform3D::drawInspector() {
-    ImGui::Text("Transform");
-
     ImGuiWrapper::dragVector3("Position", mPosition, 0.01f);
 
     auto euler = mRotation.euler();

@@ -48,6 +48,7 @@ void ImGuiInspector::drawInspect() const {
     ImGui::Separator(); //区切り線
     drawTag(*target);
     ImGui::Separator(); //区切り線
+    ImGui::Text("Transform");
     target->transform().drawInspector();
     ImGui::Separator(); //区切り線
 

@@ -7,6 +7,7 @@
 #include "../System/SystemInclude.h"
 #include <dxgi1_6.h>
 #include <memory>
+#include <vector>
 
 #pragma comment(lib, "dxgi.lib")
 
@@ -36,6 +37,7 @@ public:
 
     ID3D11Device* device() const;
     ID3D11DeviceContext* deviceContext() const;
+    ID3D11DepthStencilView* depthStencilView() const;
     const std::shared_ptr<BlendState>& blendState() const;
     const std::shared_ptr<DepthStencilState>& depthStencilState() const;
     const std::shared_ptr<RasterizerState>& rasterizerState() const;
@@ -43,7 +45,6 @@ public:
     void setViewport(float width, float height, float x = 0.f, float y = 0.f) const;
     void setRenderTarget() const;
     void setDebugRenderTarget() const;
-    void setRenderTargets(ID3D11RenderTargetView* targets[], unsigned numTargets) const;
     void setPrimitive(PrimitiveType primitive) const;
 
     void draw(unsigned numVertex, unsigned start = 0);

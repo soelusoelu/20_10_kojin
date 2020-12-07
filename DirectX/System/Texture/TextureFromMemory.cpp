@@ -48,7 +48,7 @@ void TextureFromMemory::createTextureFromMemory(unsigned char* data, unsigned wi
     sub.data = data;
     sub.pitch = width * PIXEL_DATA_SIZE;
 
-    auto tex2D = std::make_unique<Texture2D>(tex2DDesc, sub);
+    auto tex2D = std::make_unique<Texture2D>(tex2DDesc, &sub);
 
-    mShaderResourceView = std::make_unique<ShaderResourceView>(*tex2D);
+    mShaderResourceView = std::make_shared<ShaderResourceView>(*tex2D);
 }

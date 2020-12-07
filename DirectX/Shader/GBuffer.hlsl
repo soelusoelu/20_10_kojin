@@ -41,7 +41,7 @@ VS_OUTPUT VS(float4 Pos : POSITION, float3 Norm : NORMAL, float2 UV : TEXCOORD)
 
     output.Pos = mul(wvp, Pos);
     output.WorldPos = mul(world, Pos);
-    output.WorldNormal = mul(world, float4(Norm, 1)).xyz;
+    output.WorldNormal = mul(world, float4(Norm, 0)).xyz;
 
     output.UV = UV;
 

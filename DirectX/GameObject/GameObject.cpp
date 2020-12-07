@@ -16,7 +16,6 @@ GameObject::~GameObject() {
 }
 
 void GameObject::update() {
-    mComponentManager->start();
     if (getActive()) {
         mComponentManager->update();
     }
@@ -51,6 +50,10 @@ bool GameObject::getActive() const {
 
 const std::string& GameObject::name() const {
     return mName;
+}
+
+void GameObject::setTag(const std::string& tag) {
+    mTag = tag;
 }
 
 const std::string& GameObject::tag() const {

@@ -22,7 +22,7 @@ public:
 
     Vector3& operator=(const Vector3& vec);
 
-    Vector3 operator-();
+    Vector3 operator-() const;
 
     // Vector addition (a + b)
     friend Vector3 operator+(const Vector3& a, const Vector3& b);

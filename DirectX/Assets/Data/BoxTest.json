@@ -1,10 +1,9 @@
 {
+  "transform": {
+    "pivot": [ 0.0, -1.0, 0.0 ]
+  },
+  "prototype": "CharacterCommonComponents",
   "components": [
-    {
-      "type": "DragAndDropCharacter",
-      "properties": {
-      }
-    },
     {
       "type": "MeshComponent",
       "properties": {
@@ -12,8 +11,19 @@
       }
     },
     {
-      "type": "AABBCollider",
+      "type": "MeshOutLine",
       "properties": {
+        "offset": 1.0
+      }
+    },
+    {
+      "type": "AABBCollider",
+      "properties": {}
+    },
+    {
+      "type": "HitPointComponent",
+      "properties": {
+        "HP": 200
       }
     }
   ]

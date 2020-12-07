@@ -34,7 +34,8 @@ void Window::createWindow(HINSTANCE hInstance) {
     //mWndClass.hIcon = LoadIcon(NULL, IDI_APPLICATION);
     mWndClass.hCursor = LoadCursor(NULL, IDC_ARROW);
     //mWndClass.hbrBackground = (HBRUSH)GetStockObject(LTGRAY_BRUSH);
-    mWndClass.lpszClassName = StringUtil::charToWchar(mTitle.c_str());
+    auto wcharTitle = StringUtil::charToWchar(mTitle);
+    mWndClass.lpszClassName = wcharTitle.c_str();
     //mWndClass.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
 
     //ウィンドウクラスをOSに登録
@@ -51,21 +52,28 @@ void Window::createWindow(HINSTANCE hInstance) {
 
     //ウィンドウの作成
     mhWnd = CreateWindow(
-        mWndClass.lpszClassName,                        //クラス名
-        StringUtil::charToWchar(mTitle.c_str()), //タイトルバーの文字
-        WS_OVERLAPPEDWINDOW,                     //標準的なウィンドウスタイル
-        CW_USEDEFAULT,                           //表示X座標(OSに任せる)
-        CW_USEDEFAULT,                           //表示Y座標(OSに任せる)
-        wrc.right - wrc.left,                    //ウィンドウ横幅
-        wrc.bottom - wrc.top,                    //ウィンドウ縦幅
-        nullptr,                                 //親ウィンドウハンドル
-        nullptr,                                 //メニューハンドル
-        hInstance,                               //呼び出しアプリケーションハンドル
-        nullptr                                  //オプション
+        mWndClass.lpszClassName,    //クラス名
+        wcharTitle.c_str(),         //タイトルバーの文字
+        WS_OVERLAPPEDWINDOW,        //標準的なウィンドウスタイル
+        CW_USEDEFAULT,              //表示X座標(OSに任せる)
+        CW_USEDEFAULT,              //表示Y座標(OSに任せる)
+        wrc.right - wrc.left,       //ウィンドウ横幅
+        wrc.bottom - wrc.top,       //ウィンドウ縦幅
+        nullptr,                    //親ウィンドウハンドル
+        nullptr,                    //メニューハンドル
+        hInstance,                  //呼び出しアプリケーションハンドル
+        nullptr                     //オプション
     );
 
     //ウインドウの表示
+#ifdef _DEBUG
+    //デバッグ時は最大表示
     ShowWindow(mhWnd, SW_MAXIMIZE);
+#else
+    //リリース時はウィンドウサイズで表示
+    ShowWindow(mhWnd, SW_SHOW);
+#endif // _DEBUG
+
     UpdateWindow(mhWnd);
 }
 

@@ -38,7 +38,7 @@ void GBuffer::create() {
     mRenderTargets.emplace_back(std::make_unique<RenderTargetView>(*texture, &rtvDesc));
 
     srvDesc.format = desc.format;
-    mShaderResourceViews.emplace_back(std::make_unique<ShaderResourceView>(*texture, srvDesc));
+    mShaderResourceViews.emplace_back(std::make_unique<ShaderResourceView>(*texture, &srvDesc));
 
     //ノーマル
     desc.format = Format::FORMAT_R10G10B10A2_UNORM;
@@ -48,7 +48,7 @@ void GBuffer::create() {
     mRenderTargets.emplace_back(std::make_unique<RenderTargetView>(*texture2, &rtvDesc));
 
     srvDesc.format = desc.format;
-    mShaderResourceViews.emplace_back(std::make_unique<ShaderResourceView>(*texture2, srvDesc));
+    mShaderResourceViews.emplace_back(std::make_unique<ShaderResourceView>(*texture2, &srvDesc));
 
     //ポジション
     desc.format = Format::FORMAT_RGBA16_FLOAT;
@@ -58,7 +58,7 @@ void GBuffer::create() {
     mRenderTargets.emplace_back(std::make_unique<RenderTargetView>(*texture3, &rtvDesc));
 
     srvDesc.format = desc.format;
-    mShaderResourceViews.emplace_back(std::make_unique<ShaderResourceView>(*texture3, srvDesc));
+    mShaderResourceViews.emplace_back(std::make_unique<ShaderResourceView>(*texture3, &srvDesc));
 
     //スペキュラ
     desc.format = Format::FORMAT_RGBA16_FLOAT;
@@ -68,7 +68,7 @@ void GBuffer::create() {
     mRenderTargets.emplace_back(std::make_unique<RenderTargetView>(*texture4, &rtvDesc));
 
     srvDesc.format = desc.format;
-    mShaderResourceViews.emplace_back(std::make_unique<ShaderResourceView>(*texture4, srvDesc));
+    mShaderResourceViews.emplace_back(std::make_unique<ShaderResourceView>(*texture4, &srvDesc));
 
     //各種生成
     createSampler();
@@ -82,10 +82,10 @@ void GBuffer::renderToTexture() {
 
     //各テクスチャをレンダーターゲットに設定
     static constexpr unsigned numGBuffer = static_cast<unsigned>(Type::NUM_GBUFFER_TEXTURES);
-    Microsoft::WRL::ComPtr<ID3D11RenderTargetView> views[numGBuffer];
-    for (size_t i = 0; i < numGBuffer; i++) {
-        views[i] = mRenderTargets[i]->getRenderTarget();
-    }
+    //Microsoft::WRL::ComPtr<ID3D11RenderTargetView> views[numGBuffer];
+    //for (size_t i = 0; i < numGBuffer; i++) {
+    //    views[i] = mRenderTargets[i]->getRenderTarget();
+    //}
     //dx.setRenderTargets(views->GetAddressOf(), numGBuffer);
 
     //クリア

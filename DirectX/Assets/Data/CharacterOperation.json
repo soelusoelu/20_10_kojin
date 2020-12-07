@@ -1,0 +1,53 @@
+{
+  "components": [
+    {
+      "type": "CharacterOperation",
+      "properties": {}
+    },
+    {
+      "type": "CharacterDeleter",
+      "properties": {}
+    },
+    {
+      "type": "CharacterSelector",
+      "properties": {}
+    },
+    {
+      "type": "DragAndDropCharacter",
+      "properties": {}
+    },
+    {
+      "type": "OverlapPrevention",
+      "properties": {}
+    },
+    {
+      "type": "CharacterCreater",
+      "properties": {}
+    },
+    {
+      "type": "CharacterCreateSpriteOperation",
+      "properties": {
+        "spriteStartPosition": [ 64.0, 1016.0 ],
+        "spriteScale": [ 0.7, 0.7 ],
+        "spriteSpace": 48.0,
+        "spritePivot": "LeftBottom",
+        "nonActiveAlpha": 0.2,
+        "costTextScale": 0.75
+      }
+    },
+    {
+      "type": "CharacterCost",
+      "properties": {}
+    },
+    {
+      "type": "CostRenderer",
+      "properties": {}
+    },
+    {
+      "type": "Text",
+      "properties": {
+        "position": [ 80.0, 750.0 ]
+      }
+    }
+  ]
+}

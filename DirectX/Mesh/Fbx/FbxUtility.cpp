@@ -19,3 +19,20 @@ Vector3 FbxUtility::fbxDouble3ToVector3(const FbxDouble3& src) {
 
     return dst;
 }
+
+Vector2 FbxUtility::fbxVector2ToVector2(const FbxVector2& src) {
+    Vector2 dst;
+    dst.x = static_cast<float>(src[0]);
+    dst.y = static_cast<float>(src[1]);
+
+    return dst;
+}
+
+Vector3 FbxUtility::fbxVector4ToVector3(const FbxVector4& src) {
+    Vector3 dst;
+    dst.x = static_cast<float>(src[0]);
+    dst.y = static_cast<float>(src[1]);
+    dst.z = static_cast<float>(src[2]);
+
+    return dst;
+}

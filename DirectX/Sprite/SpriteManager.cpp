@@ -68,8 +68,7 @@ void SpriteManager::add3D(const Sprite3DPtr& add) {
 }
 
 void SpriteManager::clear() {
-    mSpriteComponents.clear();
-    mSprite3Ds.clear();
+    remove();
 }
 
 void SpriteManager::remove() {

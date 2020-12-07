@@ -1,5 +1,4 @@
 {
-  "version": 1,
   "globalProperties": {
     "window": {
       "title": "MyEngine",
@@ -14,8 +13,8 @@
     },
     "fps": 60.0,
     "beginScene": "Title",
+    "removeExclusionTag": [ "Camera", "Light", "Shadow" ],
     "light": {
-      "ambientLight": [ 0.1, 0.1, 0.1 ],
       "pointLightMeshFileName": "Shape/Sphere.obj"
     },
     "drawString": {

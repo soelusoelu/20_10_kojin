@@ -1,0 +1,20 @@
+{
+  "Stage1": {
+    "cost": 100,
+    "ground": "Plane",
+    "characters": [
+      "SphereTest",
+      "BoxTest",
+      "SimpleCharacter"
+    ]
+  },
+  "Stage2": {
+    "cost": 200,
+    "ground": "Plane",
+    "characters": [
+      "SimpleCharacter",
+      "BoxTest",
+      "SphereTest"
+    ]
+  }
+}

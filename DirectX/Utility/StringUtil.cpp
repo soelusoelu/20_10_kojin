@@ -1,6 +1,7 @@
 ﻿#include "StringUtil.h"
 #include "../DebugLayer/Debug.h"
 #include "../System/SystemInclude.h"
+#include <cassert>
 #include <locale.h>
 #include <iomanip>
 #include <sstream>
@@ -20,20 +21,32 @@ std::vector<std::string> StringUtil::split(const std::string& src, const char de
     return temp;
 }
 
-const wchar_t* StringUtil::charToWchar(const char* src) {
-    wchar_t dst[256];
-    //size_t len = 0;
-    //setlocale(LC_ALL, "japanese");
-    //mbstowcs_s(&len, dst, 256, src, _TRUNCATE);
+std::wstring StringUtil::charToWchar(const std::string& src) {
+    //文字数を取得する
+    auto num1 = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED | MB_ERR_INVALID_CHARS, src.c_str(), -1, nullptr, 0);
 
-    MultiByteToWideChar(CP_ACP, 0, src, -1, dst, _countof(dst));
+    std::wstring dst;
+    dst.resize(num1);
+    //文字列を取得する
+    auto num2 = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED | MB_ERR_INVALID_CHARS, src.c_str(), -1, dst.data(), num1);
+
+    //一応チェック
+    assert(num1 == num2);
 
     return dst;
 }
 
-std::string StringUtil::wcharToString(const wchar_t* src) {
-    char dst[256];
-    WideCharToMultiByte(CP_ACP, 0, src, -1, dst, _countof(dst), nullptr, nullptr);
+std::string StringUtil::wcharToString(const std::wstring& src) {
+    //文字数を取得する
+    auto num1 = WideCharToMultiByte(CP_ACP, MB_PRECOMPOSED | MB_ERR_INVALID_CHARS, src.c_str(), -1, nullptr, 0, nullptr, nullptr);
+
+    std::string dst;
+    dst.resize(num1);
+    //文字列を取得する
+    auto num2 = WideCharToMultiByte(CP_ACP, MB_PRECOMPOSED | MB_ERR_INVALID_CHARS, src.c_str(), -1, dst.data(), num1, nullptr, nullptr);
+
+    //一応チェック
+    assert(num1 == num2);
 
     return dst;
 }

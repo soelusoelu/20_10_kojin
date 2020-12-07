@@ -1,11 +1,6 @@
 {
   "components": [
     {
-      "type": "Scene",
-      "properties": {
-      }
-    },
-    {
       "type": "Title",
       "properties": {
       }

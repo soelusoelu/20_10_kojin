@@ -383,6 +383,39 @@ Matrix4 Matrix4::createTranslation(const Vector3& trans) {
     return Matrix4(temp);
 }
 
+Matrix4 Matrix4::createLookAt(const Vector3& pos, const Vector3& lookAt, const Vector3& up) {
+    auto zaxis = Vector3::normalize(lookAt - pos);
+    auto xaxis = Vector3::normalize(Vector3::cross(up, zaxis));
+    auto yaxis = Vector3::normalize(Vector3::cross(zaxis, xaxis));
+    Vector3 trans(
+        -Vector3::dot(xaxis, pos),
+        -Vector3::dot(yaxis, pos),
+        -Vector3::dot(zaxis, pos)
+    );
+
+    float temp[4][4] = {
+        { xaxis.x, yaxis.x, zaxis.x, 0.f },
+        { xaxis.y, yaxis.y, zaxis.y, 0.f },
+        { xaxis.z, yaxis.z, zaxis.z, 0.f },
+        { trans.x, trans.y, trans.z, 1.f }
+    };
+
+    return Matrix4(temp);
+}
+
+Matrix4 Matrix4::createPerspectiveFOV(int width, int height, float fov, float nearClip, float farClip) {
+    float yScale = Math::cot(fov / 2.f);
+    float xScale = yScale * static_cast<float>(height) / static_cast<float>(width);
+    float temp[4][4] = {
+        { xScale, 0.f, 0.f, 0.f },
+        { 0.f, yScale, 0.f, 0.f },
+        { 0.f, 0.f, farClip / (farClip - nearClip), 1.f },
+        { 0.f, 0.f, -nearClip * farClip / (farClip - nearClip), 0.f }
+    };
+
+    return Matrix4(temp);
+}
+
 Matrix4 Matrix4::createOrtho(float width, float height, float _near, float _far) {
     float temp[4][4] = {
         { 2.f / width, 0.f, 0.f, 0.f },

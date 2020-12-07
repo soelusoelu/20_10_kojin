@@ -1,0 +1,19 @@
+{
+  "components": [
+    {
+      "type": "GameStart",
+      "properties": {
+
+      }
+    },
+    {
+      "type": "SpriteComponent",
+      "properties": {
+        "fileName": "Go.png",
+        "position": [ 1856.0, 1016.0 ],
+        "scale": [ 0.75, 0.75 ],
+        "pivot": "RightBottom"
+      }
+    }
+  ]
+}

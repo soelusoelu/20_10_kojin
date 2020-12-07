@@ -21,7 +21,7 @@ bool Mouse::getMouseButtonDown(MouseCode button) const {
 }
 
 bool Mouse::getMouseButton(MouseCode button) const {
-    return mCurrentMouseState.rgbButtons[static_cast<int>(button)] & 0x80;
+    return (mCurrentMouseState.rgbButtons[static_cast<int>(button)] & 0x80 && (mPreviousMouseState.rgbButtons[static_cast<int>(button)] & 0x80));
 }
 
 bool Mouse::getMouseButtonUp(MouseCode button) const {

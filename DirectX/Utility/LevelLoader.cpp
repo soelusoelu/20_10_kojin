@@ -8,7 +8,9 @@
 #include <rapidjson/prettywriter.h>
 #include <fstream>
 
-bool LevelLoader::loadJSON(const std::string & filePath, rapidjson::Document * outDoc) {
+bool LevelLoader::loadJSON(rapidjson::Document& outDoc, const std::string& fileName, const std::string& directoryPath) {
+    const auto& filePath = directoryPath + fileName;
+
     //バイナリモードで開き、末尾に移動
     std::ifstream file(filePath, std::ios::in | std::ios::binary | std::ios::ate);
     if (!file.is_open()) {
@@ -27,8 +29,8 @@ bool LevelLoader::loadJSON(const std::string & filePath, rapidjson::Document * o
     file.read(bytes.data(), static_cast<size_t>(fileSize));
 
     //生データをRapidJSONドキュメントにロードする
-    outDoc->Parse(bytes.data());
-    if (!outDoc->IsObject()) {
+    outDoc.Parse(bytes.data());
+    if (!outDoc.IsObject()) {
         Debug::windowMessage(filePath + "ファイルは有効ではありません");
         return false;
     }
@@ -36,10 +38,10 @@ bool LevelLoader::loadJSON(const std::string & filePath, rapidjson::Document * o
     return true;
 }
 
-void LevelLoader::loadGlobal(Game * root, const std::string & filePath) {
+void LevelLoader::loadGlobal(Game* root, const std::string& filePath) {
     rapidjson::Document doc;
-    if (!loadJSON(filePath, &doc)) {
-        Debug::windowMessage(filePath + ": レベルファイルのロードに失敗しました");
+    if (!loadJSON(doc, filePath)) {
+        return;
     }
 
     const rapidjson::Value& globals = doc["globalProperties"];
@@ -61,12 +63,12 @@ void LevelLoader::saveGameObject(const GameObject& gameObject, const std::string
     //タグを追加
     JsonHelper::setString(alloc, &doc, "tag", gameObject.tag());
 
-    //プロパティ用のjsonオブジェクトを作る
+    //トランスフォーム用のjsonオブジェクトを作る
     rapidjson::Value props(rapidjson::kObjectType);
-    //プロパティを保存
+    //トランスフォームを保存
     gameObject.saveProperties(alloc, &props);
-    //プロパティをゲームオブジェクトのjsonオブジェクトに追加
-    doc.AddMember("properties", props, alloc);
+    //トランスフォームをゲームオブジェクトのjsonオブジェクトに追加
+    doc.AddMember("transform", props, alloc);
 
     //コンポーネントを保存
     rapidjson::Value components(rapidjson::kArrayType);

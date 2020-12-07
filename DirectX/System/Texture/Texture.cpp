@@ -18,6 +18,21 @@ Texture::Texture() :
     createSampler();
 }
 
+Texture::Texture(const std::shared_ptr<ShaderResourceView>& view, const Vector2& textureSize)
+    : mShaderResourceView(view)
+    , mSampler(nullptr)
+    , mTextureSize(textureSize)
+{
+    if (!vertexBuffer || !indexBuffer) {
+        //バーテックスバッファー作成
+        createVertexBuffer();
+        //インデックスバッファの作成
+        createIndexBuffer();
+    }
+    //テクスチャー用サンプラー作成
+    createSampler();
+}
+
 Texture::~Texture() = default;
 
 void Texture::finalize() {

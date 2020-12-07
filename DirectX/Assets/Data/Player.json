@@ -1,5 +1,5 @@
 {
-  "properties": {
+  "transform": {
     "position": [ 0.0, 1.0, 0.0 ],
     "scale": [ 2.0, 2.0, 2.0 ]
   },
@@ -7,7 +7,7 @@
     {
       "type": "MeshComponent",
       "properties": {
-        "fileName": "Shape/Sphere.obj"
+        "fileName": "Practice/test.fbx"
       }
     },
     {

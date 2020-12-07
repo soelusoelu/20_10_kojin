@@ -2,31 +2,28 @@
 #include "DirectX.h"
 #include "Format.h"
 #include "Usage.h"
-#include "../System/GlobalFunction.h"
 
-Texture2D::Texture2D(const Texture2DDesc& desc) :
+Texture2D::Texture2D(const Texture2DDesc& desc, const SubResourceDesc* data) :
     mTexture2D(nullptr),
     mDesc(desc) {
-    MyDirectX::DirectX::instance().device()->CreateTexture2D(&toTexture2DDesc(desc), nullptr, &mTexture2D);
+    const auto& temp = toTexture2DDesc(desc);
+    if (data) {
+        const auto& sub = toSubResource(*data);
+        MyDirectX::DirectX::instance().device()->CreateTexture2D(&temp, &sub, &mTexture2D);
+    } else {
+        MyDirectX::DirectX::instance().device()->CreateTexture2D(&temp, nullptr, &mTexture2D);
+    }
 }
 
-Texture2D::Texture2D(const Texture2DDesc& desc, const SubResourceDesc& data) :
-    mTexture2D(nullptr),
-    mDesc(desc) {
-    MyDirectX::DirectX::instance().device()->CreateTexture2D(&toTexture2DDesc(desc), &toSubResource(data), &mTexture2D);
-}
-
-Texture2D::Texture2D(ID3D11Texture2D* texture2D) :
+Texture2D::Texture2D(Microsoft::WRL::ComPtr<ID3D11Texture2D> texture2D) :
     mTexture2D(texture2D),
     mDesc() {
 }
 
-Texture2D::~Texture2D() {
-    safeRelease(mTexture2D);
-}
+Texture2D::~Texture2D() = default;
 
 ID3D11Texture2D* Texture2D::texture2D() const {
-    return mTexture2D;
+    return mTexture2D.Get();
 }
 
 const Texture2DDesc& Texture2D::desc() const {
@@ -34,7 +31,7 @@ const Texture2DDesc& Texture2D::desc() const {
 }
 
 D3D11_TEXTURE2D_DESC Texture2D::toTexture2DDesc(const Texture2DDesc& desc) const {
-    D3D11_TEXTURE2D_DESC td;
+    D3D11_TEXTURE2D_DESC td{};
     td.Width = desc.width;
     td.Height = desc.height;
     td.MipLevels = desc.mipLevels;

@@ -21,7 +21,7 @@ public:
     virtual ~Component();
     //loadPropertiesの直後に呼び出される
     virtual void awake() {};
-    //getComponentはここでして
+    //全コンポーネントがロードされたあとに呼ばれる
     virtual void start() {};
     //毎フレーム呼ばれる
     virtual void update() {};
@@ -63,6 +63,7 @@ public:
         t->mComponentName = componentName;
         t->componentManager().addComponent(t);
         t->awake();
+        t->start();
         return t;
     }
 

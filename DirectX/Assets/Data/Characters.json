@@ -1,0 +1,17 @@
+{
+  "SphereTest": {
+    "mesh": "Shape/Sphere.fbx",
+    "sprite": "Character/red.png",
+    "cost": 10
+  },
+  "BoxTest": {
+    "mesh": "Shape/box.fbx",
+    "sprite": "Character/green.png",
+    "cost": 20
+  },
+  "SimpleCharacter": {
+    "mesh": "Practice/test.fbx",
+    "sprite": "Character/blue.png",
+    "cost": 30
+  }
+}

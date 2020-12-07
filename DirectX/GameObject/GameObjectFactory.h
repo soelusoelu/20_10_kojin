@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "../Math/Math.h"
 #include <rapidjson/document.h>
 #include <functional>
 #include <memory>
@@ -22,11 +23,13 @@ private:
     GameObjectFactory& operator=(const GameObjectFactory&) = delete;
 
     //ゲームオブジェクトを生成する
-    std::shared_ptr<GameObject> createGameObject(const rapidjson::Document& inDocument, const std::string& type);
+    std::shared_ptr<GameObject> createGameObject(const rapidjson::Document& inDocument, const std::string& type, const std::string& directoryPath);
     //ゲームオブジェクトのタグを取得する
     std::string loadTag(const rapidjson::Document& inDocument);
     //ゲームオブジェクトプロパティの読み込み
     void loadGameObjectProperties(GameObject& gameObject, const rapidjson::Document& inDocument);
+    //継承コンポーネントの読み込み
+    void loadPrototypeComponents(GameObject& gameObject, const rapidjson::Document& inDocument, const std::string& directoryPath) const;
     //コンポーネントの読み込み
     void loadComponents(GameObject& gameObject, const rapidjson::Document& inDocument) const;
     //各コンポーネントの読み込み

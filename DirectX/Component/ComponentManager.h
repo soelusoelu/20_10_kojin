@@ -36,12 +36,6 @@ public:
     template<typename T>
     std::shared_ptr<T> getComponent() const {
         std::shared_ptr<T> comp = nullptr;
-        for (const auto& c : mStartComponents) {
-            comp = std::dynamic_pointer_cast<T>(c);
-            if (comp) {
-                return comp;
-            }
-        }
         for (const auto& c : mComponents) {
             comp = std::dynamic_pointer_cast<T>(c);
             if (comp) {
@@ -56,12 +50,6 @@ public:
     template<typename T>
     std::vector<std::shared_ptr<T>> getComponents() const {
         std::vector<std::shared_ptr<T>> components;
-        for (const auto& c : mStartComponents) {
-            auto comp = std::dynamic_pointer_cast<T>(c);
-            if (comp) {
-                components.emplace_back(comp);
-            }
-        }
         for (const auto& c : mComponents) {
             auto comp = std::dynamic_pointer_cast<T>(c);
             if (comp) {
@@ -82,6 +70,5 @@ private:
     void saveComponent(rapidjson::Document::AllocatorType& alloc, rapidjson::Value* outArray, const Component& component) const;
 
 private:
-    ComponentPtrList mStartComponents;
     ComponentPtrList mComponents;
 };

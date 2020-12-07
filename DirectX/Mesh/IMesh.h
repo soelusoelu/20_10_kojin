@@ -1,10 +1,9 @@
 ﻿#pragma once
 
-#include "Bone.h"
 #include "IMeshLoader.h"
 #include "Material.h"
-#include "Motion.h"
-#include <vector>
+#include "../Collision/Collision.h"
+#include "../Math/Math.h"
 
 //外部公開用メッシュインターフェース
 class IMesh {
@@ -16,12 +15,12 @@ public:
     virtual unsigned getMeshCount() const = 0;
     //指定の頂点情報を取得
     virtual const MeshVertices& getMeshVertices(unsigned index) const = 0;
-    //モーションを取得する
-    virtual const Motion& getMotion(unsigned index) const = 0;
-    //モーション数を取得する
-    virtual unsigned getMotionCount() const = 0;
-    //ボーンを取得する
-    virtual const Bone& getBone(unsigned index) const = 0;
-    //ボーン数を取得する
-    virtual unsigned getBoneCount() const = 0;
+    //指定のインデックスバッファを取得する
+    virtual const Indices& getMeshIndices(unsigned index) const = 0;
+    //指定のメッシュのポリゴン数を取得する
+    virtual unsigned getPolygonCount(unsigned index) const = 0;
+    //指定のメッシュの指定のポリゴンを取得する
+    virtual Triangle getPolygon(unsigned meshIndex, unsigned polygonIndex) const = 0;
+    //指定のメッシュの指定のポリゴンにワールド行列を演算し取得する
+    virtual Triangle getPolygon(unsigned meshIndex, unsigned polygonIndex, const Matrix4& world) const = 0;
 };

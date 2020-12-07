@@ -6,15 +6,19 @@
 
 //ImGuiラッパー関数群
 namespace ImGuiWrapper {
+bool dragInt(const std::string& label, int& v, float speed = 1.f, int min = 0, int max = 0, const char* format = "%.3f", ImGuiSliderFlags flags = 0);
+
 bool dragFloat(const std::string& label, float& v, float speed = 1.f, float min = 0.f, float max = 0.f, const char* format = "%.3f", ImGuiSliderFlags flags = 0);
 bool dragVector2(const std::string& label, Vector2& v, float speed = 1.f, float min = 0.f, float max = 0.f, const char* format = "%.3f", ImGuiSliderFlags flags = 0);
 bool dragVector3(const std::string& label, Vector3& v, float speed = 1.f, float min = 0.f, float max = 0.f, const char* format = "%.3f", ImGuiSliderFlags flags = 0);
 bool dragVector4(const std::string& label, Vector4& v, float speed = 1.f, float min = 0.f, float max = 0.f, const char* format = "%.3f", ImGuiSliderFlags flags = 0);
 
-bool sliderFloat(const std::string& label, float& v, float min = 0.f, float max = 0.f, const char* format = "%.3f", ImGuiSliderFlags flags = 0);
-bool sliderVector2(const std::string& label, Vector2& v, float min = 0.f, float max = 0.f, const char* format = "%.3f", ImGuiSliderFlags flags = 0);
-bool sliderVector3(const std::string& label, Vector3& v, float min = 0.f, float max = 0.f, const char* format = "%.3f", ImGuiSliderFlags flags = 0);
-bool sliderVector4(const std::string& label, Vector4& v, float min = 0.f, float max = 0.f, const char* format = "%.3f", ImGuiSliderFlags flags = 0);
+bool sliderInt(const std::string& label, int& v, int min, int max, const char* format = "%.3f", ImGuiSliderFlags flags = 0);
+
+bool sliderFloat(const std::string& label, float& v, float min, float max, const char* format = "%.3f", ImGuiSliderFlags flags = 0);
+bool sliderVector2(const std::string& label, Vector2& v, float min, float max, const char* format = "%.3f", ImGuiSliderFlags flags = 0);
+bool sliderVector3(const std::string& label, Vector3& v, float min, float max, const char* format = "%.3f", ImGuiSliderFlags flags = 0);
+bool sliderVector4(const std::string& label, Vector4& v, float min, float max, const char* format = "%.3f", ImGuiSliderFlags flags = 0);
 
 bool colorEdit3(const std::string& label, Vector3& col, ImGuiColorEditFlags flags = 0);
 bool colorEdit4(const std::string& label, Vector4& col, ImGuiColorEditFlags flags = 0);

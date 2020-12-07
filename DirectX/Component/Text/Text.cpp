@@ -14,6 +14,10 @@ Text::~Text() = default;
 void Text::lateUpdate() {
     TextBase::lateUpdate();
 
+    if (!mIsActive) {
+        return;
+    }
+
     auto split = StringUtil::split(mText, '\n');
     auto pos = mPosition;
 

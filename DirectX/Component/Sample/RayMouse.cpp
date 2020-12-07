@@ -52,7 +52,7 @@ void RayMouse::update() {
         //    return;
         //}
         //無限平面とレイの衝突判定
-        if (!Intersect::intersectRayPlane(ray, plane, mIntersectPoint)) {
+        if (!Intersect::intersectRayPlane(ray, plane, &mIntersectPoint)) {
             return;
         }
         //AABBとレイの衝突判定
@@ -60,7 +60,7 @@ void RayMouse::update() {
             mSelectedMesh = true;
         }
     } else if (mouse.getMouseButton(MouseCode::LeftButton)) {
-        Intersect::intersectRayPlane(ray, plane, mIntersectPoint);
+        Intersect::intersectRayPlane(ray, plane, &mIntersectPoint);
     } else if (mouse.getMouseButtonUp(MouseCode::LeftButton)) {
         mSelectedMesh = false;
     }

@@ -30,6 +30,8 @@ public:
 
     //名前の取得
     const std::string& name() const;
+    //タグを設定する
+    void setTag(const std::string& tag);
     //タグの取得
     const std::string& tag() const;
 

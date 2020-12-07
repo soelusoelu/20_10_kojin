@@ -1,0 +1,46 @@
+{
+  "transform": {
+    "rotation": [ 0.0, -90.0, 0.0 ]
+  },
+  "prototype": "CharacterCommonComponents",
+  "components": [
+    {
+      "type": "MeshComponent",
+      "properties": {
+        "fileName": "Practice/test.fbx"
+      }
+    },
+    {
+      "type": "MeshOutLine",
+      "properties": {
+        "outLineColorThickness": 0.05,
+        "offset": 2.6947
+      }
+    },
+    {
+      "type": "AABBCollider",
+      "properties": {
+        "min": [
+          -1.4133567810058594,
+          0.20364421606063844,
+          -2.1725893020629885
+        ],
+        "max": [
+          1.411314606666565,
+          5.593063831329346,
+          1.0
+        ]
+      }
+    },
+    {
+      "type": "HitPointComponent",
+      "properties": {
+        "HP": 300
+      }
+    },
+    {
+      "type": "SimpleCharacter",
+      "properties": {}
+    }
+  ]
+}

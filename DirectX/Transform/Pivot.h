@@ -17,6 +17,8 @@ enum class Pivot {
 };
 
 namespace PivotFunc {
-    //文字列をPivotに変換
-    void stringToPivot(const std::string& src, Pivot* dst);
+//文字列をPivotに変換
+void stringToPivot(const std::string& src, Pivot* dst);
+//Pivotを文字列に変換
+void pivotToString(const Pivot& src, std::string& dst);
 };

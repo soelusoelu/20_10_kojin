@@ -79,7 +79,7 @@ void Game::initialize() {
     mSceneManager = new SceneManager();
 
     //ファイルから値を読み込む
-    LevelLoader::loadGlobal(this, "Assets\\Data\\Global.json");
+    LevelLoader::loadGlobal(this, "Global.json");
 
     mWindow->createWindow(mInstance);
     const auto& hwnd = mWindow->gethWnd();

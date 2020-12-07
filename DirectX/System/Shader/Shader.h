@@ -52,7 +52,7 @@ private:
     //インプットレイアウトの生成
     void createInputLayout(const std::vector<InputElementDesc>& layout);
     //シェーダーに値を渡すための開始・終了処理
-    void map(D3D11_MAPPED_SUBRESOURCE* mapRes, unsigned index = 0, unsigned sub = 0, D3D11_MAP type = D3D11_MAP_WRITE_DISCARD, unsigned flag = 0) const;
+    bool map(D3D11_MAPPED_SUBRESOURCE* mapRes, unsigned index = 0, unsigned sub = 0, D3D11_MAP type = D3D11_MAP_WRITE_DISCARD, unsigned flag = 0) const;
     void unmap(unsigned index = 0, unsigned sub = 0) const;
 
 private:

@@ -7,13 +7,15 @@
 #include "../Utility/FileUtil.h"
 #include <cassert>
 
-Mesh::Mesh() :
-    mMesh(nullptr) {
+Mesh::Mesh()
+    : mMesh(nullptr)
+{
 }
 
 Mesh::~Mesh() = default;
 
 const Material& Mesh::getMaterial(unsigned index) const {
+    assert(index < mMaterials.size());
     return mMaterials[index];
 }
 
@@ -22,15 +24,53 @@ unsigned Mesh::getMeshCount() const {
 }
 
 const MeshVertices& Mesh::getMeshVertices(unsigned index) const {
+    assert(index < mMeshesVertices.size());
     return mMeshesVertices[index];
 }
 
+const Indices& Mesh::getMeshIndices(unsigned index) const {
+    assert(index < mMeshesIndices.size());
+    return mMeshesIndices[index];
+}
+
+unsigned Mesh::getPolygonCount(unsigned index) const {
+    return getMeshIndices(index).size() / 3;
+}
+
+Triangle Mesh::getPolygon(unsigned meshIndex, unsigned polygonIndex) const {
+    const auto& meshVertices = getMeshVertices(meshIndex);
+    const auto& meshIndices = getMeshIndices(meshIndex);
+
+    Triangle polygon{};
+    polygon.p0 = meshVertices[meshIndices[polygonIndex * 3]].pos;
+    polygon.p1 = meshVertices[meshIndices[polygonIndex * 3 + 1]].pos;
+    polygon.p2 = meshVertices[meshIndices[polygonIndex * 3 + 2]].pos;
+
+    return polygon;
+}
+
+Triangle Mesh::getPolygon(unsigned meshIndex, unsigned polygonIndex, const Matrix4& world) const {
+    auto polygon = getPolygon(meshIndex, polygonIndex);
+
+    polygon.p0 = Vector3::transform(polygon.p0, world);
+    polygon.p1 = Vector3::transform(polygon.p1, world);
+    polygon.p2 = Vector3::transform(polygon.p2, world);
+
+    return polygon;
+}
+
 const Motion& Mesh::getMotion(unsigned index) const {
+    assert(index < mMotions.size());
     return mMotions[index];
 }
 
 unsigned Mesh::getMotionCount() const {
     return mMotions.size();
+}
+
+void Mesh::setMotionName(const std::string& name, unsigned index) {
+    assert(index < mMotions.size());
+    mMotions[index].name = name;
 }
 
 const Bone& Mesh::getBone(unsigned index) const {
@@ -41,15 +81,6 @@ unsigned Mesh::getBoneCount() const {
     return mBones.size();
 }
 
-void Mesh::loadMesh(const std::string& filePath) {
-    //すでに生成済みなら終了する
-    if (mMesh) {
-        return;
-    }
-
-    initialize(filePath);
-}
-
 void Mesh::draw(unsigned meshIndex) const {
     //バーテックスバッファーをセット
     mVertexBuffers[meshIndex]->setVertexBuffer();
@@ -58,6 +89,15 @@ void Mesh::draw(unsigned meshIndex) const {
 
     //プリミティブをレンダリング
     MyDirectX::DirectX::instance().drawIndexed(mMeshesIndices[meshIndex].size());
+}
+
+void Mesh::loadMesh(const std::string& filePath) {
+    //すでに生成済みなら終了する
+    if (mMesh) {
+        return;
+    }
+
+    initialize(filePath);
 }
 
 void Mesh::initialize(const std::string& filePath) {

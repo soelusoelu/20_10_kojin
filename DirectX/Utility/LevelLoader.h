@@ -14,7 +14,7 @@ class GameObject;
 class LevelLoader {
 public:
     //jsonファイルの読み込み
-    static bool loadJSON(const std::string& filePath, rapidjson::Document* outDoc);
+    static bool loadJSON(rapidjson::Document& outDoc, const std::string& fileName, const std::string& directoryPath = "Assets\\Data\\");
     //グローバルデータを読み込む
     static void loadGlobal(Game* root, const std::string& filePath);
     //ゲームオブジェクトを保存する

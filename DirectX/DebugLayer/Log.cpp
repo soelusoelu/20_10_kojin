@@ -33,6 +33,10 @@ void Log::logWarning(const std::string & message) {
     addLog(message, ColorPalette::yellow);
 }
 
+void Log::clear() {
+    mLogs.clear();
+}
+
 void Log::drawLogs(DrawString* drawString) const {
     const float height = DrawString::HEIGHT * mScale.y;
     auto pos = Vector2(0.f, Window::debugHeight() - height);

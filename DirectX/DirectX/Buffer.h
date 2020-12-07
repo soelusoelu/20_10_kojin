@@ -6,11 +6,11 @@
 
 class Buffer {
 public:
-    Buffer(const BufferDesc& desc);
-    Buffer(const BufferDesc& desc, const SubResourceDesc& data);
+    Buffer(const BufferDesc& desc, const SubResourceDesc* data = nullptr);
     virtual ~Buffer();
     const BufferDesc& desc() const;
     ID3D11Buffer* buffer() const;
+    ID3D11Buffer* const* bufferAddres() const;
 
 private:
     D3D11_BUFFER_DESC toBufferDesc(const BufferDesc& desc) const;
@@ -21,6 +21,6 @@ private:
 
 protected:
     BufferDesc mDesc;
-    ID3D11Buffer* mBuffer;
+    Microsoft::WRL::ComPtr<ID3D11Buffer> mBuffer;
 };
 

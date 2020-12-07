@@ -1,19 +1,8 @@
 {
   "components": [
     {
-      "type": "Scene",
-      "properties": {
-      }
-    },
-    {
       "type": "GamePlay",
       "properties": {
-      }
-    },
-    {
-      "type": "MeshComponent",
-      "properties": {
-        "fileName": "Shape/Sphere.obj"
       }
     }
   ]

@@ -17,6 +17,7 @@ public:
     void log(const std::string& message);
     void logError(const std::string& message);
     void logWarning(const std::string& message);
+    void clear();
     void drawLogs(DrawString* drawString) const;
 
 private:

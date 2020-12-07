@@ -14,4 +14,14 @@ Matrix4 substitutionMatrix(
 Vector3 fbxDouble3ToVector3(
     const FbxDouble3& src
 );
+
+//FbxVector2からVector2へ変換する
+Vector2 fbxVector2ToVector2(
+    const FbxVector2& src
+);
+
+//FbxVector4からVector3へ変換する
+Vector3 fbxVector4ToVector3(
+    const FbxVector4& src
+);
 };

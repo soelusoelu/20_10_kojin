@@ -4,9 +4,9 @@ SamplerState g_samLinear : register(s0);
 
 cbuffer global
 {
-    matrix mWorldProj;
-    float4 mColor;
-    float4 mUV;
+    matrix wp;
+    float4 color;
+    float4 uv;
 };
 
 //ç\ë¢ëÃ
@@ -16,18 +16,18 @@ struct VS_OUTPUT
     float2 UV : TEXCOORD;
 };
 
-VS_OUTPUT VS(float4 Pos : POSITION, float2 uv : TEXCOORD)
+VS_OUTPUT VS(float4 Pos : POSITION, float2 UV : TEXCOORD)
 {
     VS_OUTPUT output = (VS_OUTPUT) 0;
-    output.Pos = mul(mWorldProj, Pos);
-    output.UV = uv * float2(mUV.z - mUV.x, mUV.w - mUV.y) + float2(mUV.x, mUV.y);
+    output.Pos = mul(wp, Pos);
+    output.UV = UV * float2(uv.z - uv.x, uv.w - uv.y) + float2(uv.x, uv.y);
 
     return output;
 }
 
 float4 PS(VS_OUTPUT input) : SV_Target
 {
-    float4 color = g_texDecal.Sample(g_samLinear, input.UV);
-    color *= mColor;
-    return color;
+    float4 col = g_texDecal.Sample(g_samLinear, input.UV);
+    col *= color;
+    return col;
 }

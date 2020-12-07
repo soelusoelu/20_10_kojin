@@ -16,8 +16,6 @@ class LightManager;
 class DrawString;
 
 class SceneManager {
-    using StringSet = std::unordered_set<std::string>;
-
 public:
     SceneManager();
     ~SceneManager();
@@ -27,7 +25,7 @@ public:
     void draw() const;
 
 private:
-    void change(const StringSet& tags);
+    void change();
     void createScene(const std::string& name);
 
 private:
@@ -41,5 +39,6 @@ private:
     std::unique_ptr<LightManager> mLightManager;
     DrawString* mTextDrawer;
     std::string mBeginScene;
+    std::unordered_set<std::string> mRemoveExclusionTags;
     bool mShouldDraw;
 };

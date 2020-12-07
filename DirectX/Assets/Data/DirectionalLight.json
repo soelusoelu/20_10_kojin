@@ -1,15 +1,13 @@
 {
   "tag": "Light",
-  "properties": {
-    "position": [ 0.0, 15.0, 0.0 ],
-    "scale": [ 0.5, 0.5, 0.5 ]
+  "transform": {
+    "position": [ 0.0, 15.0, 0.0 ]
   },
   "components": [
     {
       "type": "DirectionalLight",
       "properties": {
-        "direction": [ -50.0, 0.0, 0.0 ],
-        "color": [ 0.5, 0.75, 1.0 ]
+        "direction": [ -45.0, 0.0, 0.0 ]
       }
     },
     {

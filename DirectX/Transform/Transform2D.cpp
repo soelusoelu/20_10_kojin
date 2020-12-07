@@ -1,11 +1,13 @@
 ﻿#include "Transform2D.h"
+#include "../DebugLayer/ImGuiWrapper.h"
 #include "../System/Window.h"
 
 Transform2D::Transform2D() :
     mWorldTransform(Matrix4::identity),
     mPosition(Vector2::zero),
     mRotation(0.f),
-    mPivot(Vector2::zero),
+    mPivot(Pivot::NONE),
+    mPivotPosition(Vector2::zero),
     mScale(Vector2::one),
     mSize(Vector2::zero),
     mIsRecomputeTransform(true) {
@@ -16,7 +18,7 @@ Transform2D::~Transform2D() = default;
 bool Transform2D::computeWorldTransform() {
     if (mIsRecomputeTransform) {
         mWorldTransform = Matrix4::createScale(Vector3(mSize, 1.f)); //テクスチャサイズに
-        mWorldTransform *= Matrix4::createTranslation(Vector3(-mPivot, 0.f)); //中心 + ピボットを原点に
+        mWorldTransform *= Matrix4::createTranslation(Vector3(-mPivotPosition, 0.f)); //中心 + ピボットを原点に
 
         mWorldTransform *= Matrix4::createScale(Vector3(getScale() * Window::getWindowCompensate(), 1.f));
         mWorldTransform *= Matrix4::createRotationZ(mRotation);
@@ -33,9 +35,8 @@ const Matrix4& Transform2D::getWorldTransform() const {
     return mWorldTransform;
 }
 
-void Transform2D::setPosition(const Vector2 & pos) {
-    mPosition.x = pos.x;
-    mPosition.y = pos.y;
+void Transform2D::setPosition(const Vector2& pos) {
+    mPosition = pos;
     shouldRecomputeTransform();
 }
 
@@ -43,9 +44,8 @@ const Vector2& Transform2D::getPosition() const {
     return mPosition;
 }
 
-void Transform2D::translate(const Vector2 & translation) {
-    mPosition.x += translation.x;
-    mPosition.y += translation.y;
+void Transform2D::translate(const Vector2& translation) {
+    mPosition += translation;
     shouldRecomputeTransform();
 }
 
@@ -75,45 +75,52 @@ void Transform2D::rotate(float angle) {
 }
 
 void Transform2D::setPivot(Pivot pivot) {
+    mPivot = pivot;
+
     switch (pivot) {
     case Pivot::LEFT_TOP:
-        mPivot = Vector2::zero;
+        mPivotPosition = Vector2::zero;
         break;
     case Pivot::CENTER_TOP:
-        mPivot.x = mSize.x / 2.f;
+        mPivotPosition.x = mSize.x / 2.f;
         break;
     case Pivot::RIGHT_TOP:
-        mPivot.x = mSize.x;
+        mPivotPosition.x = mSize.x;
         break;
     case Pivot::CENTER_LEFT:
-        mPivot.y = mSize.y / 2.f;
+        mPivotPosition.y = mSize.y / 2.f;
         break;
     case Pivot::CENTER:
-        mPivot = mSize / 2.f;
+        mPivotPosition = mSize / 2.f;
         break;
     case Pivot::CENTER_RIGHT:
-        mPivot = Vector2(mSize.x, mSize.y / 2.f);
+        mPivotPosition = Vector2(mSize.x, mSize.y / 2.f);
         break;
     case Pivot::LEFT_BOTTOM:
-        mPivot.y = mSize.y;
+        mPivotPosition.y = mSize.y;
         break;
     case Pivot::CETNER_BOTTOM:
-        mPivot = Vector2(mSize.x / 2.f, mSize.y);
+        mPivotPosition = Vector2(mSize.x / 2.f, mSize.y);
         break;
     case Pivot::RIGHT_BOTTOM:
-        mPivot = mSize;
+        mPivotPosition = mSize;
         break;
     default:
         break;
     }
+
     shouldRecomputeTransform();
 }
 
 const Vector2& Transform2D::getPivot() const {
+    return mPivotPosition;
+}
+
+Pivot Transform2D::getPivotEnum() const {
     return mPivot;
 }
 
-void Transform2D::setScale(const Vector2 & scale) {
+void Transform2D::setScale(const Vector2& scale) {
     mScale = scale;
     shouldRecomputeTransform();
 }
@@ -128,13 +135,25 @@ const Vector2& Transform2D::getScale() const {
     return mScale;
 }
 
-void Transform2D::setSize(const Vector2 & size) {
+void Transform2D::setSize(const Vector2& size) {
     mSize = size;
     shouldRecomputeTransform();
 }
 
 const Vector2& Transform2D::getSize() const {
     return mSize;
+}
+
+void Transform2D::drawInspector() {
+    if (ImGuiWrapper::dragVector2("Position", mPosition, 0.1f)) {
+        shouldRecomputeTransform();
+    }
+    if (ImGuiWrapper::dragFloat("Rotation", mRotation, 0.1f, 0.f, 360.f)) {
+        shouldRecomputeTransform();
+    }
+    if (ImGuiWrapper::dragVector2("Scale", mScale, 0.01f, 0.f, FLT_MAX)) {
+        shouldRecomputeTransform();
+    }
 }
 
 void Transform2D::shouldRecomputeTransform() {

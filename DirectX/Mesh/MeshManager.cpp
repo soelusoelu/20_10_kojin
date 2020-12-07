@@ -1,15 +1,25 @@
 ﻿#include "MeshManager.h"
 #include "../Component/Camera/Camera.h"
-#include "../Component/Mesh/MeshComponent.h"
+#include "../Component/Mesh/MeshRenderer.h"
+#include "../Component/Mesh/ShadowMap.h"
 #include "../DirectX/DirectXInclude.h"
+#include "../GameObject/GameObject.h"
+#include "../GameObject/GameObjectFactory.h"
 #include "../Transform/Transform3D.h"
 
-MeshManager::MeshManager() {
-    MeshComponent::setMeshManager(this);
+MeshManager::MeshManager()
+    : mShadowMap(nullptr)
+{
+    MeshRenderer::setMeshManager(this);
 }
 
 MeshManager::~MeshManager() {
-    MeshComponent::setMeshManager(nullptr);
+    MeshRenderer::setMeshManager(nullptr);
+}
+
+void MeshManager::createShadowMap() {
+    auto sm = GameObjectCreater::create("ShadowMap");
+    mShadowMap = sm->componentManager().getComponent<ShadowMap>();
 }
 
 void MeshManager::update() {
@@ -21,17 +31,13 @@ void MeshManager::draw(const Camera& camera, const DirectionalLight& dirLight) c
         return;
     }
 
-    for (const auto& mesh : mMeshes) {
-        if (!isDraw(*mesh, camera)) {
-            continue;
-        }
+    MyDirectX::DirectX::instance().rasterizerState()->setCulling(CullMode::BACK);
 
-        //MyDirectX::DirectX::instance().rasterizerState()->setCulling(CullMode::FRONT);
-        //mesh->draw(camera, dirLight);
-
-        MyDirectX::DirectX::instance().rasterizerState()->setCulling(CullMode::BACK);
-        mesh->draw(camera, dirLight);
+    if (mShadowMap) {
+        drawShadow(camera, dirLight);
     }
+
+    drawMeshes(camera, dirLight);
 }
 
 void MeshManager::add(const MeshPtr& mesh) {
@@ -39,7 +45,7 @@ void MeshManager::add(const MeshPtr& mesh) {
 }
 
 void MeshManager::clear() {
-    mMeshes.clear();
+    remove();
 }
 
 void MeshManager::remove() {
@@ -53,10 +59,7 @@ void MeshManager::remove() {
     }
 }
 
-bool MeshManager::isDraw(const MeshComponent& mesh, const Camera& camera) const {
-    if (!mesh.getActive()) {
-        return false;
-    }
+bool MeshManager::isDraw(const MeshRenderer& mesh, const Camera& camera) const {
     if (mesh.isDead()) {
         return false;
     }
@@ -67,4 +70,35 @@ bool MeshManager::isDraw(const MeshComponent& mesh, const Camera& camera) const 
     //}
 
     return true;
+}
+
+void MeshManager::drawMeshes(const Camera& camera, const DirectionalLight& dirLight) const {
+    for (const auto& mesh : mMeshes) {
+        if (!isDraw(*mesh, camera)) {
+            continue;
+        }
+
+        mesh->draw(camera, dirLight);
+    }
+}
+
+void MeshManager::drawShadow(const Camera& camera, const DirectionalLight& dirLight) const {
+    //描画準備
+    mShadowMap->drawBegin(dirLight);
+
+    for (const auto& mesh : mMeshes) {
+        //描画できないなら次へ
+        if (!isDraw(*mesh, camera)) {
+            continue;
+        }
+
+        //描画
+        mShadowMap->draw(*mesh, camera, dirLight);
+
+        //影描画用の定数バッファを設定する
+        mShadowMap->setShadowConstantBuffer(*mesh);
+    }
+
+    //描画終了処理
+    mShadowMap->drawEnd();
 }

@@ -24,9 +24,12 @@ public:
     //色味 [0, 1]
     void setColor(const Vector3& color);
     void setColor(float r, float g, float b);
-    //不透明度(0～1、1が不透明, 0が透明)
+    //色を取得する
+    const Vector3& getColor() const;
+    //不透明度 [0, 1]
     void setAlpha(float alpha);
-    const Vector4& getColor() const;
+    //不透明度を取得する
+    float getAlpha() const;
     //切り取り範囲(left, top, right, bottom, 0～1)
     void setUV(float l, float t, float r, float b);
     const Vector4& getUV() const;
@@ -36,8 +39,9 @@ public:
     void setActive(bool value);
     //アクティブ状態の取得
     bool getActive() const;
-    //テクスチャを設定する
+    //ファイル名からテクスチャを設定する
     void setTextureFromFileName(const std::string& fileName);
+    //テクスチャを設定する
     void setTexture(const std::shared_ptr<Texture>& texture);
     //テクスチャの取得
     const Texture& texture() const;
@@ -54,7 +58,8 @@ private:
     std::unique_ptr<Transform2D> mTransform;
     std::shared_ptr<Texture> mTexture;
     std::shared_ptr<Shader> mShader;
-    Vector4 mColor;
+    Vector3 mColor;
+    float mAlpha;
     Vector4 mUV;
     std::string mFileName;
     bool mIsActive;

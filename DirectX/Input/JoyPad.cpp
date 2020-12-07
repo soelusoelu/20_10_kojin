@@ -92,7 +92,7 @@ bool JoyPad::getJoyDown(JoyCode joy) const {
 }
 
 bool JoyPad::getJoy(JoyCode joy) const {
-    return mCurrentJoyState.rgbButtons[static_cast<int>(joy)] & 0x80;
+    return (mCurrentJoyState.rgbButtons[static_cast<int>(joy)] & 0x80 && (mPreviousJoyState.rgbButtons[static_cast<int>(joy)] & 0x80));
 }
 
 bool JoyPad::getJoyUp(JoyCode joy) const {

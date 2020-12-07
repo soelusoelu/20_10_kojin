@@ -11,7 +11,6 @@ class TextBase : public Component {
 public:
     TextBase(GameObject& gameObject);
     virtual ~TextBase();
-    virtual void lateUpdate() override;
     virtual void onEnable(bool value) override;
     virtual void loadProperties(const rapidjson::Value& inObj) override;
     virtual void drawInspector() override;

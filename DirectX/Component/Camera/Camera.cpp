@@ -17,12 +17,12 @@ Camera::Camera(GameObject& gameObject) :
 Camera::~Camera() = default;
 
 void Camera::awake() {
-    calcLookAt();
-    calcPerspectiveFOV(Window::width(), Window::height());
+    calcView();
+    calcProj();
 }
 
 void Camera::lateUpdate() {
-    calcLookAt();
+    calcView();
 }
 
 void Camera::loadProperties(const rapidjson::Value & inObj) {
@@ -65,6 +65,37 @@ Vector3 Camera::getPosition() const {
 
 void Camera::lookAt(const Vector3 & position) {
     mLookAt = position;
+}
+
+const Vector3& Camera::getLookAt() const {
+    return mLookAt;
+}
+
+void Camera::setFov(float fov) {
+    mFOV = fov;
+    calcProj();
+}
+
+float Camera::getFov() const {
+    return mFOV;
+}
+
+void Camera::setNearClip(float nearClip) {
+    mNearClip = nearClip;
+    calcProj();
+}
+
+float Camera::getNearClip() const {
+    return mNearClip;
+}
+
+void Camera::setFarClip(float farClip) {
+    mFarClip = farClip;
+    calcProj();
+}
+
+float Camera::getFarClip() const {
+    return mFarClip;
 }
 
 Vector3 Camera::screenToWorldPoint(const Vector2 & position, float z) {
@@ -169,33 +200,10 @@ bool Camera::viewFrustumCulling(const Vector3& pos, float radius) const {
     return true;
 }
 
-void Camera::calcLookAt() {
-    auto pos = getPosition();
-    Vector3 zaxis = Vector3::normalize(mLookAt - pos);
-    Vector3 xaxis = Vector3::normalize(Vector3::cross(transform().up(), zaxis));
-    Vector3 yaxis = Vector3::normalize(Vector3::cross(zaxis, xaxis));
-    Vector3 trans;
-    trans.x = -Vector3::dot(xaxis, pos);
-    trans.y = -Vector3::dot(yaxis, pos);
-    trans.z = -Vector3::dot(zaxis, pos);
-
-    float temp[4][4] = {
-        { xaxis.x, yaxis.x, zaxis.x, 0.f },
-        { xaxis.y, yaxis.y, zaxis.y, 0.f },
-        { xaxis.z, yaxis.z, zaxis.z, 0.f },
-        { trans.x, trans.y, trans.z, 1.f }
-    };
-    mView = Matrix4(temp);
+void Camera::calcView() {
+    mView = Matrix4::createLookAt(getPosition(), mLookAt, transform().up());
 }
 
-void Camera::calcPerspectiveFOV(int width, int height) {
-    float yScale = Math::cot(mFOV / 2.f);
-    float xScale = yScale * static_cast<float>(height) / static_cast<float>(width);
-    float temp[4][4] = {
-        { xScale, 0.f, 0.f, 0.f },
-        { 0.f, yScale, 0.f, 0.f },
-        { 0.f, 0.f, mFarClip / (mFarClip - mNearClip), 1.f },
-        { 0.f, 0.f, -mNearClip * mFarClip / (mFarClip - mNearClip), 0.f }
-    };
-    mProjection = Matrix4(temp);
+void Camera::calcProj() {
+    mProjection = Matrix4::createPerspectiveFOV(Window::width(), Window::height(), mFOV, mNearClip, mFarClip);
 }

@@ -13,6 +13,12 @@
     <FxCompile Include="Shader\SkinMesh.hlsl" />
     <FxCompile Include="Shader\Point3D.hlsl" />
     <FxCompile Include="Shader\Mesh.hlsl" />
+    <FxCompile Include="Shader\OutLine.hlsl" />
+    <FxCompile Include="Shader\SkinMeshOutLine.hlsl" />
+    <FxCompile Include="Shader\Texture3D.hlsl" />
+    <FxCompile Include="Shader\Shadow.hlsl" />
+    <FxCompile Include="Shader\ShadowDepthTextureCreater.hlsl" />
+    <FxCompile Include="Shader\SkinMeshShadow.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component\ComponentManager.cpp" />
@@ -167,8 +173,6 @@
     <ClCompile Include="Collision\Ray.cpp" />
     <ClCompile Include="Collision\Sphere.cpp" />
     <ClCompile Include="Component\Collider\AABBCollider.cpp" />
-    <ClCompile Include="Component\CharacterOperation\DragAndDropCharacter.cpp" />
-    <ClCompile Include="Component\CharacterOperation\CharacterCreater.cpp" />
     <ClCompile Include="Collision\Square.cpp" />
     <ClCompile Include="Component\Camera\CameraMove.cpp" />
     <ClCompile Include="System\AssetsManager.cpp" />
@@ -178,12 +182,7 @@
     <ClCompile Include="Mesh\Fbx\FbxBoneParser.cpp" />
     <ClCompile Include="Mesh\Fbx\FbxAnimationTime.cpp" />
     <ClCompile Include="Component\Mesh\SkinMeshComponent.cpp" />
-    <ClCompile Include="Component\CollideOperation\CollideMouseOperator.cpp" />
     <ClCompile Include="DebugLayer\PointRenderer.cpp" />
-    <ClCompile Include="Component\CollideOperation\CollideAdder.cpp" />
-    <ClCompile Include="Component\CollideOperation\AABBMouseScaler.cpp" />
-    <ClCompile Include="Component\CollideOperation\AABBSelector.cpp" />
-    <ClCompile Include="Component\CollideOperation\MeshAdder.cpp" />
     <ClCompile Include="Imgui\imgui.cpp" />
     <ClCompile Include="Imgui\imgui_demo.cpp" />
     <ClCompile Include="Imgui\imgui_draw.cpp" />
@@ -191,16 +190,21 @@
     <ClCompile Include="Imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="Imgui\imgui_widgets.cpp" />
     <ClCompile Include="DebugLayer\ImGuiInspector.cpp" />
-    <ClCompile Include="Component\CharacterOperation\CharacterCost.cpp" />
-    <ClCompile Include="Component\CharacterOperation\CostRenderer.cpp" />
     <ClCompile Include="DebugLayer\ImGuiWrapper.cpp" />
     <ClCompile Include="Component\Other\GameObjectSaveAndLoader.cpp" />
     <ClCompile Include="Component\Other\SaveThis.cpp" />
     <ClCompile Include="Mesh\Fbx\FbxBoneWeightParser.cpp" />
     <ClCompile Include="Mesh\Fbx\FbxMotionParser.cpp" />
     <ClCompile Include="Mesh\Fbx\FbxUtility.cpp" />
-    <ClCompile Include="Component\Camera\LookAtObject.cpp" />
+    <ClCompile Include="Sprite\SpriteUtility.cpp" />
+    <ClCompile Include="Component\Mesh\MeshOutLine.cpp" />
+    <ClCompile Include="Component\Mesh\MeshShader.cpp" />
+    <ClCompile Include="Collision\Triangle.cpp" />
+    <ClCompile Include="Mesh\VertexNormalSmoother.cpp" />
+    <ClCompile Include="Component\Mesh\ShadowMap.cpp" />
+    <ClCompile Include="Component\Mesh\MeshRenderer.cpp" />
     <ClCompile Include="Component\Player\PlayerMove.cpp" />
+    <ClCompile Include="Component\Camera\LookAtObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component\ComponentManager.h" />
@@ -400,8 +404,6 @@
     <ClInclude Include="Collision\Ray.h" />
     <ClInclude Include="Collision\Sphere.h" />
     <ClInclude Include="Component\Collider\AABBCollider.h" />
-    <ClInclude Include="Component\CharacterOperation\DragAndDropCharacter.h" />
-    <ClInclude Include="Component\CharacterOperation\CharacterCreater.h" />
     <ClInclude Include="Collision\Square.h" />
     <ClInclude Include="Component\Camera\CameraMove.h" />
     <ClInclude Include="System\AssetsManager.h" />
@@ -412,12 +414,7 @@
     <ClInclude Include="Mesh\Fbx\FbxAnimationTime.h" />
     <ClInclude Include="Mesh\Bone.h" />
     <ClInclude Include="Component\Mesh\SkinMeshComponent.h" />
-    <ClInclude Include="Component\CollideOperation\CollideMouseOperator.h" />
     <ClInclude Include="DebugLayer\PointRenderer.h" />
-    <ClInclude Include="Component\CollideOperation\CollideAdder.h" />
-    <ClInclude Include="Component\CollideOperation\AABBMouseScaler.h" />
-    <ClInclude Include="Component\CollideOperation\AABBSelector.h" />
-    <ClInclude Include="Component\CollideOperation\MeshAdder.h" />
     <ClInclude Include="Imgui\imconfig.h" />
     <ClInclude Include="Imgui\imgui.h" />
     <ClInclude Include="Imgui\imgui_impl_dx11.h" />
@@ -427,9 +424,6 @@
     <ClInclude Include="Imgui\imstb_textedit.h" />
     <ClInclude Include="Imgui\imstb_truetype.h" />
     <ClInclude Include="DebugLayer\ImGuiInspector.h" />
-    <ClInclude Include="Component\CharacterOperation\CharacterCost.h" />
-    <ClInclude Include="Component\CharacterOperation\CharacterCreateInfo.h" />
-    <ClInclude Include="Component\CharacterOperation\CostRenderer.h" />
     <ClInclude Include="DebugLayer\ImGuiWrapper.h" />
     <ClInclude Include="Component\Other\GameObjectSaveAndLoader.h" />
     <ClInclude Include="Component\Other\SaveThis.h" />
@@ -438,7 +432,48 @@
     <ClInclude Include="Mesh\Fbx\FbxMotionParser.h" />
     <ClInclude Include="Mesh\Fbx\FbxMotionTime.h" />
     <ClInclude Include="Mesh\Fbx\FbxUtility.h" />
-    <ClInclude Include="Component\Camera\LookAtObject.h" />
+    <ClInclude Include="Sprite\SpriteUtility.h" />
+    <ClInclude Include="Component\Mesh\MeshOutLine.h" />
+    <ClInclude Include="Component\Mesh\MeshShader.h" />
+    <ClInclude Include="Collision\Triangle.h" />
+    <ClInclude Include="Mesh\IAnimation.h" />
+    <ClInclude Include="Mesh\VertexNormalSmoother.h" />
+    <ClInclude Include="Component\Mesh\ShadowMap.h" />
+    <ClInclude Include="Mesh\IMeshDrawer.h" />
+    <ClInclude Include="Component\Mesh\IDrawBefore.h" />
+    <ClInclude Include="Component\Mesh\MeshRenderer.h" />
     <ClInclude Include="Component\Player\PlayerMove.h" />
+    <ClInclude Include="Component\Camera\LookAtObject.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shader\MeshCommonHeader.hlsli" />
+    <None Include="Shader\MeshCommonAndMaterialHeader.hlsli" />
+    <None Include="Shader\OutLineHeader.hlsli" />
+    <None Include="Shader\SimpleHeader.hlsli" />
+    <None Include="Assets\Data\ShadowMap.json" />
+    <None Include="Assets\Data\BoxTest.json" />
+    <None Include="Assets\Data\Camera.json" />
+    <None Include="Assets\Data\CharacterCommonComponents.json" />
+    <None Include="Assets\Data\CharacterOperation.json" />
+    <None Include="Assets\Data\Characters.json" />
+    <None Include="Assets\Data\CollideOperator.json" />
+    <None Include="Assets\Data\DirectionalLight.json" />
+    <None Include="Assets\Data\EnemyOperation.json" />
+    <None Include="Assets\Data\Enemys.json" />
+    <None Include="Assets\Data\GamePlay.json" />
+    <None Include="Assets\Data\GameReset.json" />
+    <None Include="Assets\Data\GameStart.json" />
+    <None Include="Assets\Data\Global.json" />
+    <None Include="Assets\Data\Plane.json" />
+    <None Include="Assets\Data\SimpleCharacter.json" />
+    <None Include="Assets\Data\SkinMesh.json" />
+    <None Include="Assets\Data\SphereMap.json" />
+    <None Include="Assets\Data\SphereTest.json" />
+    <None Include="Assets\Data\Stage.json" />
+    <None Include="Assets\Data\StageSelect.json" />
+    <None Include="Assets\Data\Title.json" />
+    <None Include="Assets\Data\Waveform.json" />
+    <None Include="Shader\ShadowHeader.hlsli" />
+    <None Include="Assets\Data\Player.json" />
   </ItemGroup>
 </Project>

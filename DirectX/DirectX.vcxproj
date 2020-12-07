@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -165,15 +165,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Component\Camera\LookAtObject.cpp" />
-    <ClCompile Include="Component\CharacterOperation\CharacterCost.cpp" />
-    <ClCompile Include="Component\CharacterOperation\CostRenderer.cpp" />
-    <ClCompile Include="Component\CollideOperation\AABBSelector.cpp" />
-    <ClCompile Include="Component\CollideOperation\AABBMouseScaler.cpp" />
-    <ClCompile Include="Component\CollideOperation\CollideAdder.cpp" />
-    <ClCompile Include="Component\CollideOperation\CollideMouseOperator.cpp" />
     <ClCompile Include="Component\Camera\CameraMove.cpp" />
-    <ClCompile Include="Component\CharacterOperation\CharacterCreater.cpp" />
+    <ClCompile Include="Component\Camera\LookAtObject.cpp" />
     <ClCompile Include="Component\Collider\AABBCollider.cpp" />
     <ClCompile Include="Collision\Intersect.cpp" />
     <ClCompile Include="Collision\AABB.cpp" />
@@ -182,12 +175,13 @@
     <ClCompile Include="Component\Player\PlayerMove.cpp" />
     <ClCompile Include="Component\Sample\RayMouse.cpp" />
     <ClCompile Include="Collision\Ray.cpp" />
-    <ClCompile Include="Component\CharacterOperation\DragAndDropCharacter.cpp" />
     <ClCompile Include="Collision\Square.cpp" />
-    <ClCompile Include="Component\CollideOperation\MeshAdder.cpp" />
     <ClCompile Include="DebugLayer\ImGuiInspector.cpp" />
     <ClCompile Include="DebugLayer\ImGuiWrapper.cpp" />
     <ClCompile Include="Component\Other\GameObjectSaveAndLoader.cpp" />
+    <ClCompile Include="Component\Mesh\MeshOutLine.cpp" />
+    <ClCompile Include="Component\Mesh\MeshShader.cpp" />
+    <ClCompile Include="Component\Mesh\MeshRenderer.cpp" />
     <ClCompile Include="Mesh\Fbx\FbxUtility.cpp" />
     <ClCompile Include="Mesh\Fbx\FbxMotionParser.cpp" />
     <ClCompile Include="Imgui\imgui.cpp" />
@@ -204,6 +198,8 @@
     <ClCompile Include="Component\Mesh\SkinMeshComponent.cpp" />
     <ClCompile Include="DebugLayer\PointRenderer.cpp" />
     <ClCompile Include="Component\Other\SaveThis.cpp" />
+    <ClCompile Include="Component\Mesh\ShadowMap.cpp" />
+    <ClCompile Include="Sprite\SpriteUtility.cpp" />
     <ClCompile Include="System\Shader\InputElementManager.cpp" />
     <ClCompile Include="System\Shader\ConstantBufferManager.cpp" />
     <ClCompile Include="DebugLayer\LineRenderer\LineRenderer.cpp" />
@@ -296,6 +292,7 @@
     <ClCompile Include="Mesh\Fbx\FBX.cpp" />
     <ClCompile Include="DirectX\DirectX.cpp" />
     <ClCompile Include="DebugLayer\Debug.cpp" />
+    <ClCompile Include="Collision\Triangle.cpp" />
     <ClCompile Include="Utility\Easing.cpp" />
     <ClCompile Include="Utility\FileUtil.cpp" />
     <ClCompile Include="Utility\LevelLoader.cpp" />
@@ -351,29 +348,24 @@
     <ClCompile Include="Sound\File\WaveformOutput.cpp" />
     <ClCompile Include="Sound\Effects\FourierTransform\WindowFunction.cpp" />
     <ClCompile Include="Component\Sound\WaveformRenderSample.cpp" />
+    <ClCompile Include="Mesh\VertexNormalSmoother.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Component\Camera\LookAtObject.h" />
-    <ClInclude Include="Component\CharacterOperation\CharacterCost.h" />
-    <ClInclude Include="Component\CharacterOperation\CharacterCreateInfo.h" />
-    <ClInclude Include="Component\CharacterOperation\CostRenderer.h" />
-    <ClInclude Include="Component\CollideOperation\AABBSelector.h" />
-    <ClInclude Include="Component\CollideOperation\AABBMouseScaler.h" />
-    <ClInclude Include="Component\CollideOperation\CollideAdder.h" />
-    <ClInclude Include="Component\CollideOperation\CollideMouseOperator.h" />
     <ClInclude Include="Component\Camera\CameraMove.h" />
-    <ClInclude Include="Component\CharacterOperation\CharacterCreater.h" />
+    <ClInclude Include="Component\Camera\LookAtObject.h" />
     <ClInclude Include="Component\Collider\AABBCollider.h" />
     <ClInclude Include="Collision\Intersect.h" />
     <ClInclude Include="Collision\AABB.h" />
     <ClInclude Include="Collision\Sphere.h" />
     <ClInclude Include="Collision\Circle.h" />
-    <ClInclude Include="Component\CharacterOperation\DragAndDropCharacter.h" />
-    <ClInclude Include="Component\CollideOperation\MeshAdder.h" />
+    <ClInclude Include="Component\Mesh\IDrawBefore.h" />
     <ClInclude Include="Component\Player\PlayerMove.h" />
     <ClInclude Include="DebugLayer\ImGuiInspector.h" />
     <ClInclude Include="DebugLayer\ImGuiWrapper.h" />
     <ClInclude Include="Component\Other\GameObjectSaveAndLoader.h" />
+    <ClInclude Include="Component\Mesh\MeshOutLine.h" />
+    <ClInclude Include="Component\Mesh\MeshShader.h" />
+    <ClInclude Include="Component\Mesh\MeshRenderer.h" />
     <ClInclude Include="Mesh\Fbx\FbxUtility.h" />
     <ClInclude Include="Mesh\Fbx\FbxMotionParser.h" />
     <ClInclude Include="Imgui\imconfig.h" />
@@ -391,7 +383,9 @@
     <ClInclude Include="Mesh\Fbx\FbxMeshParser.h" />
     <ClInclude Include="Mesh\Fbx\FbxMaterialParser.h" />
     <ClInclude Include="Mesh\Fbx\FbxMotionTime.h" />
+    <ClInclude Include="Mesh\IAnimation.h" />
     <ClInclude Include="Mesh\IMesh.h" />
+    <ClInclude Include="Mesh\IMeshDrawer.h" />
     <ClInclude Include="Mesh\Motion.h" />
     <ClInclude Include="Mesh\Vertex.h" />
     <ClInclude Include="Component\Sample\RayMouse.h" />
@@ -400,6 +394,8 @@
     <ClInclude Include="Component\Mesh\SkinMeshComponent.h" />
     <ClInclude Include="DebugLayer\PointRenderer.h" />
     <ClInclude Include="Component\Other\SaveThis.h" />
+    <ClInclude Include="Component\Mesh\ShadowMap.h" />
+    <ClInclude Include="Sprite\SpriteUtility.h" />
     <ClInclude Include="System\Shader\InputElementManager.h" />
     <ClInclude Include="System\Shader\ConstantBufferManager.h" />
     <ClInclude Include="DebugLayer\LineRenderer\LineRenderer.h" />
@@ -525,6 +521,7 @@
     <ClInclude Include="Mesh\IMeshLoader.h" />
     <ClInclude Include="DirectX\DirectX.h" />
     <ClInclude Include="DebugLayer\Debug.h" />
+    <ClInclude Include="Collision\Triangle.h" />
     <ClInclude Include="Utility\Easing.h" />
     <ClInclude Include="Utility\FileUtil.h" />
     <ClInclude Include="Utility\LevelLoader.h" />
@@ -590,6 +587,7 @@
     <ClInclude Include="Sound\File\WaveformOutput.h" />
     <ClInclude Include="Sound\Effects\FourierTransform\WindowFunction.h" />
     <ClInclude Include="Component\Sound\WaveformRenderSample.h" />
+    <ClInclude Include="Mesh\VertexNormalSmoother.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\ChickenMesh.hlsl">
@@ -652,6 +650,14 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
+    <FxCompile Include="Shader\OutLine.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
     <FxCompile Include="Shader\Point3D.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
@@ -670,6 +676,8 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
     </FxCompile>
+    <FxCompile Include="Shader\Shadow.hlsl" />
+    <FxCompile Include="Shader\ShadowDepthTextureCreater.hlsl" />
     <FxCompile Include="Shader\SimpleMesh.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Effect</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
@@ -688,6 +696,23 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
+    <FxCompile Include="Shader\SkinMeshOutLine.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shader\SkinMeshShadow.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Effect</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Effect</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
     <FxCompile Include="Shader\Texture.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
@@ -696,11 +721,43 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
     </FxCompile>
+    <FxCompile Include="Shader\Texture3D.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DirectXTex\DirectXTex_Desktop_2019_Win10.vcxproj">
       <Project>{371b9fa9-4c90-4ac6-a123-aced756d6c77}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Data\BoxTest.json" />
+    <None Include="Assets\Data\Camera.json" />
+    <None Include="Assets\Data\CharacterCommonComponents.json" />
+    <None Include="Assets\Data\CharacterOperation.json" />
+    <None Include="Assets\Data\Characters.json" />
+    <None Include="Assets\Data\CollideOperator.json" />
+    <None Include="Assets\Data\DirectionalLight.json" />
+    <None Include="Assets\Data\EnemyOperation.json" />
+    <None Include="Assets\Data\Enemys.json" />
+    <None Include="Assets\Data\GamePlay.json" />
+    <None Include="Assets\Data\GameReset.json" />
+    <None Include="Assets\Data\GameStart.json" />
+    <None Include="Assets\Data\Global.json" />
+    <None Include="Assets\Data\Plane.json" />
+    <None Include="Assets\Data\Player.json" />
+    <None Include="Assets\Data\ShadowMap.json" />
+    <None Include="Assets\Data\SimpleCharacter.json" />
+    <None Include="Assets\Data\SkinMesh.json" />
+    <None Include="Assets\Data\SphereMap.json" />
+    <None Include="Assets\Data\SphereTest.json" />
+    <None Include="Assets\Data\Stage.json" />
+    <None Include="Assets\Data\StageSelect.json" />
+    <None Include="Assets\Data\Title.json" />
+    <None Include="Assets\Data\Waveform.json" />
+    <None Include="Shader\MeshCommonAndMaterialHeader.hlsli" />
+    <None Include="Shader\MeshCommonHeader.hlsli" />
+    <None Include="Shader\OutLineHeader.hlsli" />
+    <None Include="Shader\ShadowHeader.hlsli" />
+    <None Include="Shader\SimpleHeader.hlsli" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

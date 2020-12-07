@@ -1,11 +1,9 @@
 ﻿#pragma once
 
-#include "../Component.h"
+#include "Scene.h"
 #include <memory>
 
-class Scene;
-
-class GamePlay : public Component {
+class GamePlay : public Scene {
 public:
     GamePlay(GameObject& gameObject);
     ~GamePlay();
@@ -13,5 +11,5 @@ public:
     virtual void update() override;
 
 private:
-    std::shared_ptr<Scene> mScene;
+
 };

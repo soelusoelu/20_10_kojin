@@ -22,6 +22,7 @@
 #include "../Sprite/Sprite.h"
 #include "../Sprite/SpriteManager.h"
 #include "../Utility/LevelLoader.h"
+#include <vector>
 
 SceneManager::SceneManager() :
     mRenderer(std::make_unique<Renderer>()),
@@ -47,6 +48,12 @@ void SceneManager::loadProperties(const rapidjson::Value& inObj) {
     JsonHelper::getString(inObj, "beginScene", &mBeginScene);
     mLightManager->loadProperties(inObj);
     mTextDrawer->loadProperties(inObj);
+
+    std::vector<std::string> tags;
+    JsonHelper::getStringArray(inObj, "removeExclusionTag", &tags);
+    for (const auto& tag : tags) {
+        mRemoveExclusionTags.emplace(tag);
+    }
 }
 
 void SceneManager::initialize() {
@@ -58,6 +65,8 @@ void SceneManager::initialize() {
 
     auto cam = GameObjectCreater::create("Camera");
     mCamera = cam->componentManager().getComponent<Camera>();
+
+    mMeshManager->createShadowMap();
 
     mLightManager->createDirectionalLight();
 
@@ -100,8 +109,14 @@ void SceneManager::update() {
     //シーン移行
     const auto& next = mCurrentScene->getNext();
     if (!next.empty()) {
-        change(mCurrentScene->getObjectToNext());
+        change();
+        //次のシーンに渡す値を避難させとく
+        const auto& toNextValues = mCurrentScene->getValuePassToNextScene();
+        //シーン遷移
         createScene(next);
+        //新しいシーンに前のシーンの値を渡す
+        mCurrentScene->getValueFromPreviousScene(toNextValues);
+        //このフレームは描画しない
         mShouldDraw = false;
     }
 }
@@ -112,13 +127,13 @@ void SceneManager::draw() const {
     }
 
     //各テクスチャ上にレンダリング
-    mRenderer->renderToTexture();
+    //mRenderer->renderToTexture();
     //メッシュ描画準備
     //mRenderer->renderMesh();
     ////メッシュの一括描画
     //mMeshManager->draw(*mCamera, mLightManager->getDirectionalLight());
     //各テクスチャを参照してレンダリング
-    mRenderer->renderFromTexture(*mCamera, *mLightManager);
+    //mRenderer->renderFromTexture(*mCamera, *mLightManager);
     ////ポイントライト描画準備
     //mRenderer->renderPointLight();
     ////ポイントライトの一括描画
@@ -160,13 +175,15 @@ void SceneManager::draw() const {
     DebugUtility::lineRenderer2D().draw(proj);
 }
 
-void SceneManager::change(const StringSet& tags) {
-    mGameObjectManager->clearExceptSpecified(tags);
+void SceneManager::change() {
+    mGameObjectManager->clear(mRemoveExclusionTags);
     mMeshManager->clear();
     mSpriteManager->clear();
 }
 
 void SceneManager::createScene(const std::string& name) {
+    //シーン作成
     auto scene = GameObjectCreater::create(name);
+    //シーンコンポーネント取得
     mCurrentScene = scene->componentManager().getComponent<Scene>();
 }

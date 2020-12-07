@@ -1,20 +1,8 @@
-Texture2D tex : register(t0);
-SamplerState samplerState : register(s0);
+#include "MeshCommonAndMaterialHeader.hlsli"
 
-cbuffer global_0 : register(b0)
+cbuffer Animation : register(b2)
 {
-    float3 lightDir : packoffset(c0);
-    float3 cameraPos : packoffset(c1);
-    matrix world : packoffset(c2);
-    matrix wvp : packoffset(c6);
-    matrix bones[256] : packoffset(c10);
-};
-
-cbuffer global_1 : register(b1)
-{
-    float3 ambient : packoffset(c0);
-    float4 diffuse : packoffset(c1);
-    float3 specular : packoffset(c2);
+    matrix bones[256];
 };
 
 struct VS_OUTPUT
@@ -49,14 +37,18 @@ float4 PS(VS_OUTPUT input) : SV_Target
     float3 normal = input.Normal;
     float3 viewDir = normalize(cameraPos - input.WorldPos);
 
-    float NL = dot(normal, lightDir);
-    float3 Reflect = normalize(2 * NL * normal - lightDir);
-    float spec = pow(saturate(dot(Reflect, viewDir)), 4);
+    float NL = dot(normal, -lightDir);
 
-    float3 color = saturate(ambient + diffuse.rgb * NL + specular * spec);
+    //ŠgŽU”½ŽËŒõ
+    float3 diff = NL * diffuse.rgb;
+
+    //”½ŽËŒõƒxƒNƒgƒ‹
+    float3 reflect = normalize(lightDir + 2 * NL * normal);
+    //‹¾–Ê”½ŽËŒõ
+    float spec = pow(saturate(dot(reflect, viewDir)), shininess) * specular;
+
+    float3 color = saturate(ambient + diff + spec) * lightColor;
     float4 texColor = tex.Sample(samplerState, input.UV);
 
-    color *= texColor.rgb;
-
-    return float4(color, texColor.a * diffuse.a);
+    return float4(color * texColor.rgb, diffuse.a * texColor.a);
 }

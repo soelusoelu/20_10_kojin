@@ -20,6 +20,7 @@ public:
     virtual void finalize() override;
     virtual void onEnable(bool value) override;
     virtual void loadProperties(const rapidjson::Value& inObj) override;
+    virtual void saveProperties(rapidjson::Document::AllocatorType& alloc, rapidjson::Value* inObj) const override;
     virtual void drawInspector() override;
 
     //描画
@@ -27,12 +28,15 @@ public:
 
     //トランスフォーム
     Transform2D& transform() const;
-    //色味
+    //色味 [0, 1]
     void setColor(const Vector3& color);
     void setColor(float r, float g, float b);
-    //不透明度(0～1、1が不透明, 0が透明)
+    //色を取得する
+    const Vector3& getColor() const;
+    //不透明度 [0, 1]
     void setAlpha(float alpha);
-    const Vector4& getColor() const;
+    //不透明度を取得する
+    float getAlpha() const;
     //切り取り範囲(left, top, right, bottom, 0～1)
     void setUV(float l, float t, float r, float b);
     const Vector4& getUV() const;
@@ -42,7 +46,7 @@ public:
     void setActive(bool value);
     bool getActive() const;
     bool isDead() const;
-    //テクスチャの張替え
+    //ファイル名からテクスチャを設定する
     void setTextureFromFileName(const std::string& fileName);
     //テクスチャを設定する
     void setTexture(const std::shared_ptr<Texture>& texture);

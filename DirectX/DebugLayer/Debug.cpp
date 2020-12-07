@@ -29,6 +29,12 @@ void Debug::logWarning(const std::string& message) {
 #endif // _DEBUG
 }
 
+void Debug::logClear() {
+#ifdef _DEBUG
+    DebugUtility::log().clear();
+#endif // _DEBUG
+}
+
 void Debug::renderPoint(const Vector3& point, const Vector3& color) {
 #ifdef _DEBUG
     DebugUtility::pointRenderer().renderPoint(point, color);

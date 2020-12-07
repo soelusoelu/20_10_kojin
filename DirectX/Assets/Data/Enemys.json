@@ -1,0 +1,16 @@
+{
+  "Stage1": [
+    {
+      "type": "SphereTest",
+      "position": [ 10.0, 0.0, 10.0 ]
+    },
+    {
+      "type": "BoxTest",
+      "position": [ 10.0, 0.0, -10.0 ]
+    },
+    {
+      "type": "SimpleCharacter",
+      "position": [ 10.0, 0.0, 0.0 ]
+    }
+  ]
+}

@@ -61,6 +61,12 @@ public:
 
     static Matrix4 createTranslation(const Vector3& trans);
 
+    //ビュー行列を作成する
+    static Matrix4 createLookAt(const Vector3& pos, const Vector3& lookAt, const Vector3& up);
+
+    //プロジェクション行列を作成する
+    static Matrix4 createPerspectiveFOV(int width, int height, float fov, float nearClip, float farClip);
+
     static Matrix4 createOrtho(float width, float height, float _near, float _far);
 
     static const Matrix4 identity;

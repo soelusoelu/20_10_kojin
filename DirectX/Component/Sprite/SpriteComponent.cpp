@@ -1,4 +1,5 @@
 ﻿#include "SpriteComponent.h"
+#include "../../DebugLayer/ImGuiWrapper.h"
 #include "../../GameObject/GameObject.h"
 #include "../../Imgui/imgui.h"
 #include "../../Sprite/Sprite.h"
@@ -71,11 +72,39 @@ void SpriteComponent::loadProperties(const rapidjson::Value& inObj) {
     }
 }
 
+void SpriteComponent::saveProperties(rapidjson::Document::AllocatorType& alloc, rapidjson::Value* inObj) const {
+    JsonHelper::setInt(alloc, inObj, "drawOrder", mDrawOrder);
+    JsonHelper::setString(alloc, inObj, "fileName", fileName());
+    JsonHelper::setBool(alloc, inObj, "isActive", getActive());
+    JsonHelper::setVector2(alloc, inObj, "position", transform().getPosition());
+    JsonHelper::setFloat(alloc, inObj, "rotation", transform().getRotation());
+    JsonHelper::setVector2(alloc, inObj, "scale", transform().getScale());
+    JsonHelper::setVector3(alloc, inObj, "color", getColor());
+    JsonHelper::setFloat(alloc, inObj, "alpha", getAlpha());
+    JsonHelper::setVector4(alloc, inObj, "uv", getUV());
+    std::string dst;
+    PivotFunc::pivotToString(transform().getPivotEnum(), dst);
+    JsonHelper::setString(alloc, inObj, "pivot", dst);
+}
+
 void SpriteComponent::drawInspector() {
     ImGui::Text("FileName: %s", fileName().c_str());
-    //inspect->emplace_back("Position", transform().getPosition());
-    //inspect->emplace_back("Rotation", transform().getRotation());
-    //inspect->emplace_back("Scale", transform().getScale());
+    transform().drawInspector();
+
+    auto color = getColor();
+    if (ImGuiWrapper::colorEdit3("Color", color)) {
+        setColor(color);
+    }
+
+    auto alpha = getAlpha();
+    if (ImGuiWrapper::sliderFloat("Alpha", alpha, 0.f, 1.f)) {
+        setAlpha(alpha);
+    }
+
+    auto uv = getUV();
+    if (ImGuiWrapper::sliderVector4("UV", uv, 0.f, 1.f)) {
+        setUV(uv.x, uv.y, uv.z, uv.w);
+    }
 }
 
 void SpriteComponent::draw(const Matrix4& proj) const {
@@ -94,12 +123,16 @@ void SpriteComponent::setColor(float r, float g, float b) {
     mSprite->setColor(r, g, b);
 }
 
+const Vector3& SpriteComponent::getColor() const {
+    return mSprite->getColor();
+}
+
 void SpriteComponent::setAlpha(float alpha) {
     mSprite->setAlpha(alpha);
 }
 
-const Vector4& SpriteComponent::getColor() const {
-    return mSprite->getColor();
+float SpriteComponent::getAlpha() const {
+    return mSprite->getAlpha();
 }
 
 void SpriteComponent::setUV(float l, float t, float r, float b) {

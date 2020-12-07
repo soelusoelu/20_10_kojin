@@ -1,7 +1,4 @@
-cbuffer global_0
-{
-    matrix wvp; //ƒ[ƒ‹ƒh‚©‚çË‰e‚Ü‚Å‚Ì•ÏŠ·s—ñ
-};
+#include "SimpleHeader.hlsli"
 
 struct VS_OUTPUT
 {

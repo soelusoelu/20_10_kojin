@@ -1,0 +1,11 @@
+{
+  "tag": "background",
+  "components": [
+    {
+      "type": "MeshComponent",
+      "properties": {
+        "fileName": "Yashiki/sky.obj"
+      }
+    }
+  ]
+}

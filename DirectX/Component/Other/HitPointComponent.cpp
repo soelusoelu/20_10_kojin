@@ -1,67 +1,93 @@
 ﻿#include "HitPointComponent.h"
-#include "../../Imgui/imgui.h"
+#include "../../DebugLayer/ImGuiWrapper.h"
+#include "../../Device/Subject.h"
 #include "../../Utility/LevelLoader.h"
 
-HitPointComponent::HitPointComponent(GameObject& gameObject) :
-    Component(gameObject),
-    mHP(0),
-    mMaxHP(0) {
+HitPointComponent::HitPointComponent(GameObject& gameObject)
+    : Component(gameObject)
+    , mHp(0)
+    , mMaxHp(0)
+    , mCallbackUpdateHp(std::make_unique<Subject>())
+{
 }
 
 HitPointComponent::~HitPointComponent() = default;
 
-void HitPointComponent::loadProperties(const rapidjson::Value & inObj) {
-    JsonHelper::getInt(inObj, "HP", &mHP);
-    JsonHelper::getInt(inObj, "maxHP", &mMaxHP);
+void HitPointComponent::loadProperties(const rapidjson::Value& inObj) {
+    JsonHelper::getInt(inObj, "HP", &mHp);
+    JsonHelper::getInt(inObj, "maxHP", &mMaxHp);
+    if (mMaxHp < mHp) {
+        mMaxHp = mHp;
+    }
 }
 
 void HitPointComponent::saveProperties(rapidjson::Document::AllocatorType& alloc, rapidjson::Value* inObj) const {
-    JsonHelper::setInt(alloc, inObj, "HP", mHP);
-    JsonHelper::setInt(alloc, inObj, "maxHP", mMaxHP);
+    JsonHelper::setInt(alloc, inObj, "HP", mHp);
+    JsonHelper::setInt(alloc, inObj, "maxHP", mMaxHp);
 }
 
 void HitPointComponent::drawInspector() {
-    ImGui::SliderInt("HP", &mHP, 0, mMaxHP);
-    ImGui::SliderInt("MaxHP", &mMaxHP, 0, INT_MAX);
+    if (ImGuiWrapper::sliderInt("HP", mHp, 0, mMaxHp)) {
+        mCallbackUpdateHp->notify();
+    }
+    if (ImGuiWrapper::dragInt("MaxHP", mMaxHp, 1.f, mHp)) {
+        mCallbackUpdateHp->notify();
+    }
 }
 
 void HitPointComponent::takeDamage(int damage) {
     if (damage < 0) {
         damage = 0;
     }
-    mHP -= damage;
-    if (mHP < 0) {
-        mHP = 0;
+    mHp -= damage;
+    if (mHp < 0) {
+        mHp = 0;
     }
+
+    mCallbackUpdateHp->notify();
 }
 
 void HitPointComponent::takeHeal(int heal) {
     if (heal < 0) {
         heal = 0;
     }
-    mHP += heal;
+    mHp += heal;
     clampHpIfOverMax();
+
+    mCallbackUpdateHp->notify();
 }
 
 void HitPointComponent::setHP(int hp, bool isChangeMax) {
-    mHP = hp;
+    mHp = hp;
+
+    //最大値も変更するか
     if (isChangeMax) {
-        mMaxHP = hp;
-    } else {
-        clampHpIfOverMax();
+        mMaxHp = hp;
     }
+
+    clampHpIfOverMax();
+
+    mCallbackUpdateHp->notify();
 }
 
-int HitPointComponent::hp() const {
-    return mHP;
+int HitPointComponent::getHP() const {
+    return mHp;
+}
+
+int HitPointComponent::getMaxHP() const {
+    return mMaxHp;
 }
 
 float HitPointComponent::hpRate() const {
-    return static_cast<float>(mHP) / static_cast<float>(mMaxHP);
+    return static_cast<float>(mHp) / static_cast<float>(mMaxHp);
+}
+
+void HitPointComponent::callbackUpdateHP(const std::function<void()>& callback) {
+    mCallbackUpdateHp->addObserver(callback);
 }
 
 void HitPointComponent::clampHpIfOverMax() {
-    if (mHP > mMaxHP) {
-        mHP = mMaxHP;
+    if (mHp > mMaxHp) {
+        mHp = mMaxHp;
     }
 }

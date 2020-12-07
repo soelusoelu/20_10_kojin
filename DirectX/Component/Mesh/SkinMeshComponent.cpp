@@ -1,17 +1,14 @@
 ﻿#include "SkinMeshComponent.h"
-#include "../Camera/Camera.h"
-#include "../Light/DirectionalLight.h"
-#include "../../Device/Time.h"
-#include "../../Input/Input.h"
-#include "../../Mesh/Material.h"
-#include "../../Mesh/Mesh.h"
+#include "MeshComponent.h"
+#include "MeshShader.h"
+#include "../../DebugLayer/Debug.h"
 #include "../../System/Shader/ConstantBuffers.h"
-#include "../../System/Shader/Shader.h"
-#include "../../System/Texture/TextureFromFile.h"
-#include "../../Transform/Transform3D.h"
+#include <cassert>
 
 SkinMeshComponent::SkinMeshComponent(GameObject& gameObject)
-    : MeshComponent(gameObject)
+    : Component(gameObject)
+    , mAnimation(nullptr)
+    , mMeshShader(nullptr)
     , mCurrentMotionNo(0)
     , mCurrentFrame(0)
 {
@@ -20,54 +17,57 @@ SkinMeshComponent::SkinMeshComponent(GameObject& gameObject)
 SkinMeshComponent::~SkinMeshComponent() = default;
 
 void SkinMeshComponent::update() {
-    if (Input::keyboard().getKeyDown(KeyCode::Space)) {
-        mCurrentMotionNo = ++mCurrentMotionNo % mMesh->getMotionCount();
-        mCurrentFrame = 0;
-    }
-    auto& motion = mMesh->getMotion(mCurrentMotionNo);
+    const auto& motion = mAnimation->getMotion(mCurrentMotionNo);
     ++mCurrentFrame;
     if (mCurrentFrame >= motion.numFrame) {
         mCurrentFrame = 0;
     }
+
+    //シェーダーにボーンのデータを渡す
+    for (size_t i = 0; i < mAnimation->getBoneCount(); ++i) {
+        mCurrentBones[i] = mAnimation->getBone(i).offsetMat * motion.frameMat[i][mCurrentFrame];
+    }
+    mMeshShader->setTransferData(mCurrentBones.data(), sizeof(SkinMeshConstantBuffer), 3);
 }
 
-void SkinMeshComponent::draw(const Camera& camera, const DirectionalLight& dirLight) const {
-    //使用するシェーダーの登録
-    mShader->setShaderInfo();
+void SkinMeshComponent::setMotionName(const std::string& name, unsigned motionNo) {
+    assert(motionNo < mAnimation->getMotionCount());
+    mAnimation->setMotionName(name, motionNo);
+}
 
-    //シェーダーのコンスタントバッファーに各種データを渡す
-    SkinMeshConstantBuffer meshcb;
-    auto& motion = mMesh->getMotion(mCurrentMotionNo);
-    for (size_t i = 0; i < mMesh->getBoneCount(); i++) {
-        meshcb.bones[i] = mMesh->getBone(i).offsetMat * motion.frameMat[i][mCurrentFrame];
-    }
-    const auto& world = transform().getWorldTransform();
-    meshcb.world = world;
-    meshcb.wvp = world * camera.getViewProjection();
-    meshcb.lightDir = dirLight.getDirection();
-    meshcb.cameraPos = camera.getPosition();
-    mShader->transferData(&meshcb, sizeof(meshcb), 0);
+void SkinMeshComponent::changeMotion(unsigned motionNo) {
+    assert(motionNo < mAnimation->getMotionCount());
+    mCurrentMotionNo = motionNo;
+    mCurrentFrame = 0;
+}
 
-    for (size_t i = 0; i < mMesh->getMeshCount(); ++i) {
-        MaterialConstantBuffer matcb;
-        const auto& mat = mMesh->getMaterial(i);
-        matcb.ambient = mat.ambient;
-        //アルファ値は0のときが多いから
-        float alpha = mAlpha;
-        if (!Math::nearZero(mat.transparency)) {
-            alpha *= mat.transparency;
+void SkinMeshComponent::changeMotion(const std::string& motionName) {
+    for (size_t i = 0; i < mAnimation->getMotionCount(); ++i) {
+        if (mAnimation->getMotion(i).name == motionName) {
+            mCurrentMotionNo = i;
+            mCurrentFrame = 0;
+            return;
         }
-        matcb.diffuse = Vector4(mat.diffuse, alpha);
-        matcb.specular = mat.specular;
-        //データ転送
-        mShader->transferData(&matcb, sizeof(matcb), 1);
-
-        //テクスチャが有るなら登録
-        if (mat.texture) {
-            mat.texture->setTextureInfo();
-        }
-
-        //描画
-        mMesh->draw(i);
     }
+
+    Debug::logError("Not found motion name[" + motionName + "].");
+}
+
+const Motion& SkinMeshComponent::getCurrentMotion() const {
+    return mAnimation->getMotion(mCurrentMotionNo);
+}
+
+int SkinMeshComponent::getCurrentMotionFrame() const {
+    return mCurrentFrame;
+}
+
+const std::vector<Matrix4>& SkinMeshComponent::getBoneCurrentFrameMatrix() const {
+    return mCurrentBones;
+}
+
+void SkinMeshComponent::setValue(const std::shared_ptr<MeshShader>& meshShader, IAnimation* anim) {
+    mAnimation = anim;
+    mMeshShader = meshShader;
+
+    mCurrentBones.resize(mAnimation->getBoneCount());
 }

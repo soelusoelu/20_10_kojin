@@ -1,8 +1,8 @@
 ﻿#include "Physics.h"
 #include "../Collision/Collision.h"
 #include "../Component/ComponentManager.h"
+#include "../Component/Collider/AABBCollider.h"
 #include "../Component/Collider/Collider.h"
-#include "../Component/Collider/SphereCollider.h"
 #include <algorithm>
 
 Physics::Physics() {
@@ -34,35 +34,35 @@ void Physics::sweepAndPrune() {
         return;
     }
 
-    //center.x - mCenter.radiusが小さい順にソート
-    //std::sort(mColliders.begin(), mColliders.end(), [](CollPtr a, CollPtr b) {
-    //    auto circleA = std::dynamic_pointer_cast<SphereCollider>(a);
-    //    auto circleB = std::dynamic_pointer_cast<SphereCollider>(b);
-    //    return circleA->getSphere().center.x - circleA->getSphere().radius < circleB->getSphere().center.x - circleB->getSphere().radius;
-    //});
+    //min.xが小さい順にソート
+    std::sort(mColliders.begin(), mColliders.end(), [](CollPtr a, CollPtr b) {
+        auto circleA = std::dynamic_pointer_cast<AABBCollider>(a);
+        auto circleB = std::dynamic_pointer_cast<AABBCollider>(b);
+        return circleA->getAABB().min.x < circleB->getAABB().min.x;
+    });
 
-    //for (size_t i = 0; i < mColliders.size(); i++) {
-    //    auto a = std::dynamic_pointer_cast<SphereCollider>(mColliders[i]);
-    //    if (!a->getEnable()) {
-    //        continue;
-    //    }
-    //    const auto& as = a->getSphere();
-    //    //mCircles[i]の中心+半径を取得
-    //    float max = as.center.x + as.radius;
-    //    for (size_t j = i + 1; j < mColliders.size(); j++) {
-    //        auto b = std::dynamic_pointer_cast<SphereCollider>(mColliders[j]);
-    //        if (!b->getEnable()) {
-    //            continue;
-    //        }
-    //        const auto& bs = b->getSphere();
-    //        //もしmCircles[j]の中心-半径が、mCircles[i]の中心+半径を超えていたら、
-    //        //mCircles[i]と交差する可能性があるボックスは存在しない
-    //        if (bs.center.x - bs.radius > max) {
-    //            break;
-    //        } else if (Intersect::intersectSphere(as, bs)) {
-    //            a->addHitCollider(b);
-    //            b->addHitCollider(a);
-    //        }
-    //    }
-    //}
+    for (size_t i = 0; i < mColliders.size(); i++) {
+        auto aColl = std::dynamic_pointer_cast<AABBCollider>(mColliders[i]);
+        if (!aColl->getEnable()) {
+            continue;
+        }
+        const auto& a = aColl->getAABB();
+
+        for (size_t j = i + 1; j < mColliders.size(); j++) {
+            auto bColl = std::dynamic_pointer_cast<AABBCollider>(mColliders[j]);
+            if (!bColl->getEnable()) {
+                continue;
+            }
+            const auto& b = bColl->getAABB();
+
+            //もしb.min.xが、a.max.xを超えていたら、
+            //aと交差する可能性があるbは存在しない
+            if (b.min.x > a.max.x) {
+                break;
+            } else if (Intersect::intersectAABB(a, b)) {
+                aColl->addHitCollider(bColl);
+                bColl->addHitCollider(aColl);
+            }
+        }
+    }
 }

@@ -26,7 +26,7 @@ void AABBCollider::start() {
         if (meshComponent) {
             const auto& mesh = meshComponent->getMesh();
             //メッシュ情報からAABBを作成する
-            createAABB(mesh);
+            createAABB(*mesh);
         }
     }
 

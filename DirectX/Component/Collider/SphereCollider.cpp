@@ -17,9 +17,9 @@ void SphereCollider::start() {
 
     auto meshComponent = getComponent<MeshComponent>();
     if (meshComponent) {
-        const auto& mesh = meshComponent->getMesh();
+        const auto mesh = meshComponent->getMesh();
         //メッシュ情報から球を作成する
-        createSphere(mesh);
+        createSphere(*mesh);
     }
 }
 

@@ -13,7 +13,8 @@ DirectionalLight::DirectionalLight(GameObject& gameObject) :
 DirectionalLight::~DirectionalLight() = default;
 
 void DirectionalLight::lateUpdate() {
-    mDirection = Vector3::transform(Vector3::up, transform().getRotation());
+    //メッシュの向きと合わせる
+    mDirection = Vector3::transform(Vector3::down, transform().getRotation());
 }
 
 void DirectionalLight::loadProperties(const rapidjson::Value& inObj) {

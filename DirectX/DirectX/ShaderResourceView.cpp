@@ -2,32 +2,29 @@
 #include "DirectX.h"
 #include "Format.h"
 #include "Texture2D.h"
-#include "../System/GlobalFunction.h"
 
-ShaderResourceView::ShaderResourceView(const Texture2D& texture2D) :
+ShaderResourceView::ShaderResourceView(const Texture2D& texture2D, const ShaderResourceViewDesc* desc) :
     mShaderResourceView(nullptr) {
-    MyDirectX::DirectX::instance().device()->CreateShaderResourceView(texture2D.texture2D(), nullptr, &mShaderResourceView);
+    if (desc) {
+        const auto& temp = toSRVDesc(*desc);
+        MyDirectX::DirectX::instance().device()->CreateShaderResourceView(texture2D.texture2D(), &temp, &mShaderResourceView);
+    } else {
+        MyDirectX::DirectX::instance().device()->CreateShaderResourceView(texture2D.texture2D(), nullptr, &mShaderResourceView);
+    }
 }
 
-ShaderResourceView::ShaderResourceView(const Texture2D& texture2D, const ShaderResourceViewDesc& desc) :
-    mShaderResourceView(nullptr) {
-    MyDirectX::DirectX::instance().device()->CreateShaderResourceView(texture2D.texture2D(), &toSRVDesc(desc), &mShaderResourceView);
-}
-
-ShaderResourceView::ShaderResourceView(ID3D11ShaderResourceView* view) :
+ShaderResourceView::ShaderResourceView(Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> view) :
     mShaderResourceView(view) {
 }
 
-ShaderResourceView::~ShaderResourceView() {
-    safeRelease(mShaderResourceView);
-}
+ShaderResourceView::~ShaderResourceView() = default;
 
 void ShaderResourceView::setVSShaderResources(unsigned start, unsigned numViews) const {
-    MyDirectX::DirectX::instance().deviceContext()->VSSetShaderResources(start, numViews, &mShaderResourceView);
+    MyDirectX::DirectX::instance().deviceContext()->VSSetShaderResources(start, numViews, mShaderResourceView.GetAddressOf());
 }
 
 void ShaderResourceView::setPSShaderResources(unsigned start, unsigned numViews) const {
-    MyDirectX::DirectX::instance().deviceContext()->PSSetShaderResources(start, numViews, &mShaderResourceView);
+    MyDirectX::DirectX::instance().deviceContext()->PSSetShaderResources(start, numViews, mShaderResourceView.GetAddressOf());
 }
 
 D3D11_SHADER_RESOURCE_VIEW_DESC ShaderResourceView::toSRVDesc(const ShaderResourceViewDesc& desc) const {

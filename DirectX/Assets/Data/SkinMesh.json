@@ -1,13 +1,12 @@
 {
-  "properties": {
+  "transform": {
     "rotation": [ 0.0, -90.0, 0.0 ]
   },
   "components": [
     {
       "type": "SkinMeshComponent",
       "properties": {
-        "fileName": "Practice\\MyModel.fbx",
-        "shaderName": "SkinMesh.hlsl"
+        "fileName": "Practice\\MyModel.fbx"
       }
     }
   ]

@@ -6,16 +6,9 @@ ComponentManager::ComponentManager() = default;
 ComponentManager::~ComponentManager() = default;
 
 void ComponentManager::start() {
-    if (mStartComponents.empty()) {
-        return;
-    }
-
-    for (const auto& comp : mStartComponents) {
+    for (const auto& comp : mComponents) {
         comp->start();
-
-        mComponents.emplace_back(comp);
     }
-    mStartComponents.clear();
 }
 
 void ComponentManager::update() const  {
@@ -31,25 +24,18 @@ void ComponentManager::lateUpdate() const {
 }
 
 void ComponentManager::finalize() {
-    for (const auto& comp : mStartComponents) {
-        comp->finalize();
-    }
     for (const auto& comp : mComponents) {
         comp->finalize();
     }
 
-    mStartComponents.clear();
     mComponents.clear();
 }
 
 void ComponentManager::addComponent(const ComponentPtr& component) {
-    mStartComponents.emplace_back(component);
+    mComponents.emplace_back(component);
 }
 
 void ComponentManager::onEnable(bool value) const {
-    for (const auto& comp : mStartComponents) {
-        comp->onEnable(value);
-    }
     for (const auto& comp : mComponents) {
         comp->onEnable(value);
     }
@@ -60,9 +46,6 @@ const std::list<std::shared_ptr<Component>>& ComponentManager::getAllComponents(
 }
 
 void ComponentManager::saveComponents(rapidjson::Document::AllocatorType& alloc, rapidjson::Value* inObj) const {
-    for (const auto& c : mStartComponents) {
-        saveComponent(alloc, inObj, *c);
-    }
     for (const auto& c : mComponents) {
         saveComponent(alloc, inObj, *c);
     }
